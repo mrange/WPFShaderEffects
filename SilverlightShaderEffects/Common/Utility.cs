@@ -17,28 +17,31 @@ using System;
 using System.Windows;
 using System.Windows.Media.Effects;
 
-namespace WpfShaderEffects.Common
+namespace SilverlightShaderEffects.Common
 {
-   static class Utility
+   public delegate object CoerceValueCallback(
+      DependencyObject d, 
+      object baseValue);
+
+   public class Utility
    {
       public static PropertyMetadata CreatePropertyMetaData(
-         object defaultValue, 
-         PropertyChangedCallback propertyChangedCallback, 
+         object defaultValue,
+         PropertyChangedCallback propertyChangedCallback,
          CoerceValueCallback coerceValueCallback)
       {
-         return new UIPropertyMetadata(
+         return new PropertyMetadata(
             defaultValue,
-            propertyChangedCallback,
-            coerceValueCallback);
+            propertyChangedCallback);
       }
 
       public static PixelShader CreatePixelShader<T>()
       {
          var pixelShader =
             new PixelShader
-               {
-                  UriSource = GetShaderUri<T>(),
-               };
+            {
+               UriSource = GetShaderUri<T>(),
+            };
          return pixelShader;
       }
 
@@ -60,12 +63,13 @@ namespace WpfShaderEffects.Common
 
          var uriString =
             string.Format(
-               @"pack://application:,,,/{0};component/{1}",
+               @"/{0};component/{1}",
                assemblyShortName,
                relativeFile);
 
-         return new Uri(uriString);
+         return new Uri(uriString, UriKind.RelativeOrAbsolute);
       }
+
 
    }
 }

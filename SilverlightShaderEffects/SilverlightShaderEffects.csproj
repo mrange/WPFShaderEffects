@@ -1,61 +1,54 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B8703764-3BE4-426E-8689-BD7D865D9D4B}</ProjectGuid>
+    <ProjectGuid>{DD41CE5A-6791-49CE-90F2-304B89EF2EC3}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WpfShaderEffects</RootNamespace>
-    <AssemblyName>WpfShaderEffects</AssemblyName>
+    <RootNamespace>SilverlightShaderEffects</RootNamespace>
+    <AssemblyName>SilverlightShaderEffects</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Output\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>..\SilverlightOutput\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Output\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>..\SilverlightOutput\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared\EffectShaders.cs">
       <Link>EffectShaders.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EffectShaders.tt</DependentUpon>
     </Compile>
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="..\Shared\ShaderBinary\BandedSwirl.fx.ps">
@@ -128,83 +121,7 @@
       <Link>ShaderBinary\ZoomBlur.fx.ps</Link>
     </Resource>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Shared\EffectShaders.tt">
-      <Link>EffectShaders.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EffectShaders.cs</LastGenOutput>
-    </None>
-    <None Include="..\Shared\ShaderSource\BandedSwirl.fx">
-      <Link>ShaderSource\BandedSwirl.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\Bloom.fx">
-      <Link>ShaderSource\Bloom.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\BrightExtract.fx">
-      <Link>ShaderSource\BrightExtract.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\ColorKeyAlpha.fx">
-      <Link>ShaderSource\ColorKeyAlpha.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\ColorTone.fx">
-      <Link>ShaderSource\ColorTone.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\ContrastAdjust.fx">
-      <Link>ShaderSource\ContrastAdjust.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\DirectionalBlur.fx">
-      <Link>ShaderSource\DirectionalBlur.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\Embossed.fx">
-      <Link>ShaderSource\Embossed.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\Gloom.fx">
-      <Link>ShaderSource\Gloom.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\GrowablePoissonDisk.fx">
-      <Link>ShaderSource\GrowablePoissonDisk.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\InvertColor.fx">
-      <Link>ShaderSource\InvertColor.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\LightStreak.fx">
-      <Link>ShaderSource\LightStreak.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\Magnify.fx">
-      <Link>ShaderSource\Magnify.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\Monochrome.fx">
-      <Link>ShaderSource\Monochrome.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\Pinch.fx">
-      <Link>ShaderSource\Pinch.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\Pixelate.fx">
-      <Link>ShaderSource\Pixelate.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\Ripple.fx">
-      <Link>ShaderSource\Ripple.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\Sharpen.fx">
-      <Link>ShaderSource\Sharpen.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\SmoothMagnify.fx">
-      <Link>ShaderSource\SmoothMagnify.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\Swirl.fx">
-      <Link>ShaderSource\Swirl.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\ToneMapping.fx">
-      <Link>ShaderSource\ToneMapping.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\ToonShader.fx">
-      <Link>ShaderSource\ToonShader.fx</Link>
-    </None>
-    <None Include="..\Shared\ShaderSource\ZoomBlur.fx">
-      <Link>ShaderSource\ZoomBlur.fx</Link>
-    </None>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -212,4 +129,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

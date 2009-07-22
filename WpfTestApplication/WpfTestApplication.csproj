@@ -90,7 +90,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Tulips.jpg" />
+    <Resource Include="..\Shared\Images\Tulips.jpg">
+      <Link>Images\Tulips.jpg</Link>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
