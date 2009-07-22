@@ -15,6 +15,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		license.html = license.html
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShaderSource", "ShaderSource", "{94F7D76C-77EF-4B9A-89DC-850D469D0E00}"
+	ProjectSection(SolutionItems) = preProject
+		ShaderSource\BandedSwirl.fx = ShaderSource\BandedSwirl.fx
+		ShaderSource\Bloom.fx = ShaderSource\Bloom.fx
+		ShaderSource\BrightExtract.fx = ShaderSource\BrightExtract.fx
+		ShaderSource\ColorKeyAlpha.fx = ShaderSource\ColorKeyAlpha.fx
+		ShaderSource\ColorTone.fx = ShaderSource\ColorTone.fx
+		ShaderSource\ContrastAdjust.fx = ShaderSource\ContrastAdjust.fx
+		ShaderSource\DirectionalBlur.fx = ShaderSource\DirectionalBlur.fx
+		ShaderSource\Embossed.fx = ShaderSource\Embossed.fx
+		ShaderSource\Gloom.fx = ShaderSource\Gloom.fx
+		ShaderSource\GrowablePoissonDisk.fx = ShaderSource\GrowablePoissonDisk.fx
+		ShaderSource\InvertColor.fx = ShaderSource\InvertColor.fx
+		ShaderSource\LightStreak.fx = ShaderSource\LightStreak.fx
+		ShaderSource\Magnify.fx = ShaderSource\Magnify.fx
+		ShaderSource\Monochrome.fx = ShaderSource\Monochrome.fx
+		ShaderSource\Pinch.fx = ShaderSource\Pinch.fx
+		ShaderSource\Pixelate.fx = ShaderSource\Pixelate.fx
+		ShaderSource\Ripple.fx = ShaderSource\Ripple.fx
+		ShaderSource\Sharpen.fx = ShaderSource\Sharpen.fx
+		ShaderSource\SmoothMagnify.fx = ShaderSource\SmoothMagnify.fx
+		ShaderSource\Swirl.fx = ShaderSource\Swirl.fx
+		ShaderSource\ToneMapping.fx = ShaderSource\ToneMapping.fx
+		ShaderSource\ToonShader.fx = ShaderSource\ToonShader.fx
+		ShaderSource\ZoomBlur.fx = ShaderSource\ZoomBlur.fx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +63,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{94F7D76C-77EF-4B9A-89DC-850D469D0E00} = {CA451B2B-A8EA-451F-ACE4-C42C406DA957}
 	EndGlobalSection
 EndGlobal
