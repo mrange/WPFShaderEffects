@@ -46,70 +46,44 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Utility.cs" />
-    <Compile Include="Normal\NormalShaders.cs">
+    <Compile Include="EffectShaders.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>NormalShaders.tt</DependentUpon>
+      <DependentUpon>EffectShaders.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Normal\NormalShaders.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>NormalShaders.cs</LastGenOutput>
-    </None>
-    <EmbeddedResource Include="Normal\ShaderBinary\BandedSwirl.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\Bloom.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\BrightExtract.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\ColorKeyAlpha.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\ColorTone.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\ContrastAdjust.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\DirectionalBlur.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\Embossed.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\Gloom.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\GrowablePoissonDisk.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\InvertColor.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\LightStreak.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\Magnify.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\Monochrome.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\Pinch.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\Pixelate.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\Ripple.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\Sharpen.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\SmoothMagnify.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\Swirl.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\ToneMapping.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\ToonShader.fx.ps" />
-    <EmbeddedResource Include="Normal\ShaderBinary\ZoomBlur.fx.ps" />
-    <None Include="Normal\ShaderSource\BandedSwirl.fx" />
-    <None Include="Normal\ShaderSource\Bloom.fx" />
-    <None Include="Normal\ShaderSource\BrightExtract.fx" />
-    <None Include="Normal\ShaderSource\ColorKeyAlpha.fx" />
-    <None Include="Normal\ShaderSource\ColorTone.fx" />
-    <None Include="Normal\ShaderSource\ContrastAdjust.fx" />
-    <None Include="Normal\ShaderSource\DirectionalBlur.fx" />
-    <None Include="Normal\ShaderSource\Embossed.fx" />
-    <None Include="Normal\ShaderSource\Gloom.fx" />
-    <None Include="Normal\ShaderSource\GrowablePoissonDisk.fx" />
-    <None Include="Normal\ShaderSource\InvertColor.fx" />
-    <None Include="Normal\ShaderSource\LightStreak.fx" />
-    <None Include="Normal\ShaderSource\Magnify.fx" />
-    <None Include="Normal\ShaderSource\Monochrome.fx" />
-    <None Include="Normal\ShaderSource\Pinch.fx" />
-    <None Include="Normal\ShaderSource\Pixelate.fx" />
-    <None Include="Normal\ShaderSource\Ripple.fx" />
-    <None Include="Normal\ShaderSource\Sharpen.fx" />
-    <None Include="Normal\ShaderSource\SmoothMagnify.fx" />
-    <None Include="Normal\ShaderSource\Swirl.fx" />
-    <None Include="Normal\ShaderSource\ToneMapping.fx" />
-    <None Include="Normal\ShaderSource\ToonShader.fx" />
-    <None Include="Normal\ShaderSource\ZoomBlur.fx" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Transition\" />
+    <None Include="EffectShaders.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EffectShaders.cs</LastGenOutput>
+    </None>
+    <EmbeddedResource Include="ShaderBinary\BandedSwirl.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\Bloom.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\BrightExtract.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\ColorKeyAlpha.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\ColorTone.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\ContrastAdjust.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\DirectionalBlur.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\Embossed.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\Gloom.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\GrowablePoissonDisk.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\InvertColor.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\LightStreak.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\Magnify.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\Monochrome.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\Pinch.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\Pixelate.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\Ripple.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\Sharpen.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\SmoothMagnify.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\Swirl.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\ToneMapping.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\ToonShader.fx.ps" />
+    <EmbeddedResource Include="ShaderBinary\ZoomBlur.fx.ps" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
