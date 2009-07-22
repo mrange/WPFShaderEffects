@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfShaderEffects", "WpfShaderEffects\WpfShaderEffects.csproj", "{B8703764-3BE4-426E-8689-BD7D865D9D4B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4BC3EDCD-5870-425D-8CA4-3D9458E17032} = {4BC3EDCD-5870-425D-8CA4-3D9458E17032}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTestApplication", "WpfTestApplication\WpfTestApplication.csproj", "{01A2E15F-A0A8-4977-A17C-EC61D769192C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfShaderEffects.DirectX", "WpfShaderEffects.DirectX\WpfShaderEffects.DirectX.csproj", "{4BC3EDCD-5870-425D-8CA4-3D9458E17032}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CA451B2B-A8EA-451F-ACE4-C42C406DA957}"
+	ProjectSection(SolutionItems) = preProject
+		license.html = license.html
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8703764-3BE4-426E-8689-BD7D865D9D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8703764-3BE4-426E-8689-BD7D865D9D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8703764-3BE4-426E-8689-BD7D865D9D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8703764-3BE4-426E-8689-BD7D865D9D4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01A2E15F-A0A8-4977-A17C-EC61D769192C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01A2E15F-A0A8-4977-A17C-EC61D769192C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01A2E15F-A0A8-4977-A17C-EC61D769192C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01A2E15F-A0A8-4977-A17C-EC61D769192C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
