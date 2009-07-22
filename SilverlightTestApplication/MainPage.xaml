@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="SilverlightTestApplication.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SilverlightShaderEffects="clr-namespace:SilverlightShaderEffects;assembly=SilverlightShaderEffects" 
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480">
+  <Grid x:Name="LayoutRoot">
+
+      <Image Name="XYZ" Source="Tulips.jpg">
+         <Image.Effect>
+            <SilverlightShaderEffects:InvertColorShaderEffect/>
+         </Image.Effect>
+      </Image>
+
+   </Grid>
+</UserControl>
