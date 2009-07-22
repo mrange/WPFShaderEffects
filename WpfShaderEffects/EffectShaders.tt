@@ -85,7 +85,7 @@ namespace WpfShaderEffects
 #>
    public sealed partial class <#=shaderName#> : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<<#=shaderName#>>();
    
       public <#=shaderName#>()
