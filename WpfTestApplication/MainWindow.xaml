@@ -4,16 +4,53 @@
     xmlns:Normal="clr-namespace:WpfShaderEffects.Normal;assembly=WpfShaderEffects"
     Title="MainWindow" MinHeight="600" MinWidth="800">
     <Grid>
-      <Image Source="/WpfTestApplication;component/Images/Tulips.jpg" Stretch="UniformToFill">
-         <Image.Effect>
-            <Normal:BloomShaderEffect 
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="0.5*"/>
+         <ColumnDefinition Width="0.5*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="0.5*"/>
+         <RowDefinition Height="0.5*"/>
+      </Grid.RowDefinitions>
+      <Grid Grid.Column="0" Grid.Row="0">
+         <Image Source="/WpfTestApplication;component/Images/Tulips.jpg" Stretch="UniformToFill"/>
+         <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Normal</TextBlock>
+      </Grid>
+      <Grid Grid.Column="0" Grid.Row="1">
+         <Image Source="/WpfTestApplication;component/Images/Tulips.jpg" Stretch="UniformToFill">
+            <Image.Effect>
+               <Normal:InvertColorShaderEffect />                  
+
+            </Image.Effect>
+         </Image>
+         <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Invert</TextBlock>
+      </Grid>
+      <Grid Grid.Column="1" Grid.Row="0">
+         <Image Source="/WpfTestApplication;component/Images/Tulips.jpg" Stretch="UniformToFill">
+            <Image.Effect>
+               <Normal:RippleShaderEffect 
+                  Center="0.2,0.3" 
+                  Amplitude="0.5" 
+                  Frequency="10" 
+                  Phase="0.4"  />
+
+            </Image.Effect>
+         </Image>
+         <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Ripple</TextBlock>
+      </Grid>
+      <Grid Grid.Column="1" Grid.Row="1">
+         <Image Source="/WpfTestApplication;component/Images/Tulips.jpg" Stretch="UniformToFill">
+            <Image.Effect>
+               <Normal:BloomShaderEffect 
                BaseIntensity="0.5" 
                BaseSaturation="4" 
                BloomIntensity="0.8" 
                BloomSaturation="1"/>
 
-         </Image.Effect>
-      </Image>
+            </Image.Effect>
+         </Image>              
+         <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Bloom</TextBlock>
+      </Grid>
 
    </Grid>
 </Window>
