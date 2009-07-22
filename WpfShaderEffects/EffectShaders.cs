@@ -24,7 +24,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class BandedSwirlShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<BandedSwirlShaderEffect>();
    
       public BandedSwirlShaderEffect()
@@ -257,7 +257,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class BloomShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<BloomShaderEffect>();
    
       public BloomShaderEffect()
@@ -555,7 +555,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class BrightExtractShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<BrightExtractShaderEffect>();
    
       public BrightExtractShaderEffect()
@@ -658,7 +658,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class ColorKeyAlphaShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<ColorKeyAlphaShaderEffect>();
    
       public ColorKeyAlphaShaderEffect()
@@ -696,7 +696,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class ColorToneShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<ColorToneShaderEffect>();
    
       public ColorToneShaderEffect()
@@ -994,7 +994,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class ContrastAdjustShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<ContrastAdjustShaderEffect>();
    
       public ContrastAdjustShaderEffect()
@@ -1162,7 +1162,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class DirectionalBlurShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<DirectionalBlurShaderEffect>();
    
       public DirectionalBlurShaderEffect()
@@ -1330,7 +1330,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class EmbossedShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<EmbossedShaderEffect>();
    
       public EmbossedShaderEffect()
@@ -1498,7 +1498,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class GloomShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<GloomShaderEffect>();
    
       public GloomShaderEffect()
@@ -1796,7 +1796,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class GrowablePoissonDiskShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<GrowablePoissonDiskShaderEffect>();
    
       public GrowablePoissonDiskShaderEffect()
@@ -2029,7 +2029,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class InvertColorShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<InvertColorShaderEffect>();
    
       public InvertColorShaderEffect()
@@ -2067,7 +2067,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class LightStreakShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<LightStreakShaderEffect>();
    
       public LightStreakShaderEffect()
@@ -2235,7 +2235,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class MagnifyShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<MagnifyShaderEffect>();
    
       public MagnifyShaderEffect()
@@ -2468,7 +2468,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class MonochromeShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<MonochromeShaderEffect>();
    
       public MonochromeShaderEffect()
@@ -2571,7 +2571,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class PinchShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<PinchShaderEffect>();
    
       public PinchShaderEffect()
@@ -2869,7 +2869,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class PixelateShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<PixelateShaderEffect>();
    
       public PixelateShaderEffect()
@@ -3037,7 +3037,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class RippleShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<RippleShaderEffect>();
    
       public RippleShaderEffect()
@@ -3335,7 +3335,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class SharpenShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<SharpenShaderEffect>();
    
       public SharpenShaderEffect()
@@ -3503,7 +3503,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class SmoothMagnifyShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<SmoothMagnifyShaderEffect>();
    
       public SmoothMagnifyShaderEffect()
@@ -3671,7 +3671,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class SwirlShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<SwirlShaderEffect>();
    
       public SwirlShaderEffect()
@@ -3904,7 +3904,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class ToneMappingShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<ToneMappingShaderEffect>();
    
       public ToneMappingShaderEffect()
@@ -4397,7 +4397,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class ToonShaderShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<ToonShaderShaderEffect>();
    
       public ToonShaderShaderEffect()
@@ -4435,7 +4435,7 @@ namespace WpfShaderEffects
    /// </summary>
    public sealed partial class ZoomBlurShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          WpfShaderEffects.Common.Utility.CreatePixelShader<ZoomBlurShaderEffect>();
    
       public ZoomBlurShaderEffect()

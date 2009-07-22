@@ -13,7 +13,7 @@
  *
  * ***************************************************************************/
 
-using System.IO;
+using System;
 using System.Reflection;
 using System.Windows.Media.Effects;
 
@@ -23,22 +23,37 @@ namespace WpfShaderEffects.Common
    {
       public static PixelShader CreatePixelShader<T>()
       {
-         var stream = GetShaderBinary<T>();
-         var pixelShader = new PixelShader();
-         pixelShader.SetStreamSource(stream);
+         var pixelShader =
+            new PixelShader
+               {
+                  UriSource = GetShaderUri<T>(),
+               };
          return pixelShader;
       }
 
-      public static Stream GetShaderBinary<T>()
+      public static Uri GetShaderUri<T>()
       {
-         var type = typeof (T);
+         var type = typeof(T);
          var fullName = type.Name;
          var name = fullName.Substring(0, fullName.Length - "ShaderEffect".Length);
-         return Assembly.GetExecutingAssembly().GetManifestResourceStream(
-            type,
+
+         return MakePackUri(string.Format(@"ShaderBinary/{0}.fx.ps", name));
+      }
+
+      public static Uri MakePackUri(string relativeFile)
+      {
+         var a = Assembly.GetExecutingAssembly();
+
+         // Extract the short name.
+         var assemblyShortName = a.ToString().Split(',')[0];
+
+         var uriString =
             string.Format(
-               @"ShaderBinary.{0}.fx.ps",
-               name));
+               @"pack://application:,,,/{0};component/{1}",
+               assemblyShortName,
+               relativeFile);
+
+         return new Uri(uriString);
       }
 
    }
