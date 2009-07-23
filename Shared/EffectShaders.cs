@@ -67,11 +67,19 @@ namespace WpfShaderEffects
          @"Center",
          typeof(System.Windows.Point),
          typeof(BandedSwirlShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Point), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Point),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Point),
             PixelShaderConstantCallback(0),
-            OnCenterCoerceValueStatic));
+            OnCenterCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnCenterCoerceValue(
          System.Windows.Point baseValue,
          ref System.Windows.Point newValue,
@@ -106,7 +114,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Center (System.Windows.Point)
       /// </summary>
@@ -131,11 +139,19 @@ namespace WpfShaderEffects
          @"SpiralStrength",
          typeof(double),
          typeof(BandedSwirlShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnSpiralStrengthCoerceValueStatic));
+            OnSpiralStrengthCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnSpiralStrengthCoerceValue(
          double baseValue,
          ref double newValue,
@@ -170,7 +186,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property SpiralStrength (double)
       /// </summary>
@@ -195,11 +211,19 @@ namespace WpfShaderEffects
          @"DistanceThreshold",
          typeof(double),
          typeof(BandedSwirlShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(2),
-            OnDistanceThresholdCoerceValueStatic));
+            OnDistanceThresholdCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnDistanceThresholdCoerceValue(
          double baseValue,
          ref double newValue,
@@ -234,7 +258,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property DistanceThreshold (double)
       /// </summary>
@@ -301,11 +325,19 @@ namespace WpfShaderEffects
          @"BloomIntensity",
          typeof(double),
          typeof(BloomShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnBloomIntensityCoerceValueStatic));
+            OnBloomIntensityCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnBloomIntensityCoerceValue(
          double baseValue,
          ref double newValue,
@@ -340,7 +372,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property BloomIntensity (double)
       /// </summary>
@@ -365,11 +397,19 @@ namespace WpfShaderEffects
          @"BaseIntensity",
          typeof(double),
          typeof(BloomShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnBaseIntensityCoerceValueStatic));
+            OnBaseIntensityCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnBaseIntensityCoerceValue(
          double baseValue,
          ref double newValue,
@@ -404,7 +444,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property BaseIntensity (double)
       /// </summary>
@@ -429,11 +469,19 @@ namespace WpfShaderEffects
          @"BloomSaturation",
          typeof(double),
          typeof(BloomShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(2),
-            OnBloomSaturationCoerceValueStatic));
+            OnBloomSaturationCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnBloomSaturationCoerceValue(
          double baseValue,
          ref double newValue,
@@ -468,7 +516,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property BloomSaturation (double)
       /// </summary>
@@ -493,11 +541,19 @@ namespace WpfShaderEffects
          @"BaseSaturation",
          typeof(double),
          typeof(BloomShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(3))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(3),
-            OnBaseSaturationCoerceValueStatic));
+            OnBaseSaturationCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnBaseSaturationCoerceValue(
          double baseValue,
          ref double newValue,
@@ -532,7 +588,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property BaseSaturation (double)
       /// </summary>
@@ -596,11 +652,19 @@ namespace WpfShaderEffects
          @"Threshold",
          typeof(double),
          typeof(BrightExtractShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnThresholdCoerceValueStatic));
+            OnThresholdCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnThresholdCoerceValue(
          double baseValue,
          ref double newValue,
@@ -635,7 +699,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Threshold (double)
       /// </summary>
@@ -740,11 +804,19 @@ namespace WpfShaderEffects
          @"Desaturation",
          typeof(double),
          typeof(ColorToneShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnDesaturationCoerceValueStatic));
+            OnDesaturationCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnDesaturationCoerceValue(
          double baseValue,
          ref double newValue,
@@ -779,7 +851,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Desaturation (double)
       /// </summary>
@@ -804,11 +876,19 @@ namespace WpfShaderEffects
          @"Toned",
          typeof(double),
          typeof(ColorToneShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnTonedCoerceValueStatic));
+            OnTonedCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnTonedCoerceValue(
          double baseValue,
          ref double newValue,
@@ -843,7 +923,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Toned (double)
       /// </summary>
@@ -868,11 +948,19 @@ namespace WpfShaderEffects
          @"LightColor",
          typeof(System.Windows.Media.Color),
          typeof(ColorToneShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Media.Color), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Media.Color),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Media.Color),
             PixelShaderConstantCallback(2),
-            OnLightColorCoerceValueStatic));
+            OnLightColorCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnLightColorCoerceValue(
          System.Windows.Media.Color baseValue,
          ref System.Windows.Media.Color newValue,
@@ -907,7 +995,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property LightColor (System.Windows.Media.Color)
       /// </summary>
@@ -932,11 +1020,19 @@ namespace WpfShaderEffects
          @"DarkColor",
          typeof(System.Windows.Media.Color),
          typeof(ColorToneShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Media.Color), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Media.Color),
+            PixelShaderConstantCallback(3))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Media.Color),
             PixelShaderConstantCallback(3),
-            OnDarkColorCoerceValueStatic));
+            OnDarkColorCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnDarkColorCoerceValue(
          System.Windows.Media.Color baseValue,
          ref System.Windows.Media.Color newValue,
@@ -971,7 +1067,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property DarkColor (System.Windows.Media.Color)
       /// </summary>
@@ -1036,11 +1132,19 @@ namespace WpfShaderEffects
          @"Brightness",
          typeof(double),
          typeof(ContrastAdjustShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnBrightnessCoerceValueStatic));
+            OnBrightnessCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnBrightnessCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1075,7 +1179,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Brightness (double)
       /// </summary>
@@ -1100,11 +1204,19 @@ namespace WpfShaderEffects
          @"Contrast",
          typeof(double),
          typeof(ContrastAdjustShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnContrastCoerceValueStatic));
+            OnContrastCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnContrastCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1139,7 +1251,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Contrast (double)
       /// </summary>
@@ -1204,11 +1316,19 @@ namespace WpfShaderEffects
          @"Angle",
          typeof(double),
          typeof(DirectionalBlurShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnAngleCoerceValueStatic));
+            OnAngleCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnAngleCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1243,7 +1363,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Angle (double)
       /// </summary>
@@ -1268,11 +1388,19 @@ namespace WpfShaderEffects
          @"BlurAmount",
          typeof(double),
          typeof(DirectionalBlurShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnBlurAmountCoerceValueStatic));
+            OnBlurAmountCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnBlurAmountCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1307,7 +1435,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property BlurAmount (double)
       /// </summary>
@@ -1372,11 +1500,19 @@ namespace WpfShaderEffects
          @"Amount",
          typeof(double),
          typeof(EmbossedShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnAmountCoerceValueStatic));
+            OnAmountCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnAmountCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1411,7 +1547,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Amount (double)
       /// </summary>
@@ -1436,11 +1572,19 @@ namespace WpfShaderEffects
          @"Width",
          typeof(double),
          typeof(EmbossedShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnWidthCoerceValueStatic));
+            OnWidthCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnWidthCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1475,7 +1619,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Width (double)
       /// </summary>
@@ -1542,11 +1686,19 @@ namespace WpfShaderEffects
          @"GloomIntensity",
          typeof(double),
          typeof(GloomShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnGloomIntensityCoerceValueStatic));
+            OnGloomIntensityCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnGloomIntensityCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1581,7 +1733,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property GloomIntensity (double)
       /// </summary>
@@ -1606,11 +1758,19 @@ namespace WpfShaderEffects
          @"BaseIntensity",
          typeof(double),
          typeof(GloomShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnBaseIntensityCoerceValueStatic));
+            OnBaseIntensityCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnBaseIntensityCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1645,7 +1805,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property BaseIntensity (double)
       /// </summary>
@@ -1670,11 +1830,19 @@ namespace WpfShaderEffects
          @"GloomSaturation",
          typeof(double),
          typeof(GloomShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(2),
-            OnGloomSaturationCoerceValueStatic));
+            OnGloomSaturationCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnGloomSaturationCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1709,7 +1877,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property GloomSaturation (double)
       /// </summary>
@@ -1734,11 +1902,19 @@ namespace WpfShaderEffects
          @"BaseSaturation",
          typeof(double),
          typeof(GloomShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(3))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(3),
-            OnBaseSaturationCoerceValueStatic));
+            OnBaseSaturationCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnBaseSaturationCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1773,7 +1949,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property BaseSaturation (double)
       /// </summary>
@@ -1839,11 +2015,19 @@ namespace WpfShaderEffects
          @"DiscRadius",
          typeof(double),
          typeof(GrowablePoissonDiskShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnDiscRadiusCoerceValueStatic));
+            OnDiscRadiusCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnDiscRadiusCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1878,7 +2062,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property DiscRadius (double)
       /// </summary>
@@ -1903,11 +2087,19 @@ namespace WpfShaderEffects
          @"Width",
          typeof(double),
          typeof(GrowablePoissonDiskShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnWidthCoerceValueStatic));
+            OnWidthCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnWidthCoerceValue(
          double baseValue,
          ref double newValue,
@@ -1942,7 +2134,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Width (double)
       /// </summary>
@@ -1967,11 +2159,19 @@ namespace WpfShaderEffects
          @"Height",
          typeof(double),
          typeof(GrowablePoissonDiskShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(2),
-            OnHeightCoerceValueStatic));
+            OnHeightCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnHeightCoerceValue(
          double baseValue,
          ref double newValue,
@@ -2006,7 +2206,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Height (double)
       /// </summary>
@@ -2109,11 +2309,19 @@ namespace WpfShaderEffects
          @"BrightThreshold",
          typeof(double),
          typeof(LightStreakShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnBrightThresholdCoerceValueStatic));
+            OnBrightThresholdCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnBrightThresholdCoerceValue(
          double baseValue,
          ref double newValue,
@@ -2148,7 +2356,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property BrightThreshold (double)
       /// </summary>
@@ -2173,11 +2381,19 @@ namespace WpfShaderEffects
          @"Scale",
          typeof(double),
          typeof(LightStreakShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnScaleCoerceValueStatic));
+            OnScaleCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnScaleCoerceValue(
          double baseValue,
          ref double newValue,
@@ -2212,7 +2428,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Scale (double)
       /// </summary>
@@ -2278,11 +2494,19 @@ namespace WpfShaderEffects
          @"Radii",
          typeof(System.Windows.Point),
          typeof(MagnifyShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Point), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Point),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Point),
             PixelShaderConstantCallback(0),
-            OnRadiiCoerceValueStatic));
+            OnRadiiCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnRadiiCoerceValue(
          System.Windows.Point baseValue,
          ref System.Windows.Point newValue,
@@ -2317,7 +2541,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Radii (System.Windows.Point)
       /// </summary>
@@ -2342,11 +2566,19 @@ namespace WpfShaderEffects
          @"Center",
          typeof(System.Windows.Point),
          typeof(MagnifyShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Point), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Point),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Point),
             PixelShaderConstantCallback(1),
-            OnCenterCoerceValueStatic));
+            OnCenterCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnCenterCoerceValue(
          System.Windows.Point baseValue,
          ref System.Windows.Point newValue,
@@ -2381,7 +2613,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Center (System.Windows.Point)
       /// </summary>
@@ -2406,11 +2638,19 @@ namespace WpfShaderEffects
          @"Amount",
          typeof(double),
          typeof(MagnifyShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(2),
-            OnAmountCoerceValueStatic));
+            OnAmountCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnAmountCoerceValue(
          double baseValue,
          ref double newValue,
@@ -2445,7 +2685,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Amount (double)
       /// </summary>
@@ -2509,11 +2749,19 @@ namespace WpfShaderEffects
          @"FilterColor",
          typeof(System.Windows.Media.Color),
          typeof(MonochromeShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Media.Color), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Media.Color),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Media.Color),
             PixelShaderConstantCallback(0),
-            OnFilterColorCoerceValueStatic));
+            OnFilterColorCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnFilterColorCoerceValue(
          System.Windows.Media.Color baseValue,
          ref System.Windows.Media.Color newValue,
@@ -2548,7 +2796,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property FilterColor (System.Windows.Media.Color)
       /// </summary>
@@ -2615,11 +2863,19 @@ namespace WpfShaderEffects
          @"CenterX",
          typeof(double),
          typeof(PinchShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnCenterXCoerceValueStatic));
+            OnCenterXCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnCenterXCoerceValue(
          double baseValue,
          ref double newValue,
@@ -2654,7 +2910,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property CenterX (double)
       /// </summary>
@@ -2679,11 +2935,19 @@ namespace WpfShaderEffects
          @"CenterY",
          typeof(double),
          typeof(PinchShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnCenterYCoerceValueStatic));
+            OnCenterYCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnCenterYCoerceValue(
          double baseValue,
          ref double newValue,
@@ -2718,7 +2982,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property CenterY (double)
       /// </summary>
@@ -2743,11 +3007,19 @@ namespace WpfShaderEffects
          @"Radius",
          typeof(double),
          typeof(PinchShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(2),
-            OnRadiusCoerceValueStatic));
+            OnRadiusCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnRadiusCoerceValue(
          double baseValue,
          ref double newValue,
@@ -2782,7 +3054,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Radius (double)
       /// </summary>
@@ -2807,11 +3079,19 @@ namespace WpfShaderEffects
          @"Amount",
          typeof(double),
          typeof(PinchShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(3))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(3),
-            OnAmountCoerceValueStatic));
+            OnAmountCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnAmountCoerceValue(
          double baseValue,
          ref double newValue,
@@ -2846,7 +3126,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Amount (double)
       /// </summary>
@@ -2911,11 +3191,19 @@ namespace WpfShaderEffects
          @"HorizontalPixelCounts",
          typeof(double),
          typeof(PixelateShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnHorizontalPixelCountsCoerceValueStatic));
+            OnHorizontalPixelCountsCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnHorizontalPixelCountsCoerceValue(
          double baseValue,
          ref double newValue,
@@ -2950,7 +3238,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property HorizontalPixelCounts (double)
       /// </summary>
@@ -2975,11 +3263,19 @@ namespace WpfShaderEffects
          @"VerticalPixelCounts",
          typeof(double),
          typeof(PixelateShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnVerticalPixelCountsCoerceValueStatic));
+            OnVerticalPixelCountsCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnVerticalPixelCountsCoerceValue(
          double baseValue,
          ref double newValue,
@@ -3014,7 +3310,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property VerticalPixelCounts (double)
       /// </summary>
@@ -3081,11 +3377,19 @@ namespace WpfShaderEffects
          @"Center",
          typeof(System.Windows.Point),
          typeof(RippleShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Point), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Point),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Point),
             PixelShaderConstantCallback(0),
-            OnCenterCoerceValueStatic));
+            OnCenterCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnCenterCoerceValue(
          System.Windows.Point baseValue,
          ref System.Windows.Point newValue,
@@ -3120,7 +3424,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Center (System.Windows.Point)
       /// </summary>
@@ -3145,11 +3449,19 @@ namespace WpfShaderEffects
          @"Amplitude",
          typeof(double),
          typeof(RippleShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnAmplitudeCoerceValueStatic));
+            OnAmplitudeCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnAmplitudeCoerceValue(
          double baseValue,
          ref double newValue,
@@ -3184,7 +3496,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Amplitude (double)
       /// </summary>
@@ -3209,11 +3521,19 @@ namespace WpfShaderEffects
          @"Frequency",
          typeof(double),
          typeof(RippleShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(2),
-            OnFrequencyCoerceValueStatic));
+            OnFrequencyCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnFrequencyCoerceValue(
          double baseValue,
          ref double newValue,
@@ -3248,7 +3568,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Frequency (double)
       /// </summary>
@@ -3273,11 +3593,19 @@ namespace WpfShaderEffects
          @"Phase",
          typeof(double),
          typeof(RippleShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(3))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(3),
-            OnPhaseCoerceValueStatic));
+            OnPhaseCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnPhaseCoerceValue(
          double baseValue,
          ref double newValue,
@@ -3312,7 +3640,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Phase (double)
       /// </summary>
@@ -3377,11 +3705,19 @@ namespace WpfShaderEffects
          @"Amount",
          typeof(double),
          typeof(SharpenShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnAmountCoerceValueStatic));
+            OnAmountCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnAmountCoerceValue(
          double baseValue,
          ref double newValue,
@@ -3416,7 +3752,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Amount (double)
       /// </summary>
@@ -3441,11 +3777,19 @@ namespace WpfShaderEffects
          @"Width",
          typeof(double),
          typeof(SharpenShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnWidthCoerceValueStatic));
+            OnWidthCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnWidthCoerceValue(
          double baseValue,
          ref double newValue,
@@ -3480,7 +3824,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Width (double)
       /// </summary>
@@ -3545,11 +3889,19 @@ namespace WpfShaderEffects
          @"Center",
          typeof(System.Windows.Point),
          typeof(SmoothMagnifyShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Point), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Point),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Point),
             PixelShaderConstantCallback(0),
-            OnCenterCoerceValueStatic));
+            OnCenterCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnCenterCoerceValue(
          System.Windows.Point baseValue,
          ref System.Windows.Point newValue,
@@ -3584,7 +3936,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Center (System.Windows.Point)
       /// </summary>
@@ -3609,11 +3961,19 @@ namespace WpfShaderEffects
          @"InnerRadius",
          typeof(double),
          typeof(SmoothMagnifyShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(2),
-            OnInnerRadiusCoerceValueStatic));
+            OnInnerRadiusCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnInnerRadiusCoerceValue(
          double baseValue,
          ref double newValue,
@@ -3648,7 +4008,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property InnerRadius (double)
       /// </summary>
@@ -3714,11 +4074,19 @@ namespace WpfShaderEffects
          @"Center",
          typeof(System.Windows.Point),
          typeof(SwirlShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Point), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Point),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Point),
             PixelShaderConstantCallback(0),
-            OnCenterCoerceValueStatic));
+            OnCenterCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnCenterCoerceValue(
          System.Windows.Point baseValue,
          ref System.Windows.Point newValue,
@@ -3753,7 +4121,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Center (System.Windows.Point)
       /// </summary>
@@ -3778,11 +4146,19 @@ namespace WpfShaderEffects
          @"SpiralStrength",
          typeof(double),
          typeof(SwirlShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnSpiralStrengthCoerceValueStatic));
+            OnSpiralStrengthCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnSpiralStrengthCoerceValue(
          double baseValue,
          ref double newValue,
@@ -3817,7 +4193,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property SpiralStrength (double)
       /// </summary>
@@ -3842,11 +4218,19 @@ namespace WpfShaderEffects
          @"AngleFrequency",
          typeof(System.Windows.Point),
          typeof(SwirlShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Point), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Point),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Point),
             PixelShaderConstantCallback(2),
-            OnAngleFrequencyCoerceValueStatic));
+            OnAngleFrequencyCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnAngleFrequencyCoerceValue(
          System.Windows.Point baseValue,
          ref System.Windows.Point newValue,
@@ -3881,7 +4265,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property AngleFrequency (System.Windows.Point)
       /// </summary>
@@ -3951,11 +4335,19 @@ namespace WpfShaderEffects
          @"Exposure",
          typeof(double),
          typeof(ToneMappingShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnExposureCoerceValueStatic));
+            OnExposureCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnExposureCoerceValue(
          double baseValue,
          ref double newValue,
@@ -3990,7 +4382,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Exposure (double)
       /// </summary>
@@ -4015,11 +4407,19 @@ namespace WpfShaderEffects
          @"Defog",
          typeof(double),
          typeof(ToneMappingShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnDefogCoerceValueStatic));
+            OnDefogCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnDefogCoerceValue(
          double baseValue,
          ref double newValue,
@@ -4054,7 +4454,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Defog (double)
       /// </summary>
@@ -4079,11 +4479,19 @@ namespace WpfShaderEffects
          @"Gamma",
          typeof(double),
          typeof(ToneMappingShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(2),
-            OnGammaCoerceValueStatic));
+            OnGammaCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnGammaCoerceValue(
          double baseValue,
          ref double newValue,
@@ -4118,7 +4526,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Gamma (double)
       /// </summary>
@@ -4143,11 +4551,19 @@ namespace WpfShaderEffects
          @"FogColor",
          typeof(System.Windows.Media.Color),
          typeof(ToneMappingShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Media.Color), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Media.Color),
+            PixelShaderConstantCallback(3))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Media.Color),
             PixelShaderConstantCallback(3),
-            OnFogColorCoerceValueStatic));
+            OnFogColorCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnFogColorCoerceValue(
          System.Windows.Media.Color baseValue,
          ref System.Windows.Media.Color newValue,
@@ -4182,7 +4598,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property FogColor (System.Windows.Media.Color)
       /// </summary>
@@ -4207,11 +4623,19 @@ namespace WpfShaderEffects
          @"VignetteRadius",
          typeof(double),
          typeof(ToneMappingShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(4))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(4),
-            OnVignetteRadiusCoerceValueStatic));
+            OnVignetteRadiusCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnVignetteRadiusCoerceValue(
          double baseValue,
          ref double newValue,
@@ -4246,7 +4670,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property VignetteRadius (double)
       /// </summary>
@@ -4271,11 +4695,19 @@ namespace WpfShaderEffects
          @"VignetteCenter",
          typeof(System.Windows.Point),
          typeof(ToneMappingShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(System.Windows.Point), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(System.Windows.Point),
+            PixelShaderConstantCallback(5))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(System.Windows.Point),
             PixelShaderConstantCallback(5),
-            OnVignetteCenterCoerceValueStatic));
+            OnVignetteCenterCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnVignetteCenterCoerceValue(
          System.Windows.Point baseValue,
          ref System.Windows.Point newValue,
@@ -4310,7 +4742,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property VignetteCenter (System.Windows.Point)
       /// </summary>
@@ -4335,11 +4767,19 @@ namespace WpfShaderEffects
          @"BlueShift",
          typeof(double),
          typeof(ToneMappingShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(6))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(6),
-            OnBlueShiftCoerceValueStatic));
+            OnBlueShiftCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnBlueShiftCoerceValue(
          double baseValue,
          ref double newValue,
@@ -4374,7 +4814,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property BlueShift (double)
       /// </summary>
@@ -4477,11 +4917,19 @@ namespace WpfShaderEffects
          @"Center",
          typeof(double),
          typeof(ZoomBlurShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(0),
-            OnCenterCoerceValueStatic));
+            OnCenterCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnCenterCoerceValue(
          double baseValue,
          ref double newValue,
@@ -4516,7 +4964,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property Center (double)
       /// </summary>
@@ -4541,11 +4989,19 @@ namespace WpfShaderEffects
          @"BlurAmount",
          typeof(double),
          typeof(ZoomBlurShaderEffect),
-         Common.Utility.CreatePropertyMetaData(
-            default(double), 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
             PixelShaderConstantCallback(1),
-            OnBlurAmountCoerceValueStatic));
+            OnBlurAmountCoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void OnBlurAmountCoerceValue(
          double baseValue,
          ref double newValue,
@@ -4580,7 +5036,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property BlurAmount (double)
       /// </summary>

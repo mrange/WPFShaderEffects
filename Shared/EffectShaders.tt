@@ -141,11 +141,19 @@ namespace WpfShaderEffects
          @"<#=shaderParameterName#>",
          typeof(<#=shaderParameterType#>),
          typeof(<#=shaderName#>),
-         Common.Utility.CreatePropertyMetaData(
-            <#=defaultValue#>, 
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            <#=defaultValue#>,
+            PixelShaderConstantCallback(<#=shaderParameterIndex#>))
+#else
+         new System.Windows.UIPropertyMetadata(
+            <#=defaultValue#>,
             PixelShaderConstantCallback(<#=shaderParameterIndex#>),
-            On<#=shaderParameterName#>CoerceValueStatic));
+            On<#=shaderParameterName#>CoerceValueStatic)
+#endif
+         );            
 
+#if !SILVERLIGHT
       partial void On<#=shaderParameterName#>CoerceValue(
          <#=shaderParameterType#> baseValue,
          ref <#=shaderParameterType#> newValue,
@@ -180,7 +188,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets or sets property <#=shaderParameterName#> (<#=shaderParameterType#>)
       /// </summary>
