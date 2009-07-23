@@ -8,6 +8,9 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
+// ParameterComment        :  Monochrome color
+// ParameterType           :  Color
+// ParameterDefaultValue   :  MakeColor(0x7F, 0x7F, 0x7F)
 float4 FilterColor : register(C0);
 
 //--------------------------------------------------------------------------------------

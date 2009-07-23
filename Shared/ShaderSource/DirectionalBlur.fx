@@ -8,7 +8,16 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
+// ParameterComment        :  Blur direction (in radians)
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.1
+// ParameterCoerce         :  Angle % (2.0 * Pi)
 float Angle : register(C0);
+
+// ParameterComment        :  Amount of blur
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.2
+// ParameterCoerce         :  Clamp(BlurAmount, 0.0, double.MaxValue)
 float BlurAmount : register(C1);
 
 //--------------------------------------------------------------------------------------
@@ -24,9 +33,8 @@ sampler2D  implicitInputSampler : register(S0);
 float4 main(float2 uv : TEXCOORD) : COLOR
 {
     float4 c = 0;
-    float rad = Angle * 0.0174533f;
-    float xOffset = cos(rad);
-    float yOffset = sin(rad);
+    float xOffset = cos(Angle);
+    float yOffset = sin(Angle);
 
     for(int i=0; i<16; i++)
     {

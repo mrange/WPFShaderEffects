@@ -8,9 +8,26 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
+// ParameterComment        :  Center of Magnify
+// ParameterType           :  Point
+// ParameterDefaultValue   :  MakePoint(0.5,0.5)
 float2 Center : register(C0);
+
+// ParameterComment        :  InnerRadius of Magnify
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.1
+// ParameterCoerce         :  Clamp(InnerRadius, 0.00001, double.MaxValue)
 float InnerRadius: register(C2);
+
+// ParameterComment        :  Magnification value
+// ParameterType           :  double
+// ParameterDefaultValue   :  2.0
 float Magnification : register(c3);
+
+// ParameterComment        :  OuterRadius of Magnify
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.2
+// ParameterCoerce         :  Clamp(OuterRadius, 0.00001, double.MaxValue)
 float OuterRadius : register(c4);
 
 //--------------------------------------------------------------------------------------

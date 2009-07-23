@@ -91,9 +91,21 @@ namespace WpfShaderEffects
          }
       }
 
+      protected const double Pi = System.Math.PI;
+
       protected static Point MakePoint(double x, double y)
       {
          return new Point(x, y);
+      }
+
+      protected static Color MakeColor(byte r, byte g, byte b)
+      {
+         return MakeColor(0xFF, r, g, b);
+      }
+
+      protected static Color MakeColor(byte alpha, byte r, byte g, byte b)
+      {
+         return Color.FromArgb(alpha, r, g, b);
       }
 
       protected static double Clamp(double value, double min, double max)
@@ -266,11 +278,11 @@ namespace WpfShaderEffects
       if (coerceLine != null)
       {
 #>
-      /// Value coercion:
-      /// <#=coerceLine.Input#>
+      /// Value coercion: <#=coerceLine.Input#>
 <#
       }
-#>      /// </summary>
+#>      /// Default Value: <#=defaultValue#>
+      /// </summary>
       public <#=shaderParameterType#> <#=shaderParameterName#>
       {
          get

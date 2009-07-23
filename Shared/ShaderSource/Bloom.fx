@@ -8,9 +8,24 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
+// ParameterComment        :  Intensity of bloom effect
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.8
 float BloomIntensity : register(C0);
+
+// ParameterComment        :  Intensity of base image
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.6
 float BaseIntensity : register(C1);
+
+// ParameterComment        :  Bloom effect saturation
+// ParameterType           :  double
+// ParameterDefaultValue   :  1.0
 float BloomSaturation : register(C2);
+
+// ParameterComment        :  Base image saturation
+// ParameterType           :  double
+// ParameterDefaultValue   :  1.0
 float BaseSaturation : register(C3);
 
 //--------------------------------------------------------------------------------------

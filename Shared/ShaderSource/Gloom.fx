@@ -8,9 +8,24 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
+// ParameterComment        :  Intensity of gloom effect
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.8
 float GloomIntensity : register(C0);
+
+// ParameterComment        :  Intensity of base image
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.6
 float BaseIntensity : register(C1);
+
+// ParameterComment        :  Gloom effect saturation
+// ParameterType           :  double
+// ParameterDefaultValue   :  1.0
 float GloomSaturation : register(C2);
+
+// ParameterComment        :  Base image saturation
+// ParameterType           :  double
+// ParameterDefaultValue   :  1.0
 float BaseSaturation : register(C3);
 
 //--------------------------------------------------------------------------------------

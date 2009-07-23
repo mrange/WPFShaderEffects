@@ -114,8 +114,8 @@
     <Resource Include="..\Shared\ShaderBinary\ToneMapping.fx.ps">
       <Link>ShaderBinary\ToneMapping.fx.ps</Link>
     </Resource>
-    <Resource Include="..\Shared\ShaderBinary\ToonShader.fx.ps">
-      <Link>ShaderBinary\ToonShader.fx.ps</Link>
+    <Resource Include="..\Shared\ShaderBinary\Toon.fx.ps">
+      <Link>ShaderBinary\Toon.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\ZoomBlur.fx.ps">
       <Link>ShaderBinary\ZoomBlur.fx.ps</Link>
