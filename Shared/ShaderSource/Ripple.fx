@@ -8,9 +8,27 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
+// ParameterComment        :  Center of ripple
+// ParameterType           :  Point
+// ParameterDefaultValue   :  MakePoint(0.5,0.5)
 float2 Center : register(C0);
+
+// ParameterComment        :  Amplitude of ripple
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.2
+// ParameterCoerce         :  Clamp(Amplitude, 0.0, double.MaxValue)
 float Amplitude : register(C1);
+
+// ParameterComment        :  Frequency of ripple
+// ParameterType           :  double
+// ParameterDefaultValue   :  4.0
+// ParameterCoerce         :  Clamp(Frequency, 0.0, double.MaxValue)
 float Frequency: register(C2);
+
+// ParameterComment        :  Phase of ripple
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.0
+// ParameterCoerce         :  Phase % (2 * Pi)
 float Phase: register(C3);
 
 //--------------------------------------------------------------------------------------

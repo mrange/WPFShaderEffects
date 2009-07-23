@@ -8,6 +8,10 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
+// ParameterComment        :  Brightness threshold
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.5
+// ParameterCoerce         :  Clamp(Threshold, 0.0, 1.0)
 float Threshold : register(C0);
 
 //--------------------------------------------------------------------------------------

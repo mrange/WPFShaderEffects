@@ -8,8 +8,21 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
+// ParameterComment        :  Brightness threshold
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.5
+// ParameterCoerce         :  Clamp(BrightThreshold, 0.0, 1.0)
 float BrightThreshold : register(C0);
+
+// ParameterComment        :  Scale value
+// ParameterType           :  double
+// ParameterDefaultValue   :  2.0
+// ParameterCoerce         :  Clamp(Scale, 0.0, double.MaxValue)
 float Scale : register(C1);
+
+// ParameterComment        :  Attenuation value
+// ParameterType           :  double
+// ParameterDefaultValue   :  1.1
 float Attenuation : Attenuation : register(C2);
 
 //--------------------------------------------------------------------------------------

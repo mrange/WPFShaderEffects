@@ -1,3 +1,4 @@
+// TODO: Replace ScreenSize with ddxDdy 
 //--------------------------------------------------------------------------------------
 // 
 // WPF ShaderEffect HLSL -- GrowablePoissonDiskEffect
@@ -8,9 +9,17 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
+// ParameterComment        :  Radius of disc
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.2
+// ParameterCoerce         :  Clamp(DiscRadius, 0.0, 1.0)
 float DiscRadius : register(C0);
-float Width : register(C1);
-float Height : register(C2);
+
+// ParameterComment        :  Size of screen
+// ParameterType           :  Point
+// ParameterDefaultValue   :  MakePoint(100.0, 100.0)
+// ParameterCoerce         :  Clamp(ScreenSize, MakePoint(1.0, 1.0), MakePoint(double.MaxValue, double.MaxValue))
+float2 ScreenSize : register(C1);
 
 static const float2 poisson[12] = 
 {
@@ -42,13 +51,12 @@ sampler2D implicitInputSampler : register(S0);
 float4 main(float2 uv : TEXCOORD) : COLOR
 {
     float4 cOut;
-    float2 ScreenSize = { Width, Height };
 
     // Center tap
     cOut = tex2D(implicitInputSampler, uv);
     for(int tap = 0; tap < 12; tap++)
     {
-        float2 coord= uv.xy + (poisson[tap] / ScreenSize * DiscRadius);
+        float2 coord= uv.xy + ((poisson[tap] / ScreenSize) * DiscRadius);
         // Sample pixel
         cOut += tex2D(implicitInputSampler, coord);
     }

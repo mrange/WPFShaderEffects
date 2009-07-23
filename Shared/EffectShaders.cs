@@ -14,9 +14,9 @@
  * ***************************************************************************/
 
 
-// CompilerPath      :     H:\wpfshadereffects\Shared\..\Output\WpfShaderEffects.DirectX.dll
-// ShaderSourcePath  :     H:\wpfshadereffects\Shared\ShaderSource
-// ShaderBinaryPath  :     H:\wpfshadereffects\Shared\ShaderBinary
+// CompilerPath      :     H:\wpfshadereffects2\Shared\..\Output\WpfShaderEffects.DirectX.dll
+// ShaderSourcePath  :     H:\wpfshadereffects2\Shared\ShaderSource
+// ShaderBinaryPath  :     H:\wpfshadereffects2\Shared\ShaderBinary
 
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
@@ -53,9 +53,21 @@ namespace WpfShaderEffects
          }
       }
 
+      protected const double Pi = System.Math.PI;
+
       protected static Point MakePoint(double x, double y)
       {
          return new Point(x, y);
+      }
+
+      protected static Color MakeColor(byte r, byte g, byte b)
+      {
+         return MakeColor(0xFF, r, g, b);
+      }
+
+      protected static Color MakeColor(byte alpha, byte r, byte g, byte b)
+      {
+         return Color.FromArgb(alpha, r, g, b);
       }
 
       protected static double Clamp(double value, double min, double max)
@@ -71,7 +83,7 @@ namespace WpfShaderEffects
       }
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BandedSwirl.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\BandedSwirl.fx.ps
    
    /// <summary>
    /// BandedSwirlShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -122,9 +134,6 @@ namespace WpfShaderEffects
       {
          var inst = (BandedSwirlShaderEffect)instance;
          var Center = (Point)baseValue;
-       
-         // Coerce
-         Center = Clamp(Center, MakePoint(0,0), MakePoint(1.0,1.0));
       
          if(inst != null)
          {
@@ -152,8 +161,7 @@ namespace WpfShaderEffects
       /// <summary>
       /// Gets or sets property Center (Point)
       /// Center of swirl effect
-      /// Value coercion:
-      /// Clamp(Center, MakePoint(0,0), MakePoint(1.0,1.0))
+      /// Default Value: MakePoint(0.5,0.5)
       /// </summary>
       public Point Center
       {
@@ -178,11 +186,11 @@ namespace WpfShaderEffects
          typeof(BandedSwirlShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            0.0,
+            0.5,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            0.0,
+            0.5,
             PixelShaderConstantCallback(1),
             OnSpiralStrengthCoerceValueStatic)
 #endif
@@ -228,6 +236,7 @@ namespace WpfShaderEffects
       /// <summary>
       /// Gets or sets property SpiralStrength (double)
       /// Strength of spiral in swirl effect
+      /// Default Value: 0.5
       /// </summary>
       public double SpiralStrength
       {
@@ -252,11 +261,11 @@ namespace WpfShaderEffects
          typeof(BandedSwirlShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            0.0,
+            0.5,
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            0.0,
+            0.5,
             PixelShaderConstantCallback(2),
             OnDistanceThresholdCoerceValueStatic)
 #endif
@@ -302,6 +311,7 @@ namespace WpfShaderEffects
       /// <summary>
       /// Gets or sets property DistanceThreshold (double)
       /// DistanceThreshold
+      /// Default Value: 0.5
       /// </summary>
       public double DistanceThreshold
       {
@@ -321,7 +331,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Bloom.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\Bloom.fx.ps
    
    /// <summary>
    /// BloomShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -350,11 +360,11 @@ namespace WpfShaderEffects
          typeof(BloomShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.8,
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.8,
             PixelShaderConstantCallback(0),
             OnBloomIntensityCoerceValueStatic)
 #endif
@@ -399,6 +409,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property BloomIntensity (double)
+      /// Intensity of bloom effect
+      /// Default Value: 0.8
       /// </summary>
       public double BloomIntensity
       {
@@ -423,11 +435,11 @@ namespace WpfShaderEffects
          typeof(BloomShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.6,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.6,
             PixelShaderConstantCallback(1),
             OnBaseIntensityCoerceValueStatic)
 #endif
@@ -472,6 +484,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property BaseIntensity (double)
+      /// Intensity of base image
+      /// Default Value: 0.6
       /// </summary>
       public double BaseIntensity
       {
@@ -496,11 +510,11 @@ namespace WpfShaderEffects
          typeof(BloomShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            1.0,
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            1.0,
             PixelShaderConstantCallback(2),
             OnBloomSaturationCoerceValueStatic)
 #endif
@@ -545,6 +559,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property BloomSaturation (double)
+      /// Bloom effect saturation
+      /// Default Value: 1.0
       /// </summary>
       public double BloomSaturation
       {
@@ -569,11 +585,11 @@ namespace WpfShaderEffects
          typeof(BloomShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            1.0,
             PixelShaderConstantCallback(3))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            1.0,
             PixelShaderConstantCallback(3),
             OnBaseSaturationCoerceValueStatic)
 #endif
@@ -618,6 +634,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property BaseSaturation (double)
+      /// Base image saturation
+      /// Default Value: 1.0
       /// </summary>
       public double BaseSaturation
       {
@@ -637,7 +655,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BrightExtract.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\BrightExtract.fx.ps
    
    /// <summary>
    /// BrightExtractShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -663,11 +681,11 @@ namespace WpfShaderEffects
          typeof(BrightExtractShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.5,
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.5,
             PixelShaderConstantCallback(0),
             OnThresholdCoerceValueStatic)
 #endif
@@ -686,6 +704,9 @@ namespace WpfShaderEffects
       {
          var inst = (BrightExtractShaderEffect)instance;
          var Threshold = (double)baseValue;
+       
+         // Coerce
+         Threshold = Clamp(Threshold, 0.0, 1.0);
       
          if(inst != null)
          {
@@ -712,6 +733,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Threshold (double)
+      /// Brightness threshold
+      /// Value coercion: Clamp(Threshold, 0.0, 1.0)
+      /// Default Value: 0.5
       /// </summary>
       public double Threshold
       {
@@ -731,7 +755,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ColorKeyAlpha.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\ColorKeyAlpha.fx.ps
    
    /// <summary>
    /// ColorKeyAlphaShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -751,7 +775,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ColorTone.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\ColorTone.fx.ps
    
    /// <summary>
    /// ColorToneShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -780,11 +804,11 @@ namespace WpfShaderEffects
          typeof(ColorToneShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.5,
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.5,
             PixelShaderConstantCallback(0),
             OnDesaturationCoerceValueStatic)
 #endif
@@ -803,6 +827,9 @@ namespace WpfShaderEffects
       {
          var inst = (ColorToneShaderEffect)instance;
          var Desaturation = (double)baseValue;
+       
+         // Coerce
+         Desaturation = Clamp(Desaturation, 0.0, 1.0);
       
          if(inst != null)
          {
@@ -829,6 +856,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Desaturation (double)
+      /// Desaturation value
+      /// Value coercion: Clamp(Desaturation, 0.0, 1.0)
+      /// Default Value: 0.5
       /// </summary>
       public double Desaturation
       {
@@ -853,11 +883,11 @@ namespace WpfShaderEffects
          typeof(ColorToneShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.5,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.5,
             PixelShaderConstantCallback(1),
             OnTonedCoerceValueStatic)
 #endif
@@ -876,6 +906,9 @@ namespace WpfShaderEffects
       {
          var inst = (ColorToneShaderEffect)instance;
          var Toned = (double)baseValue;
+       
+         // Coerce
+         Toned = Clamp(Toned, 0.0, 1.0);
       
          if(inst != null)
          {
@@ -902,6 +935,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Toned (double)
+      /// Toned value
+      /// Value coercion: Clamp(Toned, 0.0, 1.0)
+      /// Default Value: 0.5
       /// </summary>
       public double Toned
       {
@@ -926,11 +962,11 @@ namespace WpfShaderEffects
          typeof(ColorToneShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(Color),
+            MakeColor(0xFF, 0x7F, 0x00),
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(Color),
+            MakeColor(0xFF, 0x7F, 0x00),
             PixelShaderConstantCallback(2),
             OnLightColorCoerceValueStatic)
 #endif
@@ -975,6 +1011,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property LightColor (Color)
+      /// LightColor value
+      /// Default Value: MakeColor(0xFF, 0x7F, 0x00)
       /// </summary>
       public Color LightColor
       {
@@ -999,11 +1037,11 @@ namespace WpfShaderEffects
          typeof(ColorToneShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(Color),
+            MakeColor(0x00, 0x3F, 0x7F),
             PixelShaderConstantCallback(3))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(Color),
+            MakeColor(0x00, 0x3F, 0x7F),
             PixelShaderConstantCallback(3),
             OnDarkColorCoerceValueStatic)
 #endif
@@ -1048,6 +1086,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property DarkColor (Color)
+      /// DarkColor value
+      /// Default Value: MakeColor(0x00, 0x3F, 0x7F)
       /// </summary>
       public Color DarkColor
       {
@@ -1067,7 +1107,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ContrastAdjust.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\ContrastAdjust.fx.ps
    
    /// <summary>
    /// ContrastAdjustShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1090,15 +1130,15 @@ namespace WpfShaderEffects
       // BEGIN_PROPERTY Brightness
       public static System.Windows.DependencyProperty BrightnessProperty = System.Windows.DependencyProperty.Register(
          @"Brightness",
-         typeof(double),
+         typeof(Color),
          typeof(ContrastAdjustShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            MakeColor(0x2F, 0x2F, 0x2F),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            MakeColor(0x2F, 0x2F, 0x2F),
             PixelShaderConstantCallback(0),
             OnBrightnessCoerceValueStatic)
 #endif
@@ -1106,8 +1146,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnBrightnessCoerceValue(
-         double baseValue,
-         ref double newValue,
+         Color baseValue,
+         ref Color newValue,
          ref bool isProcessed
          );
 
@@ -1116,11 +1156,11 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ContrastAdjustShaderEffect)instance;
-         var Brightness = (double)baseValue;
+         var Brightness = (Color)baseValue;
       
          if(inst != null)
          {
-            var newValue = default(double);
+            var newValue = default(Color);
             var isProcessed = false;
             inst.OnBrightnessCoerceValue(
                Brightness,
@@ -1142,13 +1182,15 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property Brightness (double)
+      /// Gets or sets property Brightness (Color)
+      /// Brightness color
+      /// Default Value: MakeColor(0x2F, 0x2F, 0x2F)
       /// </summary>
-      public double Brightness
+      public Color Brightness
       {
          get
          {
-            return (double)GetValue(BrightnessProperty);
+            return (Color)GetValue(BrightnessProperty);
          }
          set
          {
@@ -1167,11 +1209,11 @@ namespace WpfShaderEffects
          typeof(ContrastAdjustShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(1),
             OnContrastCoerceValueStatic)
 #endif
@@ -1190,6 +1232,9 @@ namespace WpfShaderEffects
       {
          var inst = (ContrastAdjustShaderEffect)instance;
          var Contrast = (double)baseValue;
+       
+         // Coerce
+         Contrast = Clamp(Contrast, 0.0, 1.0);
       
          if(inst != null)
          {
@@ -1216,6 +1261,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Contrast (double)
+      /// Contrast value
+      /// Value coercion: Clamp(Contrast, 0.0, 1.0)
+      /// Default Value: 0.2
       /// </summary>
       public double Contrast
       {
@@ -1235,7 +1283,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\DirectionalBlur.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\DirectionalBlur.fx.ps
    
    /// <summary>
    /// DirectionalBlurShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1262,11 +1310,11 @@ namespace WpfShaderEffects
          typeof(DirectionalBlurShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(0),
             OnAngleCoerceValueStatic)
 #endif
@@ -1285,6 +1333,9 @@ namespace WpfShaderEffects
       {
          var inst = (DirectionalBlurShaderEffect)instance;
          var Angle = (double)baseValue;
+       
+         // Coerce
+         Angle = Angle % (2.0 * Pi);
       
          if(inst != null)
          {
@@ -1311,6 +1362,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Angle (double)
+      /// Blur direction (in radians)
+      /// Value coercion: Angle % (2.0 * Pi)
+      /// Default Value: 0.1
       /// </summary>
       public double Angle
       {
@@ -1335,11 +1389,11 @@ namespace WpfShaderEffects
          typeof(DirectionalBlurShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(1),
             OnBlurAmountCoerceValueStatic)
 #endif
@@ -1358,6 +1412,9 @@ namespace WpfShaderEffects
       {
          var inst = (DirectionalBlurShaderEffect)instance;
          var BlurAmount = (double)baseValue;
+       
+         // Coerce
+         BlurAmount = Clamp(BlurAmount, 0.0, double.MaxValue);
       
          if(inst != null)
          {
@@ -1384,6 +1441,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property BlurAmount (double)
+      /// Amount of blur
+      /// Value coercion: Clamp(BlurAmount, 0.0, double.MaxValue)
+      /// Default Value: 0.2
       /// </summary>
       public double BlurAmount
       {
@@ -1403,7 +1463,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Embossed.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\Embossed.fx.ps
    
    /// <summary>
    /// EmbossedShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1430,11 +1490,11 @@ namespace WpfShaderEffects
          typeof(EmbossedShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(0),
             OnAmountCoerceValueStatic)
 #endif
@@ -1453,6 +1513,9 @@ namespace WpfShaderEffects
       {
          var inst = (EmbossedShaderEffect)instance;
          var Amount = (double)baseValue;
+       
+         // Coerce
+         Amount = Clamp(Amount, -1.0, 1.0);
       
          if(inst != null)
          {
@@ -1479,6 +1542,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Amount (double)
+      /// Amount of emboss
+      /// Value coercion: Clamp(Amount, -1.0, 1.0)
+      /// Default Value: 0.2
       /// </summary>
       public double Amount
       {
@@ -1503,11 +1569,11 @@ namespace WpfShaderEffects
          typeof(EmbossedShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.01,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.01,
             PixelShaderConstantCallback(1),
             OnWidthCoerceValueStatic)
 #endif
@@ -1526,6 +1592,9 @@ namespace WpfShaderEffects
       {
          var inst = (EmbossedShaderEffect)instance;
          var Width = (double)baseValue;
+       
+         // Coerce
+         Width = Clamp(Width, 0.0, 1.0);
       
          if(inst != null)
          {
@@ -1552,6 +1621,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Width (double)
+      /// Width of emboss
+      /// Value coercion: Clamp(Width, 0.0, 1.0)
+      /// Default Value: 0.01
       /// </summary>
       public double Width
       {
@@ -1571,7 +1643,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Gloom.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\Gloom.fx.ps
    
    /// <summary>
    /// GloomShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1600,11 +1672,11 @@ namespace WpfShaderEffects
          typeof(GloomShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.8,
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.8,
             PixelShaderConstantCallback(0),
             OnGloomIntensityCoerceValueStatic)
 #endif
@@ -1649,6 +1721,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property GloomIntensity (double)
+      /// Intensity of gloom effect
+      /// Default Value: 0.8
       /// </summary>
       public double GloomIntensity
       {
@@ -1673,11 +1747,11 @@ namespace WpfShaderEffects
          typeof(GloomShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.6,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.6,
             PixelShaderConstantCallback(1),
             OnBaseIntensityCoerceValueStatic)
 #endif
@@ -1722,6 +1796,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property BaseIntensity (double)
+      /// Intensity of base image
+      /// Default Value: 0.6
       /// </summary>
       public double BaseIntensity
       {
@@ -1746,11 +1822,11 @@ namespace WpfShaderEffects
          typeof(GloomShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            1.0,
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            1.0,
             PixelShaderConstantCallback(2),
             OnGloomSaturationCoerceValueStatic)
 #endif
@@ -1795,6 +1871,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property GloomSaturation (double)
+      /// Gloom effect saturation
+      /// Default Value: 1.0
       /// </summary>
       public double GloomSaturation
       {
@@ -1819,11 +1897,11 @@ namespace WpfShaderEffects
          typeof(GloomShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            1.0,
             PixelShaderConstantCallback(3))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            1.0,
             PixelShaderConstantCallback(3),
             OnBaseSaturationCoerceValueStatic)
 #endif
@@ -1868,6 +1946,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property BaseSaturation (double)
+      /// Base image saturation
+      /// Default Value: 1.0
       /// </summary>
       public double BaseSaturation
       {
@@ -1887,7 +1967,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\GrowablePoissonDisk.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\GrowablePoissonDisk.fx.ps
    
    /// <summary>
    /// GrowablePoissonDiskShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1902,8 +1982,7 @@ namespace WpfShaderEffects
          :  base(s_pixelShader)
       {
          UpdateShaderValue(DiscRadiusProperty);
-         UpdateShaderValue(WidthProperty);
-         UpdateShaderValue(HeightProperty);
+         UpdateShaderValue(ScreenSizeProperty);
             
       }
    
@@ -1915,11 +1994,11 @@ namespace WpfShaderEffects
          typeof(GrowablePoissonDiskShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(0),
             OnDiscRadiusCoerceValueStatic)
 #endif
@@ -1938,6 +2017,9 @@ namespace WpfShaderEffects
       {
          var inst = (GrowablePoissonDiskShaderEffect)instance;
          var DiscRadius = (double)baseValue;
+       
+         // Coerce
+         DiscRadius = Clamp(DiscRadius, 0.0, 1.0);
       
          if(inst != null)
          {
@@ -1964,6 +2046,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property DiscRadius (double)
+      /// Radius of disc
+      /// Value coercion: Clamp(DiscRadius, 0.0, 1.0)
+      /// Default Value: 0.2
       /// </summary>
       public double DiscRadius
       {
@@ -1981,43 +2066,46 @@ namespace WpfShaderEffects
       // ----------------------------------------------------------------------
       
       // ----------------------------------------------------------------------
-      // BEGIN_PROPERTY Width
-      public static System.Windows.DependencyProperty WidthProperty = System.Windows.DependencyProperty.Register(
-         @"Width",
-         typeof(double),
+      // BEGIN_PROPERTY ScreenSize
+      public static System.Windows.DependencyProperty ScreenSizeProperty = System.Windows.DependencyProperty.Register(
+         @"ScreenSize",
+         typeof(Point),
          typeof(GrowablePoissonDiskShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            MakePoint(100.0, 100.0),
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            MakePoint(100.0, 100.0),
             PixelShaderConstantCallback(1),
-            OnWidthCoerceValueStatic)
+            OnScreenSizeCoerceValueStatic)
 #endif
          );            
 
 #if !SILVERLIGHT
-      partial void OnWidthCoerceValue(
-         double baseValue,
-         ref double newValue,
+      partial void OnScreenSizeCoerceValue(
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
-      static object OnWidthCoerceValueStatic(
+      static object OnScreenSizeCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
          var inst = (GrowablePoissonDiskShaderEffect)instance;
-         var Width = (double)baseValue;
+         var ScreenSize = (Point)baseValue;
+       
+         // Coerce
+         ScreenSize = Clamp(ScreenSize, MakePoint(1.0, 1.0), MakePoint(double.MaxValue, double.MaxValue));
       
          if(inst != null)
          {
-            var newValue = default(double);
+            var newValue = default(Point);
             var isProcessed = false;
-            inst.OnWidthCoerceValue(
-               Width,
+            inst.OnScreenSizeCoerceValue(
+               ScreenSize,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2036,100 +2124,30 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property Width (double)
+      /// Gets or sets property ScreenSize (Point)
+      /// Size of screen
+      /// Value coercion: Clamp(ScreenSize, MakePoint(1.0, 1.0), MakePoint(double.MaxValue, double.MaxValue))
+      /// Default Value: MakePoint(100.0, 100.0)
       /// </summary>
-      public double Width
+      public Point ScreenSize
       {
          get
          {
-            return (double)GetValue(WidthProperty);
+            return (Point)GetValue(ScreenSizeProperty);
          }
          set
          {
-            SetValue(WidthProperty, value);
+            SetValue(ScreenSizeProperty, value);
          }
       }
 
-      // END_PROPERTY Width
-      // ----------------------------------------------------------------------
-      
-      // ----------------------------------------------------------------------
-      // BEGIN_PROPERTY Height
-      public static System.Windows.DependencyProperty HeightProperty = System.Windows.DependencyProperty.Register(
-         @"Height",
-         typeof(double),
-         typeof(GrowablePoissonDiskShaderEffect),
-#if SILVERLIGHT
-         new System.Windows.PropertyMetadata(
-            default(double),
-            PixelShaderConstantCallback(2))
-#else
-         new System.Windows.UIPropertyMetadata(
-            default(double),
-            PixelShaderConstantCallback(2),
-            OnHeightCoerceValueStatic)
-#endif
-         );            
-
-#if !SILVERLIGHT
-      partial void OnHeightCoerceValue(
-         double baseValue,
-         ref double newValue,
-         ref bool isProcessed
-         );
-
-      static object OnHeightCoerceValueStatic(
-         System.Windows.DependencyObject instance, 
-         object baseValue)
-      {
-         var inst = (GrowablePoissonDiskShaderEffect)instance;
-         var Height = (double)baseValue;
-      
-         if(inst != null)
-         {
-            var newValue = default(double);
-            var isProcessed = false;
-            inst.OnHeightCoerceValue(
-               Height,
-               ref newValue,
-               ref isProcessed);
-            if (isProcessed)
-            {
-               return newValue;
-            }
-            else
-            {
-               return baseValue;
-            }
-         }
-         else
-         {
-            return baseValue;
-         }
-      }
-#endif
-      /// <summary>
-      /// Gets or sets property Height (double)
-      /// </summary>
-      public double Height
-      {
-         get
-         {
-            return (double)GetValue(HeightProperty);
-         }
-         set
-         {
-            SetValue(HeightProperty, value);
-         }
-      }
-
-      // END_PROPERTY Height
+      // END_PROPERTY ScreenSize
       // ----------------------------------------------------------------------
       
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\InvertColor.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\InvertColor.fx.ps
    
    /// <summary>
    /// InvertColorShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -2149,7 +2167,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\LightStreak.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\LightStreak.fx.ps
    
    /// <summary>
    /// LightStreakShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -2176,11 +2194,11 @@ namespace WpfShaderEffects
          typeof(LightStreakShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.5,
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.5,
             PixelShaderConstantCallback(0),
             OnBrightThresholdCoerceValueStatic)
 #endif
@@ -2199,6 +2217,9 @@ namespace WpfShaderEffects
       {
          var inst = (LightStreakShaderEffect)instance;
          var BrightThreshold = (double)baseValue;
+       
+         // Coerce
+         BrightThreshold = Clamp(BrightThreshold, 0.0, 1.0);
       
          if(inst != null)
          {
@@ -2225,6 +2246,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property BrightThreshold (double)
+      /// Brightness threshold
+      /// Value coercion: Clamp(BrightThreshold, 0.0, 1.0)
+      /// Default Value: 0.5
       /// </summary>
       public double BrightThreshold
       {
@@ -2249,11 +2273,11 @@ namespace WpfShaderEffects
          typeof(LightStreakShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            2.0,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            2.0,
             PixelShaderConstantCallback(1),
             OnScaleCoerceValueStatic)
 #endif
@@ -2272,6 +2296,9 @@ namespace WpfShaderEffects
       {
          var inst = (LightStreakShaderEffect)instance;
          var Scale = (double)baseValue;
+       
+         // Coerce
+         Scale = Clamp(Scale, 0.0, double.MaxValue);
       
          if(inst != null)
          {
@@ -2298,6 +2325,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Scale (double)
+      /// Scale value
+      /// Value coercion: Clamp(Scale, 0.0, double.MaxValue)
+      /// Default Value: 2.0
       /// </summary>
       public double Scale
       {
@@ -2317,7 +2347,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Magnify.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\Magnify.fx.ps
    
    /// <summary>
    /// MagnifyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -2345,11 +2375,11 @@ namespace WpfShaderEffects
          typeof(MagnifyShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(Point),
+            MakePoint(0.1,0.1),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(Point),
+            MakePoint(0.1,0.1),
             PixelShaderConstantCallback(0),
             OnRadiiCoerceValueStatic)
 #endif
@@ -2368,6 +2398,9 @@ namespace WpfShaderEffects
       {
          var inst = (MagnifyShaderEffect)instance;
          var Radii = (Point)baseValue;
+       
+         // Coerce
+         Radii = Clamp(Radii, MakePoint(0.00001, 0.00001), MakePoint(double.MaxValue, double.MaxValue));
       
          if(inst != null)
          {
@@ -2394,6 +2427,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Radii (Point)
+      /// Radii of Magnify
+      /// Value coercion: Clamp(Radii, MakePoint(0.00001, 0.00001), MakePoint(double.MaxValue, double.MaxValue))
+      /// Default Value: MakePoint(0.1,0.1)
       /// </summary>
       public Point Radii
       {
@@ -2418,11 +2454,11 @@ namespace WpfShaderEffects
          typeof(MagnifyShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(1),
             OnCenterCoerceValueStatic)
 #endif
@@ -2467,6 +2503,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Center (Point)
+      /// Center of Magnify
+      /// Default Value: MakePoint(0.5,0.5)
       /// </summary>
       public Point Center
       {
@@ -2491,11 +2529,11 @@ namespace WpfShaderEffects
          typeof(MagnifyShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            2.0,
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            2.0,
             PixelShaderConstantCallback(2),
             OnAmountCoerceValueStatic)
 #endif
@@ -2540,6 +2578,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Amount (double)
+      /// Amount of Magnify
+      /// Default Value: 2.0
       /// </summary>
       public double Amount
       {
@@ -2559,7 +2599,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Monochrome.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\Monochrome.fx.ps
    
    /// <summary>
    /// MonochromeShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -2585,11 +2625,11 @@ namespace WpfShaderEffects
          typeof(MonochromeShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(Color),
+            MakeColor(0x7F, 0x7F, 0x7F),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(Color),
+            MakeColor(0x7F, 0x7F, 0x7F),
             PixelShaderConstantCallback(0),
             OnFilterColorCoerceValueStatic)
 #endif
@@ -2634,6 +2674,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property FilterColor (Color)
+      /// Monochrome color
+      /// Default Value: MakeColor(0x7F, 0x7F, 0x7F)
       /// </summary>
       public Color FilterColor
       {
@@ -2653,7 +2695,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Pinch.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\Pinch.fx.ps
    
    /// <summary>
    /// PinchShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -2667,51 +2709,50 @@ namespace WpfShaderEffects
       public PinchShaderEffect()
          :  base(s_pixelShader)
       {
-         UpdateShaderValue(CenterXProperty);
-         UpdateShaderValue(CenterYProperty);
+         UpdateShaderValue(CenterProperty);
          UpdateShaderValue(RadiusProperty);
          UpdateShaderValue(AmountProperty);
             
       }
    
       // ----------------------------------------------------------------------
-      // BEGIN_PROPERTY CenterX
-      public static System.Windows.DependencyProperty CenterXProperty = System.Windows.DependencyProperty.Register(
-         @"CenterX",
-         typeof(double),
+      // BEGIN_PROPERTY Center
+      public static System.Windows.DependencyProperty CenterProperty = System.Windows.DependencyProperty.Register(
+         @"Center",
+         typeof(Point),
          typeof(PinchShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0),
-            OnCenterXCoerceValueStatic)
+            OnCenterCoerceValueStatic)
 #endif
          );            
 
 #if !SILVERLIGHT
-      partial void OnCenterXCoerceValue(
-         double baseValue,
-         ref double newValue,
+      partial void OnCenterCoerceValue(
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
-      static object OnCenterXCoerceValueStatic(
+      static object OnCenterCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
          var inst = (PinchShaderEffect)instance;
-         var CenterX = (double)baseValue;
+         var Center = (Point)baseValue;
       
          if(inst != null)
          {
-            var newValue = default(double);
+            var newValue = default(Point);
             var isProcessed = false;
-            inst.OnCenterXCoerceValue(
-               CenterX,
+            inst.OnCenterCoerceValue(
+               Center,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2730,94 +2771,23 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property CenterX (double)
+      /// Gets or sets property Center (Point)
+      /// Center of pinching
+      /// Default Value: MakePoint(0.5,0.5)
       /// </summary>
-      public double CenterX
+      public Point Center
       {
          get
          {
-            return (double)GetValue(CenterXProperty);
+            return (Point)GetValue(CenterProperty);
          }
          set
          {
-            SetValue(CenterXProperty, value);
+            SetValue(CenterProperty, value);
          }
       }
 
-      // END_PROPERTY CenterX
-      // ----------------------------------------------------------------------
-      
-      // ----------------------------------------------------------------------
-      // BEGIN_PROPERTY CenterY
-      public static System.Windows.DependencyProperty CenterYProperty = System.Windows.DependencyProperty.Register(
-         @"CenterY",
-         typeof(double),
-         typeof(PinchShaderEffect),
-#if SILVERLIGHT
-         new System.Windows.PropertyMetadata(
-            default(double),
-            PixelShaderConstantCallback(1))
-#else
-         new System.Windows.UIPropertyMetadata(
-            default(double),
-            PixelShaderConstantCallback(1),
-            OnCenterYCoerceValueStatic)
-#endif
-         );            
-
-#if !SILVERLIGHT
-      partial void OnCenterYCoerceValue(
-         double baseValue,
-         ref double newValue,
-         ref bool isProcessed
-         );
-
-      static object OnCenterYCoerceValueStatic(
-         System.Windows.DependencyObject instance, 
-         object baseValue)
-      {
-         var inst = (PinchShaderEffect)instance;
-         var CenterY = (double)baseValue;
-      
-         if(inst != null)
-         {
-            var newValue = default(double);
-            var isProcessed = false;
-            inst.OnCenterYCoerceValue(
-               CenterY,
-               ref newValue,
-               ref isProcessed);
-            if (isProcessed)
-            {
-               return newValue;
-            }
-            else
-            {
-               return baseValue;
-            }
-         }
-         else
-         {
-            return baseValue;
-         }
-      }
-#endif
-      /// <summary>
-      /// Gets or sets property CenterY (double)
-      /// </summary>
-      public double CenterY
-      {
-         get
-         {
-            return (double)GetValue(CenterYProperty);
-         }
-         set
-         {
-            SetValue(CenterYProperty, value);
-         }
-      }
-
-      // END_PROPERTY CenterY
+      // END_PROPERTY Center
       // ----------------------------------------------------------------------
       
       // ----------------------------------------------------------------------
@@ -2828,12 +2798,12 @@ namespace WpfShaderEffects
          typeof(PinchShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
-            PixelShaderConstantCallback(2))
+            0.2,
+            PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
-            PixelShaderConstantCallback(2),
+            0.2,
+            PixelShaderConstantCallback(1),
             OnRadiusCoerceValueStatic)
 #endif
          );            
@@ -2851,6 +2821,9 @@ namespace WpfShaderEffects
       {
          var inst = (PinchShaderEffect)instance;
          var Radius = (double)baseValue;
+       
+         // Coerce
+         Radius = Clamp(Radius, 0.0, double.MaxValue);
       
          if(inst != null)
          {
@@ -2877,6 +2850,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Radius (double)
+      /// Radius of pinching
+      /// Value coercion: Clamp(Radius, 0.0, double.MaxValue)
+      /// Default Value: 0.2
       /// </summary>
       public double Radius
       {
@@ -2901,12 +2877,12 @@ namespace WpfShaderEffects
          typeof(PinchShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
-            PixelShaderConstantCallback(3))
+            0.2,
+            PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
-            PixelShaderConstantCallback(3),
+            0.2,
+            PixelShaderConstantCallback(2),
             OnAmountCoerceValueStatic)
 #endif
          );            
@@ -2924,6 +2900,9 @@ namespace WpfShaderEffects
       {
          var inst = (PinchShaderEffect)instance;
          var Amount = (double)baseValue;
+       
+         // Coerce
+         Amount = Clamp(Amount, 0.0, double.MaxValue);
       
          if(inst != null)
          {
@@ -2950,6 +2929,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Amount (double)
+      /// Amount of pinching
+      /// Value coercion: Clamp(Amount, 0.0, double.MaxValue)
+      /// Default Value: 0.2
       /// </summary>
       public double Amount
       {
@@ -2969,7 +2951,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Pixelate.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\Pixelate.fx.ps
    
    /// <summary>
    /// PixelateShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -2983,49 +2965,51 @@ namespace WpfShaderEffects
       public PixelateShaderEffect()
          :  base(s_pixelShader)
       {
-         UpdateShaderValue(HorizontalPixelCountsProperty);
-         UpdateShaderValue(VerticalPixelCountsProperty);
+         UpdateShaderValue(PixelCountProperty);
             
       }
    
       // ----------------------------------------------------------------------
-      // BEGIN_PROPERTY HorizontalPixelCounts
-      public static System.Windows.DependencyProperty HorizontalPixelCountsProperty = System.Windows.DependencyProperty.Register(
-         @"HorizontalPixelCounts",
-         typeof(double),
+      // BEGIN_PROPERTY PixelCount
+      public static System.Windows.DependencyProperty PixelCountProperty = System.Windows.DependencyProperty.Register(
+         @"PixelCount",
+         typeof(Point),
          typeof(PixelateShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            MakePoint(20.0, 20.0),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            MakePoint(20.0, 20.0),
             PixelShaderConstantCallback(0),
-            OnHorizontalPixelCountsCoerceValueStatic)
+            OnPixelCountCoerceValueStatic)
 #endif
          );            
 
 #if !SILVERLIGHT
-      partial void OnHorizontalPixelCountsCoerceValue(
-         double baseValue,
-         ref double newValue,
+      partial void OnPixelCountCoerceValue(
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
-      static object OnHorizontalPixelCountsCoerceValueStatic(
+      static object OnPixelCountCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
          var inst = (PixelateShaderEffect)instance;
-         var HorizontalPixelCounts = (double)baseValue;
+         var PixelCount = (Point)baseValue;
+       
+         // Coerce
+         PixelCount = Clamp(PixelCount, MakePoint(20.0, 20.0), MakePoint(10000.0, 10000.0));
       
          if(inst != null)
          {
-            var newValue = default(double);
+            var newValue = default(Point);
             var isProcessed = false;
-            inst.OnHorizontalPixelCountsCoerceValue(
-               HorizontalPixelCounts,
+            inst.OnPixelCountCoerceValue(
+               PixelCount,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3044,100 +3028,30 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property HorizontalPixelCounts (double)
+      /// Gets or sets property PixelCount (Point)
+      /// PixelCount value
+      /// Value coercion: Clamp(PixelCount, MakePoint(20.0, 20.0), MakePoint(10000.0, 10000.0))
+      /// Default Value: MakePoint(20.0, 20.0)
       /// </summary>
-      public double HorizontalPixelCounts
+      public Point PixelCount
       {
          get
          {
-            return (double)GetValue(HorizontalPixelCountsProperty);
+            return (Point)GetValue(PixelCountProperty);
          }
          set
          {
-            SetValue(HorizontalPixelCountsProperty, value);
+            SetValue(PixelCountProperty, value);
          }
       }
 
-      // END_PROPERTY HorizontalPixelCounts
-      // ----------------------------------------------------------------------
-      
-      // ----------------------------------------------------------------------
-      // BEGIN_PROPERTY VerticalPixelCounts
-      public static System.Windows.DependencyProperty VerticalPixelCountsProperty = System.Windows.DependencyProperty.Register(
-         @"VerticalPixelCounts",
-         typeof(double),
-         typeof(PixelateShaderEffect),
-#if SILVERLIGHT
-         new System.Windows.PropertyMetadata(
-            default(double),
-            PixelShaderConstantCallback(1))
-#else
-         new System.Windows.UIPropertyMetadata(
-            default(double),
-            PixelShaderConstantCallback(1),
-            OnVerticalPixelCountsCoerceValueStatic)
-#endif
-         );            
-
-#if !SILVERLIGHT
-      partial void OnVerticalPixelCountsCoerceValue(
-         double baseValue,
-         ref double newValue,
-         ref bool isProcessed
-         );
-
-      static object OnVerticalPixelCountsCoerceValueStatic(
-         System.Windows.DependencyObject instance, 
-         object baseValue)
-      {
-         var inst = (PixelateShaderEffect)instance;
-         var VerticalPixelCounts = (double)baseValue;
-      
-         if(inst != null)
-         {
-            var newValue = default(double);
-            var isProcessed = false;
-            inst.OnVerticalPixelCountsCoerceValue(
-               VerticalPixelCounts,
-               ref newValue,
-               ref isProcessed);
-            if (isProcessed)
-            {
-               return newValue;
-            }
-            else
-            {
-               return baseValue;
-            }
-         }
-         else
-         {
-            return baseValue;
-         }
-      }
-#endif
-      /// <summary>
-      /// Gets or sets property VerticalPixelCounts (double)
-      /// </summary>
-      public double VerticalPixelCounts
-      {
-         get
-         {
-            return (double)GetValue(VerticalPixelCountsProperty);
-         }
-         set
-         {
-            SetValue(VerticalPixelCountsProperty, value);
-         }
-      }
-
-      // END_PROPERTY VerticalPixelCounts
+      // END_PROPERTY PixelCount
       // ----------------------------------------------------------------------
       
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Ripple.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\Ripple.fx.ps
    
    /// <summary>
    /// RippleShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3166,11 +3080,11 @@ namespace WpfShaderEffects
          typeof(RippleShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0),
             OnCenterCoerceValueStatic)
 #endif
@@ -3215,6 +3129,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Center (Point)
+      /// Center of ripple
+      /// Default Value: MakePoint(0.5,0.5)
       /// </summary>
       public Point Center
       {
@@ -3239,11 +3155,11 @@ namespace WpfShaderEffects
          typeof(RippleShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(1),
             OnAmplitudeCoerceValueStatic)
 #endif
@@ -3262,6 +3178,9 @@ namespace WpfShaderEffects
       {
          var inst = (RippleShaderEffect)instance;
          var Amplitude = (double)baseValue;
+       
+         // Coerce
+         Amplitude = Clamp(Amplitude, 0.0, double.MaxValue);
       
          if(inst != null)
          {
@@ -3288,6 +3207,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Amplitude (double)
+      /// Amplitude of ripple
+      /// Value coercion: Clamp(Amplitude, 0.0, double.MaxValue)
+      /// Default Value: 0.2
       /// </summary>
       public double Amplitude
       {
@@ -3312,11 +3234,11 @@ namespace WpfShaderEffects
          typeof(RippleShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            4.0,
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            4.0,
             PixelShaderConstantCallback(2),
             OnFrequencyCoerceValueStatic)
 #endif
@@ -3335,6 +3257,9 @@ namespace WpfShaderEffects
       {
          var inst = (RippleShaderEffect)instance;
          var Frequency = (double)baseValue;
+       
+         // Coerce
+         Frequency = Clamp(Frequency, 0.0, double.MaxValue);
       
          if(inst != null)
          {
@@ -3361,6 +3286,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Frequency (double)
+      /// Frequency of ripple
+      /// Value coercion: Clamp(Frequency, 0.0, double.MaxValue)
+      /// Default Value: 4.0
       /// </summary>
       public double Frequency
       {
@@ -3385,11 +3313,11 @@ namespace WpfShaderEffects
          typeof(RippleShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.0,
             PixelShaderConstantCallback(3))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.0,
             PixelShaderConstantCallback(3),
             OnPhaseCoerceValueStatic)
 #endif
@@ -3408,6 +3336,9 @@ namespace WpfShaderEffects
       {
          var inst = (RippleShaderEffect)instance;
          var Phase = (double)baseValue;
+       
+         // Coerce
+         Phase = Phase % (2 * Pi);
       
          if(inst != null)
          {
@@ -3434,6 +3365,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Phase (double)
+      /// Phase of ripple
+      /// Value coercion: Phase % (2 * Pi)
+      /// Default Value: 0.0
       /// </summary>
       public double Phase
       {
@@ -3453,7 +3387,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Sharpen.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\Sharpen.fx.ps
    
    /// <summary>
    /// SharpenShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3480,11 +3414,11 @@ namespace WpfShaderEffects
          typeof(SharpenShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(0),
             OnAmountCoerceValueStatic)
 #endif
@@ -3503,6 +3437,9 @@ namespace WpfShaderEffects
       {
          var inst = (SharpenShaderEffect)instance;
          var Amount = (double)baseValue;
+       
+         // Coerce
+         Amount = Clamp(Amount, -1.0, 1.0);
       
          if(inst != null)
          {
@@ -3529,6 +3466,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Amount (double)
+      /// Amount of sharpness
+      /// Value coercion: Clamp(Amount, -1.0, 1.0)
+      /// Default Value: 0.1
       /// </summary>
       public double Amount
       {
@@ -3553,11 +3493,11 @@ namespace WpfShaderEffects
          typeof(SharpenShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.01,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.01,
             PixelShaderConstantCallback(1),
             OnWidthCoerceValueStatic)
 #endif
@@ -3576,6 +3516,9 @@ namespace WpfShaderEffects
       {
          var inst = (SharpenShaderEffect)instance;
          var Width = (double)baseValue;
+       
+         // Coerce
+         Width = Clamp(Width, 0.0, 1.0);
       
          if(inst != null)
          {
@@ -3602,6 +3545,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Width (double)
+      /// Width of sharpness
+      /// Value coercion: Clamp(Width, 0.0, 1.0)
+      /// Default Value: 0.01
       /// </summary>
       public double Width
       {
@@ -3621,7 +3567,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SmoothMagnify.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\SmoothMagnify.fx.ps
    
    /// <summary>
    /// SmoothMagnifyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3648,11 +3594,11 @@ namespace WpfShaderEffects
          typeof(SmoothMagnifyShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0),
             OnCenterCoerceValueStatic)
 #endif
@@ -3697,6 +3643,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Center (Point)
+      /// Center of Magnify
+      /// Default Value: MakePoint(0.5,0.5)
       /// </summary>
       public Point Center
       {
@@ -3721,11 +3669,11 @@ namespace WpfShaderEffects
          typeof(SmoothMagnifyShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(2),
             OnInnerRadiusCoerceValueStatic)
 #endif
@@ -3744,6 +3692,9 @@ namespace WpfShaderEffects
       {
          var inst = (SmoothMagnifyShaderEffect)instance;
          var InnerRadius = (double)baseValue;
+       
+         // Coerce
+         InnerRadius = Clamp(InnerRadius, 0.00001, double.MaxValue);
       
          if(inst != null)
          {
@@ -3770,6 +3721,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property InnerRadius (double)
+      /// InnerRadius of Magnify
+      /// Value coercion: Clamp(InnerRadius, 0.00001, double.MaxValue)
+      /// Default Value: 0.1
       /// </summary>
       public double InnerRadius
       {
@@ -3789,7 +3743,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Swirl.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\Swirl.fx.ps
    
    /// <summary>
    /// SwirlShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3817,11 +3771,11 @@ namespace WpfShaderEffects
          typeof(SwirlShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0),
             OnCenterCoerceValueStatic)
 #endif
@@ -3866,6 +3820,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Center (Point)
+      /// Center of Swirl
+      /// Default Value: MakePoint(0.5,0.5)
       /// </summary>
       public Point Center
       {
@@ -3890,11 +3846,11 @@ namespace WpfShaderEffects
          typeof(SwirlShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.5,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.5,
             PixelShaderConstantCallback(1),
             OnSpiralStrengthCoerceValueStatic)
 #endif
@@ -3939,6 +3895,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property SpiralStrength (double)
+      /// Strength of spiral in swirl effect
+      /// Default Value: 0.5
       /// </summary>
       public double SpiralStrength
       {
@@ -3963,11 +3921,11 @@ namespace WpfShaderEffects
          typeof(SwirlShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(Point),
+            MakePoint(2.0,2.0),
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(Point),
+            MakePoint(2.0,2.0),
             PixelShaderConstantCallback(2),
             OnAngleFrequencyCoerceValueStatic)
 #endif
@@ -3986,6 +3944,9 @@ namespace WpfShaderEffects
       {
          var inst = (SwirlShaderEffect)instance;
          var AngleFrequency = (Point)baseValue;
+       
+         // Coerce
+         AngleFrequency = Clamp(AngleFrequency, MakePoint(0.0,0.0), MakePoint(double.MaxValue,double.MaxValue));
       
          if(inst != null)
          {
@@ -4012,6 +3973,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property AngleFrequency (Point)
+      /// AngleFrequency of spiral in swirl effect
+      /// Value coercion: Clamp(AngleFrequency, MakePoint(0.0,0.0), MakePoint(double.MaxValue,double.MaxValue))
+      /// Default Value: MakePoint(2.0,2.0)
       /// </summary>
       public Point AngleFrequency
       {
@@ -4031,7 +3995,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ToneMapping.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\ToneMapping.fx.ps
    
    /// <summary>
    /// ToneMappingShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -4063,11 +4027,11 @@ namespace WpfShaderEffects
          typeof(ToneMappingShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(0),
             OnExposureCoerceValueStatic)
 #endif
@@ -4112,6 +4076,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Exposure (double)
+      /// Exposure value of tone mapping effect
+      /// Default Value: 0.2
       /// </summary>
       public double Exposure
       {
@@ -4136,11 +4102,11 @@ namespace WpfShaderEffects
          typeof(ToneMappingShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(1),
             OnDefogCoerceValueStatic)
 #endif
@@ -4185,6 +4151,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Defog (double)
+      /// Defog value of tone mapping effect
+      /// Default Value: 0.2
       /// </summary>
       public double Defog
       {
@@ -4209,11 +4177,11 @@ namespace WpfShaderEffects
          typeof(ToneMappingShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(2),
             OnGammaCoerceValueStatic)
 #endif
@@ -4258,6 +4226,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property Gamma (double)
+      /// Gamma value of tone mapping effect
+      /// Default Value: 0.1
       /// </summary>
       public double Gamma
       {
@@ -4282,11 +4252,11 @@ namespace WpfShaderEffects
          typeof(ToneMappingShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(Color),
+            MakeColor(0xAF, 0xAF, 0xAF),
             PixelShaderConstantCallback(3))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(Color),
+            MakeColor(0xAF, 0xAF, 0xAF),
             PixelShaderConstantCallback(3),
             OnFogColorCoerceValueStatic)
 #endif
@@ -4331,6 +4301,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property FogColor (Color)
+      /// FogColor value of tone mapping effect
+      /// Default Value: MakeColor(0xAF, 0xAF, 0xAF)
       /// </summary>
       public Color FogColor
       {
@@ -4355,11 +4327,11 @@ namespace WpfShaderEffects
          typeof(ToneMappingShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(4))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(4),
             OnVignetteRadiusCoerceValueStatic)
 #endif
@@ -4378,6 +4350,9 @@ namespace WpfShaderEffects
       {
          var inst = (ToneMappingShaderEffect)instance;
          var VignetteRadius = (double)baseValue;
+       
+         // Coerce
+         VignetteRadius = Clamp(VignetteRadius, 0.0, double.MaxValue);
       
          if(inst != null)
          {
@@ -4404,6 +4379,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property VignetteRadius (double)
+      /// VignetteRadius value of tone mapping effect
+      /// Value coercion: Clamp(VignetteRadius, 0.0, double.MaxValue)
+      /// Default Value: 0.1
       /// </summary>
       public double VignetteRadius
       {
@@ -4428,11 +4406,11 @@ namespace WpfShaderEffects
          typeof(ToneMappingShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(5))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(5),
             OnVignetteCenterCoerceValueStatic)
 #endif
@@ -4477,6 +4455,8 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property VignetteCenter (Point)
+      /// VignetteCenter value of tone mapping effect
+      /// Default Value: MakePoint(0.5,0.5)
       /// </summary>
       public Point VignetteCenter
       {
@@ -4501,11 +4481,11 @@ namespace WpfShaderEffects
          typeof(ToneMappingShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(6))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.1,
             PixelShaderConstantCallback(6),
             OnBlueShiftCoerceValueStatic)
 #endif
@@ -4524,6 +4504,9 @@ namespace WpfShaderEffects
       {
          var inst = (ToneMappingShaderEffect)instance;
          var BlueShift = (double)baseValue;
+       
+         // Coerce
+         BlueShift = Clamp(BlueShift, 0.0, 1.0);
       
          if(inst != null)
          {
@@ -4550,6 +4533,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property BlueShift (double)
+      /// BlueShift value of tone mapping effect
+      /// Value coercion: Clamp(BlueShift, 0.0, 1.0)
+      /// Default Value: 0.1
       /// </summary>
       public double BlueShift
       {
@@ -4569,18 +4555,18 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ToonShader.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\Toon.fx.ps
    
    /// <summary>
-   /// ToonShaderShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
-   /// This shader effect is based on the file: ToonShader.fx
+   /// ToonShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: Toon.fx
    /// </summary>
-   public sealed partial class ToonShaderShaderEffect : BaseShaderEffect
+   public sealed partial class ToonShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
-         Common.Utility.CreatePixelShader<ToonShaderShaderEffect>();
+         Common.Utility.CreatePixelShader<ToonShaderEffect>();
    
-      public ToonShaderShaderEffect()
+      public ToonShaderEffect()
          :  base(s_pixelShader)
       {
             
@@ -4589,7 +4575,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ZoomBlur.fx.ps
+   // Wrote to H:\wpfshadereffects2\Shared\ShaderBinary\ZoomBlur.fx.ps
    
    /// <summary>
    /// ZoomBlurShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -4612,15 +4598,15 @@ namespace WpfShaderEffects
       // BEGIN_PROPERTY Center
       public static System.Windows.DependencyProperty CenterProperty = System.Windows.DependencyProperty.Register(
          @"Center",
-         typeof(double),
+         typeof(Point),
          typeof(ZoomBlurShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0),
             OnCenterCoerceValueStatic)
 #endif
@@ -4628,8 +4614,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnCenterCoerceValue(
-         double baseValue,
-         ref double newValue,
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
@@ -4638,11 +4624,11 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ZoomBlurShaderEffect)instance;
-         var Center = (double)baseValue;
+         var Center = (Point)baseValue;
       
          if(inst != null)
          {
-            var newValue = default(double);
+            var newValue = default(Point);
             var isProcessed = false;
             inst.OnCenterCoerceValue(
                Center,
@@ -4664,13 +4650,15 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property Center (double)
+      /// Gets or sets property Center (Point)
+      /// Center of Zoom
+      /// Default Value: MakePoint(0.5,0.5)
       /// </summary>
-      public double Center
+      public Point Center
       {
          get
          {
-            return (double)GetValue(CenterProperty);
+            return (Point)GetValue(CenterProperty);
          }
          set
          {
@@ -4689,11 +4677,11 @@ namespace WpfShaderEffects
          typeof(ZoomBlurShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.2,
             PixelShaderConstantCallback(1),
             OnBlurAmountCoerceValueStatic)
 #endif
@@ -4712,6 +4700,9 @@ namespace WpfShaderEffects
       {
          var inst = (ZoomBlurShaderEffect)instance;
          var BlurAmount = (double)baseValue;
+       
+         // Coerce
+         BlurAmount = Clamp(BlurAmount, 0.0, double.MaxValue);
       
          if(inst != null)
          {
@@ -4738,6 +4729,9 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property BlurAmount (double)
+      /// The amount of blur to apply
+      /// Value coercion: Clamp(BlurAmount, 0.0, double.MaxValue)
+      /// Default Value: 0.2
       /// </summary>
       public double BlurAmount
       {

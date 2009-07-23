@@ -8,8 +8,11 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
-float HorizontalPixelCounts : register(C0);
-float VerticalPixelCounts : register(C1);
+// ParameterComment        :  PixelCount value
+// ParameterType           :  Point
+// ParameterDefaultValue   :  MakePoint(20.0, 20.0)
+// ParameterCoerce         :  Clamp(PixelCount, MakePoint(20.0, 20.0), MakePoint(10000.0, 10000.0))
+float2 PixelCount : register(C0);
 
 //--------------------------------------------------------------------------------------
 // Sampler Inputs (Brushes, including ImplicitInput)
@@ -24,8 +27,7 @@ sampler2D implicitInputSampler : register(S0);
 
 float4 main(float2 uv : TEXCOORD) : COLOR
 {
-   float2 brickCounts = { HorizontalPixelCounts, VerticalPixelCounts };
-   float2 brickSize = 1.0 / brickCounts;
+   float2 brickSize = 1.0 / PixelCount;
 
    // Offset every other row of bricks
    float2 offsetuv = uv;

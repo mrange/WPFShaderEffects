@@ -8,7 +8,15 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
-float Center : register(C0);
+// ParameterComment        :  Center of Zoom
+// ParameterType           :  Point
+// ParameterDefaultValue   :  MakePoint(0.5,0.5)
+float2 Center : register(C0);
+
+// ParameterComment        :  The amount of blur to apply
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.2
+// ParameterCoerce         :  Clamp(BlurAmount, 0.0, double.MaxValue)
 float BlurAmount : register(C1);
 
 //--------------------------------------------------------------------------------------

@@ -8,7 +8,16 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
+// ParameterComment        :  Amount of emboss
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.2
+// ParameterCoerce         :  Clamp(Amount, -1.0, 1.0)
 float Amount : register(C0);
+
+// ParameterComment        :  Width of emboss
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.01
+// ParameterCoerce         :  Clamp(Width, 0.0, 1.0)
 float Width : register(C1);
 
 //--------------------------------------------------------------------------------------
