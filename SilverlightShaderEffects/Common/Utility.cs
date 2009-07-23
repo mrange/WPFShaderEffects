@@ -19,22 +19,8 @@ using System.Windows.Media.Effects;
 
 namespace SilverlightShaderEffects.Common
 {
-   public delegate object CoerceValueCallback(
-      DependencyObject d, 
-      object baseValue);
-
-   public class Utility
+   static class Utility
    {
-      public static PropertyMetadata CreatePropertyMetaData(
-         object defaultValue,
-         PropertyChangedCallback propertyChangedCallback,
-         CoerceValueCallback coerceValueCallback)
-      {
-         return new PropertyMetadata(
-            defaultValue,
-            propertyChangedCallback);
-      }
-
       public static PixelShader CreatePixelShader<T>()
       {
          var pixelShader =

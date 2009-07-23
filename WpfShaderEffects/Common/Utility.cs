@@ -14,24 +14,12 @@
  * ***************************************************************************/
 
 using System;
-using System.Windows;
 using System.Windows.Media.Effects;
 
 namespace WpfShaderEffects.Common
 {
    static class Utility
    {
-      public static PropertyMetadata CreatePropertyMetaData(
-         object defaultValue, 
-         PropertyChangedCallback propertyChangedCallback, 
-         CoerceValueCallback coerceValueCallback)
-      {
-         return new UIPropertyMetadata(
-            defaultValue,
-            propertyChangedCallback,
-            coerceValueCallback);
-      }
-
       public static PixelShader CreatePixelShader<T>()
       {
          var pixelShader =
