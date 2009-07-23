@@ -17,33 +17,30 @@
 // CompilerPath      :     H:\wpfshadereffects\Shared\..\Output\WpfShaderEffects.DirectX.dll
 // ShaderSourcePath  :     H:\wpfshadereffects\Shared\ShaderSource
 // ShaderBinaryPath  :     H:\wpfshadereffects\Shared\ShaderBinary
+
+using Color = System.Windows.Media.Color;
+using Point = System.Windows.Point;
+
 #if SILVERLIGHT
 namespace SilverlightShaderEffects
 #else
 namespace WpfShaderEffects
 #endif
 {
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BandedSwirl.fx.ps
-   
-   /// <summary>
-   /// BandedSwirlShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
-   /// This shader effect is based on the file: BandedSwirl.fx
-   /// </summary>
-   public sealed partial class BandedSwirlShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public abstract partial class BaseShaderEffect : System.Windows.Media.Effects.ShaderEffect
    {
-      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
-         Common.Utility.CreatePixelShader<BandedSwirlShaderEffect>();
-   
-      public BandedSwirlShaderEffect()
+      protected BaseShaderEffect(System.Windows.Media.Effects.PixelShader pixelShader)
       {
-         PixelShader = s_pixelShader;    
+         PixelShader = pixelShader;
          UpdateShaderValue(InputProperty);
-         UpdateShaderValue(CenterProperty);
-         UpdateShaderValue(SpiralStrengthProperty);
-         UpdateShaderValue(DistanceThresholdProperty);
-            
       }
-   
+      
+      public static readonly System.Windows.DependencyProperty InputProperty =
+         RegisterPixelShaderSamplerProperty(
+            "Input", 
+            typeof(BaseShaderEffect), 
+            0);
+            
       public System.Windows.Media.Brush Input
       {
          get 
@@ -56,24 +53,57 @@ namespace WpfShaderEffects
          }
       }
 
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(BandedSwirlShaderEffect), 
-            0);
+      protected static Point MakePoint(double x, double y)
+      {
+         return new Point(x, y);
+      }
+
+      protected static double Clamp(double value, double min, double max)
+      {
+         return System.Math.Min(max, System.Math.Max(min, value));
+      }
+      
+      protected static Point Clamp(Point value, Point min, Point max)
+      {
+         return new Point(
+            Clamp(value.X, min.X, max.X),
+            Clamp(value.Y, min.Y, max.Y));
+      }
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BandedSwirl.fx.ps
+   
+   /// <summary>
+   /// BandedSwirlShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: BandedSwirl.fx
+   /// </summary>
+   public sealed partial class BandedSwirlShaderEffect : BaseShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<BandedSwirlShaderEffect>();
+   
+      public BandedSwirlShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(CenterProperty);
+         UpdateShaderValue(SpiralStrengthProperty);
+         UpdateShaderValue(DistanceThresholdProperty);
+            
+      }
+   
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Center
       public static System.Windows.DependencyProperty CenterProperty = System.Windows.DependencyProperty.Register(
          @"Center",
-         typeof(System.Windows.Point),
+         typeof(Point),
          typeof(BandedSwirlShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Point),
+            MakePoint(0.5,0.5),
             PixelShaderConstantCallback(0),
             OnCenterCoerceValueStatic)
 #endif
@@ -81,8 +111,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnCenterCoerceValue(
-         System.Windows.Point baseValue,
-         ref System.Windows.Point newValue,
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
@@ -91,13 +121,17 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (BandedSwirlShaderEffect)instance;
+         var Center = (Point)baseValue;
+       
+         // Coerce
+         Center = Clamp(Center, MakePoint(0,0), MakePoint(1.0,1.0));
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Point)baseValue;
-            var newValue = default(System.Windows.Point);
+            var newValue = default(Point);
             var isProcessed = false;
             inst.OnCenterCoerceValue(
-               bv,
+               Center,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -116,13 +150,16 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property Center (System.Windows.Point)
+      /// Gets or sets property Center (Point)
+      /// Center of swirl effect
+      /// Value coercion:
+      /// Clamp(Center, MakePoint(0,0), MakePoint(1.0,1.0))
       /// </summary>
-      public System.Windows.Point Center
+      public Point Center
       {
          get
          {
-            return (System.Windows.Point)GetValue(CenterProperty);
+            return (Point)GetValue(CenterProperty);
          }
          set
          {
@@ -141,11 +178,11 @@ namespace WpfShaderEffects
          typeof(BandedSwirlShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.0,
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.0,
             PixelShaderConstantCallback(1),
             OnSpiralStrengthCoerceValueStatic)
 #endif
@@ -163,13 +200,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (BandedSwirlShaderEffect)instance;
+         var SpiralStrength = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnSpiralStrengthCoerceValue(
-               bv,
+               SpiralStrength,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -189,6 +227,7 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property SpiralStrength (double)
+      /// Strength of spiral in swirl effect
       /// </summary>
       public double SpiralStrength
       {
@@ -213,11 +252,11 @@ namespace WpfShaderEffects
          typeof(BandedSwirlShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(double),
+            0.0,
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(double),
+            0.0,
             PixelShaderConstantCallback(2),
             OnDistanceThresholdCoerceValueStatic)
 #endif
@@ -235,13 +274,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (BandedSwirlShaderEffect)instance;
+         var DistanceThreshold = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnDistanceThresholdCoerceValue(
-               bv,
+               DistanceThreshold,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -261,6 +301,7 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property DistanceThreshold (double)
+      /// DistanceThreshold
       /// </summary>
       public double DistanceThreshold
       {
@@ -286,15 +327,14 @@ namespace WpfShaderEffects
    /// BloomShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Bloom.fx
    /// </summary>
-   public sealed partial class BloomShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class BloomShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<BloomShaderEffect>();
    
       public BloomShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(BloomIntensityProperty);
          UpdateShaderValue(BaseIntensityProperty);
          UpdateShaderValue(BloomSaturationProperty);
@@ -302,23 +342,6 @@ namespace WpfShaderEffects
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(BloomShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY BloomIntensity
       public static System.Windows.DependencyProperty BloomIntensityProperty = System.Windows.DependencyProperty.Register(
@@ -349,13 +372,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (BloomShaderEffect)instance;
+         var BloomIntensity = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnBloomIntensityCoerceValue(
-               bv,
+               BloomIntensity,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -421,13 +445,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (BloomShaderEffect)instance;
+         var BaseIntensity = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnBaseIntensityCoerceValue(
-               bv,
+               BaseIntensity,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -493,13 +518,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (BloomShaderEffect)instance;
+         var BloomSaturation = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnBloomSaturationCoerceValue(
-               bv,
+               BloomSaturation,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -565,13 +591,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (BloomShaderEffect)instance;
+         var BaseSaturation = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnBaseSaturationCoerceValue(
-               bv,
+               BaseSaturation,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -616,36 +643,18 @@ namespace WpfShaderEffects
    /// BrightExtractShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: BrightExtract.fx
    /// </summary>
-   public sealed partial class BrightExtractShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class BrightExtractShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<BrightExtractShaderEffect>();
    
       public BrightExtractShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(ThresholdProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(BrightExtractShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Threshold
       public static System.Windows.DependencyProperty ThresholdProperty = System.Windows.DependencyProperty.Register(
@@ -676,13 +685,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (BrightExtractShaderEffect)instance;
+         var Threshold = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnThresholdCoerceValue(
-               bv,
+               Threshold,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -727,35 +737,17 @@ namespace WpfShaderEffects
    /// ColorKeyAlphaShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ColorKeyAlpha.fx
    /// </summary>
-   public sealed partial class ColorKeyAlphaShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class ColorKeyAlphaShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ColorKeyAlphaShaderEffect>();
    
       public ColorKeyAlphaShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(ColorKeyAlphaShaderEffect), 
-            0);
    
    }
    
@@ -765,15 +757,14 @@ namespace WpfShaderEffects
    /// ColorToneShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ColorTone.fx
    /// </summary>
-   public sealed partial class ColorToneShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class ColorToneShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ColorToneShaderEffect>();
    
       public ColorToneShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(DesaturationProperty);
          UpdateShaderValue(TonedProperty);
          UpdateShaderValue(LightColorProperty);
@@ -781,23 +772,6 @@ namespace WpfShaderEffects
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(ColorToneShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Desaturation
       public static System.Windows.DependencyProperty DesaturationProperty = System.Windows.DependencyProperty.Register(
@@ -828,13 +802,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ColorToneShaderEffect)instance;
+         var Desaturation = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnDesaturationCoerceValue(
-               bv,
+               Desaturation,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -900,13 +875,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ColorToneShaderEffect)instance;
+         var Toned = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnTonedCoerceValue(
-               bv,
+               Toned,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -946,15 +922,15 @@ namespace WpfShaderEffects
       // BEGIN_PROPERTY LightColor
       public static System.Windows.DependencyProperty LightColorProperty = System.Windows.DependencyProperty.Register(
          @"LightColor",
-         typeof(System.Windows.Media.Color),
+         typeof(Color),
          typeof(ColorToneShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Media.Color),
+            default(Color),
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Media.Color),
+            default(Color),
             PixelShaderConstantCallback(2),
             OnLightColorCoerceValueStatic)
 #endif
@@ -962,8 +938,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnLightColorCoerceValue(
-         System.Windows.Media.Color baseValue,
-         ref System.Windows.Media.Color newValue,
+         Color baseValue,
+         ref Color newValue,
          ref bool isProcessed
          );
 
@@ -972,13 +948,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ColorToneShaderEffect)instance;
+         var LightColor = (Color)baseValue;
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Media.Color)baseValue;
-            var newValue = default(System.Windows.Media.Color);
+            var newValue = default(Color);
             var isProcessed = false;
             inst.OnLightColorCoerceValue(
-               bv,
+               LightColor,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -997,13 +974,13 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property LightColor (System.Windows.Media.Color)
+      /// Gets or sets property LightColor (Color)
       /// </summary>
-      public System.Windows.Media.Color LightColor
+      public Color LightColor
       {
          get
          {
-            return (System.Windows.Media.Color)GetValue(LightColorProperty);
+            return (Color)GetValue(LightColorProperty);
          }
          set
          {
@@ -1018,15 +995,15 @@ namespace WpfShaderEffects
       // BEGIN_PROPERTY DarkColor
       public static System.Windows.DependencyProperty DarkColorProperty = System.Windows.DependencyProperty.Register(
          @"DarkColor",
-         typeof(System.Windows.Media.Color),
+         typeof(Color),
          typeof(ColorToneShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Media.Color),
+            default(Color),
             PixelShaderConstantCallback(3))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Media.Color),
+            default(Color),
             PixelShaderConstantCallback(3),
             OnDarkColorCoerceValueStatic)
 #endif
@@ -1034,8 +1011,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnDarkColorCoerceValue(
-         System.Windows.Media.Color baseValue,
-         ref System.Windows.Media.Color newValue,
+         Color baseValue,
+         ref Color newValue,
          ref bool isProcessed
          );
 
@@ -1044,13 +1021,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ColorToneShaderEffect)instance;
+         var DarkColor = (Color)baseValue;
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Media.Color)baseValue;
-            var newValue = default(System.Windows.Media.Color);
+            var newValue = default(Color);
             var isProcessed = false;
             inst.OnDarkColorCoerceValue(
-               bv,
+               DarkColor,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -1069,13 +1047,13 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property DarkColor (System.Windows.Media.Color)
+      /// Gets or sets property DarkColor (Color)
       /// </summary>
-      public System.Windows.Media.Color DarkColor
+      public Color DarkColor
       {
          get
          {
-            return (System.Windows.Media.Color)GetValue(DarkColorProperty);
+            return (Color)GetValue(DarkColorProperty);
          }
          set
          {
@@ -1095,37 +1073,19 @@ namespace WpfShaderEffects
    /// ContrastAdjustShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ContrastAdjust.fx
    /// </summary>
-   public sealed partial class ContrastAdjustShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class ContrastAdjustShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ContrastAdjustShaderEffect>();
    
       public ContrastAdjustShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(BrightnessProperty);
          UpdateShaderValue(ContrastProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(ContrastAdjustShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Brightness
       public static System.Windows.DependencyProperty BrightnessProperty = System.Windows.DependencyProperty.Register(
@@ -1156,13 +1116,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ContrastAdjustShaderEffect)instance;
+         var Brightness = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnBrightnessCoerceValue(
-               bv,
+               Brightness,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -1228,13 +1189,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ContrastAdjustShaderEffect)instance;
+         var Contrast = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnContrastCoerceValue(
-               bv,
+               Contrast,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -1279,37 +1241,19 @@ namespace WpfShaderEffects
    /// DirectionalBlurShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: DirectionalBlur.fx
    /// </summary>
-   public sealed partial class DirectionalBlurShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class DirectionalBlurShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<DirectionalBlurShaderEffect>();
    
       public DirectionalBlurShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(AngleProperty);
          UpdateShaderValue(BlurAmountProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(DirectionalBlurShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Angle
       public static System.Windows.DependencyProperty AngleProperty = System.Windows.DependencyProperty.Register(
@@ -1340,13 +1284,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (DirectionalBlurShaderEffect)instance;
+         var Angle = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnAngleCoerceValue(
-               bv,
+               Angle,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -1412,13 +1357,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (DirectionalBlurShaderEffect)instance;
+         var BlurAmount = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnBlurAmountCoerceValue(
-               bv,
+               BlurAmount,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -1463,37 +1409,19 @@ namespace WpfShaderEffects
    /// EmbossedShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Embossed.fx
    /// </summary>
-   public sealed partial class EmbossedShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class EmbossedShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<EmbossedShaderEffect>();
    
       public EmbossedShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(AmountProperty);
          UpdateShaderValue(WidthProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(EmbossedShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Amount
       public static System.Windows.DependencyProperty AmountProperty = System.Windows.DependencyProperty.Register(
@@ -1524,13 +1452,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (EmbossedShaderEffect)instance;
+         var Amount = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnAmountCoerceValue(
-               bv,
+               Amount,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -1596,13 +1525,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (EmbossedShaderEffect)instance;
+         var Width = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnWidthCoerceValue(
-               bv,
+               Width,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -1647,15 +1577,14 @@ namespace WpfShaderEffects
    /// GloomShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Gloom.fx
    /// </summary>
-   public sealed partial class GloomShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class GloomShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<GloomShaderEffect>();
    
       public GloomShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(GloomIntensityProperty);
          UpdateShaderValue(BaseIntensityProperty);
          UpdateShaderValue(GloomSaturationProperty);
@@ -1663,23 +1592,6 @@ namespace WpfShaderEffects
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(GloomShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY GloomIntensity
       public static System.Windows.DependencyProperty GloomIntensityProperty = System.Windows.DependencyProperty.Register(
@@ -1710,13 +1622,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (GloomShaderEffect)instance;
+         var GloomIntensity = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnGloomIntensityCoerceValue(
-               bv,
+               GloomIntensity,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -1782,13 +1695,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (GloomShaderEffect)instance;
+         var BaseIntensity = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnBaseIntensityCoerceValue(
-               bv,
+               BaseIntensity,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -1854,13 +1768,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (GloomShaderEffect)instance;
+         var GloomSaturation = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnGloomSaturationCoerceValue(
-               bv,
+               GloomSaturation,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -1926,13 +1841,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (GloomShaderEffect)instance;
+         var BaseSaturation = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnBaseSaturationCoerceValue(
-               bv,
+               BaseSaturation,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -1977,38 +1893,20 @@ namespace WpfShaderEffects
    /// GrowablePoissonDiskShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: GrowablePoissonDisk.fx
    /// </summary>
-   public sealed partial class GrowablePoissonDiskShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class GrowablePoissonDiskShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<GrowablePoissonDiskShaderEffect>();
    
       public GrowablePoissonDiskShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(DiscRadiusProperty);
          UpdateShaderValue(WidthProperty);
          UpdateShaderValue(HeightProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(GrowablePoissonDiskShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY DiscRadius
       public static System.Windows.DependencyProperty DiscRadiusProperty = System.Windows.DependencyProperty.Register(
@@ -2039,13 +1937,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (GrowablePoissonDiskShaderEffect)instance;
+         var DiscRadius = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnDiscRadiusCoerceValue(
-               bv,
+               DiscRadius,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2111,13 +2010,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (GrowablePoissonDiskShaderEffect)instance;
+         var Width = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnWidthCoerceValue(
-               bv,
+               Width,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2183,13 +2083,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (GrowablePoissonDiskShaderEffect)instance;
+         var Height = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnHeightCoerceValue(
-               bv,
+               Height,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2234,35 +2135,17 @@ namespace WpfShaderEffects
    /// InvertColorShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: InvertColor.fx
    /// </summary>
-   public sealed partial class InvertColorShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class InvertColorShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<InvertColorShaderEffect>();
    
       public InvertColorShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(InvertColorShaderEffect), 
-            0);
    
    }
    
@@ -2272,37 +2155,19 @@ namespace WpfShaderEffects
    /// LightStreakShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: LightStreak.fx
    /// </summary>
-   public sealed partial class LightStreakShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class LightStreakShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<LightStreakShaderEffect>();
    
       public LightStreakShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(BrightThresholdProperty);
          UpdateShaderValue(ScaleProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(LightStreakShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY BrightThreshold
       public static System.Windows.DependencyProperty BrightThresholdProperty = System.Windows.DependencyProperty.Register(
@@ -2333,13 +2198,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (LightStreakShaderEffect)instance;
+         var BrightThreshold = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnBrightThresholdCoerceValue(
-               bv,
+               BrightThreshold,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2405,13 +2271,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (LightStreakShaderEffect)instance;
+         var Scale = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnScaleCoerceValue(
-               bv,
+               Scale,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2456,51 +2323,33 @@ namespace WpfShaderEffects
    /// MagnifyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Magnify.fx
    /// </summary>
-   public sealed partial class MagnifyShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class MagnifyShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<MagnifyShaderEffect>();
    
       public MagnifyShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(RadiiProperty);
          UpdateShaderValue(CenterProperty);
          UpdateShaderValue(AmountProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(MagnifyShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Radii
       public static System.Windows.DependencyProperty RadiiProperty = System.Windows.DependencyProperty.Register(
          @"Radii",
-         typeof(System.Windows.Point),
+         typeof(Point),
          typeof(MagnifyShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(0),
             OnRadiiCoerceValueStatic)
 #endif
@@ -2508,8 +2357,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnRadiiCoerceValue(
-         System.Windows.Point baseValue,
-         ref System.Windows.Point newValue,
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
@@ -2518,13 +2367,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (MagnifyShaderEffect)instance;
+         var Radii = (Point)baseValue;
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Point)baseValue;
-            var newValue = default(System.Windows.Point);
+            var newValue = default(Point);
             var isProcessed = false;
             inst.OnRadiiCoerceValue(
-               bv,
+               Radii,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2543,13 +2393,13 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property Radii (System.Windows.Point)
+      /// Gets or sets property Radii (Point)
       /// </summary>
-      public System.Windows.Point Radii
+      public Point Radii
       {
          get
          {
-            return (System.Windows.Point)GetValue(RadiiProperty);
+            return (Point)GetValue(RadiiProperty);
          }
          set
          {
@@ -2564,15 +2414,15 @@ namespace WpfShaderEffects
       // BEGIN_PROPERTY Center
       public static System.Windows.DependencyProperty CenterProperty = System.Windows.DependencyProperty.Register(
          @"Center",
-         typeof(System.Windows.Point),
+         typeof(Point),
          typeof(MagnifyShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(1))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(1),
             OnCenterCoerceValueStatic)
 #endif
@@ -2580,8 +2430,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnCenterCoerceValue(
-         System.Windows.Point baseValue,
-         ref System.Windows.Point newValue,
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
@@ -2590,13 +2440,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (MagnifyShaderEffect)instance;
+         var Center = (Point)baseValue;
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Point)baseValue;
-            var newValue = default(System.Windows.Point);
+            var newValue = default(Point);
             var isProcessed = false;
             inst.OnCenterCoerceValue(
-               bv,
+               Center,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2615,13 +2466,13 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property Center (System.Windows.Point)
+      /// Gets or sets property Center (Point)
       /// </summary>
-      public System.Windows.Point Center
+      public Point Center
       {
          get
          {
-            return (System.Windows.Point)GetValue(CenterProperty);
+            return (Point)GetValue(CenterProperty);
          }
          set
          {
@@ -2662,13 +2513,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (MagnifyShaderEffect)instance;
+         var Amount = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnAmountCoerceValue(
-               bv,
+               Amount,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2713,49 +2565,31 @@ namespace WpfShaderEffects
    /// MonochromeShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Monochrome.fx
    /// </summary>
-   public sealed partial class MonochromeShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class MonochromeShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<MonochromeShaderEffect>();
    
       public MonochromeShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(FilterColorProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(MonochromeShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY FilterColor
       public static System.Windows.DependencyProperty FilterColorProperty = System.Windows.DependencyProperty.Register(
          @"FilterColor",
-         typeof(System.Windows.Media.Color),
+         typeof(Color),
          typeof(MonochromeShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Media.Color),
+            default(Color),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Media.Color),
+            default(Color),
             PixelShaderConstantCallback(0),
             OnFilterColorCoerceValueStatic)
 #endif
@@ -2763,8 +2597,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnFilterColorCoerceValue(
-         System.Windows.Media.Color baseValue,
-         ref System.Windows.Media.Color newValue,
+         Color baseValue,
+         ref Color newValue,
          ref bool isProcessed
          );
 
@@ -2773,13 +2607,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (MonochromeShaderEffect)instance;
+         var FilterColor = (Color)baseValue;
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Media.Color)baseValue;
-            var newValue = default(System.Windows.Media.Color);
+            var newValue = default(Color);
             var isProcessed = false;
             inst.OnFilterColorCoerceValue(
-               bv,
+               FilterColor,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2798,13 +2633,13 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property FilterColor (System.Windows.Media.Color)
+      /// Gets or sets property FilterColor (Color)
       /// </summary>
-      public System.Windows.Media.Color FilterColor
+      public Color FilterColor
       {
          get
          {
-            return (System.Windows.Media.Color)GetValue(FilterColorProperty);
+            return (Color)GetValue(FilterColorProperty);
          }
          set
          {
@@ -2824,15 +2659,14 @@ namespace WpfShaderEffects
    /// PinchShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Pinch.fx
    /// </summary>
-   public sealed partial class PinchShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class PinchShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<PinchShaderEffect>();
    
       public PinchShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(CenterXProperty);
          UpdateShaderValue(CenterYProperty);
          UpdateShaderValue(RadiusProperty);
@@ -2840,23 +2674,6 @@ namespace WpfShaderEffects
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(PinchShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY CenterX
       public static System.Windows.DependencyProperty CenterXProperty = System.Windows.DependencyProperty.Register(
@@ -2887,13 +2704,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (PinchShaderEffect)instance;
+         var CenterX = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnCenterXCoerceValue(
-               bv,
+               CenterX,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -2959,13 +2777,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (PinchShaderEffect)instance;
+         var CenterY = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnCenterYCoerceValue(
-               bv,
+               CenterY,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3031,13 +2850,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (PinchShaderEffect)instance;
+         var Radius = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnRadiusCoerceValue(
-               bv,
+               Radius,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3103,13 +2923,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (PinchShaderEffect)instance;
+         var Amount = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnAmountCoerceValue(
-               bv,
+               Amount,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3154,37 +2975,19 @@ namespace WpfShaderEffects
    /// PixelateShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Pixelate.fx
    /// </summary>
-   public sealed partial class PixelateShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class PixelateShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<PixelateShaderEffect>();
    
       public PixelateShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(HorizontalPixelCountsProperty);
          UpdateShaderValue(VerticalPixelCountsProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(PixelateShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY HorizontalPixelCounts
       public static System.Windows.DependencyProperty HorizontalPixelCountsProperty = System.Windows.DependencyProperty.Register(
@@ -3215,13 +3018,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (PixelateShaderEffect)instance;
+         var HorizontalPixelCounts = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnHorizontalPixelCountsCoerceValue(
-               bv,
+               HorizontalPixelCounts,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3287,13 +3091,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (PixelateShaderEffect)instance;
+         var VerticalPixelCounts = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnVerticalPixelCountsCoerceValue(
-               bv,
+               VerticalPixelCounts,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3338,15 +3143,14 @@ namespace WpfShaderEffects
    /// RippleShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Ripple.fx
    /// </summary>
-   public sealed partial class RippleShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class RippleShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<RippleShaderEffect>();
    
       public RippleShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(CenterProperty);
          UpdateShaderValue(AmplitudeProperty);
          UpdateShaderValue(FrequencyProperty);
@@ -3354,36 +3158,19 @@ namespace WpfShaderEffects
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(RippleShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Center
       public static System.Windows.DependencyProperty CenterProperty = System.Windows.DependencyProperty.Register(
          @"Center",
-         typeof(System.Windows.Point),
+         typeof(Point),
          typeof(RippleShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(0),
             OnCenterCoerceValueStatic)
 #endif
@@ -3391,8 +3178,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnCenterCoerceValue(
-         System.Windows.Point baseValue,
-         ref System.Windows.Point newValue,
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
@@ -3401,13 +3188,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (RippleShaderEffect)instance;
+         var Center = (Point)baseValue;
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Point)baseValue;
-            var newValue = default(System.Windows.Point);
+            var newValue = default(Point);
             var isProcessed = false;
             inst.OnCenterCoerceValue(
-               bv,
+               Center,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3426,13 +3214,13 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property Center (System.Windows.Point)
+      /// Gets or sets property Center (Point)
       /// </summary>
-      public System.Windows.Point Center
+      public Point Center
       {
          get
          {
-            return (System.Windows.Point)GetValue(CenterProperty);
+            return (Point)GetValue(CenterProperty);
          }
          set
          {
@@ -3473,13 +3261,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (RippleShaderEffect)instance;
+         var Amplitude = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnAmplitudeCoerceValue(
-               bv,
+               Amplitude,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3545,13 +3334,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (RippleShaderEffect)instance;
+         var Frequency = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnFrequencyCoerceValue(
-               bv,
+               Frequency,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3617,13 +3407,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (RippleShaderEffect)instance;
+         var Phase = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnPhaseCoerceValue(
-               bv,
+               Phase,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3668,37 +3459,19 @@ namespace WpfShaderEffects
    /// SharpenShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Sharpen.fx
    /// </summary>
-   public sealed partial class SharpenShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class SharpenShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<SharpenShaderEffect>();
    
       public SharpenShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(AmountProperty);
          UpdateShaderValue(WidthProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(SharpenShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Amount
       public static System.Windows.DependencyProperty AmountProperty = System.Windows.DependencyProperty.Register(
@@ -3729,13 +3502,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (SharpenShaderEffect)instance;
+         var Amount = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnAmountCoerceValue(
-               bv,
+               Amount,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3801,13 +3575,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (SharpenShaderEffect)instance;
+         var Width = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnWidthCoerceValue(
-               bv,
+               Width,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3852,50 +3627,32 @@ namespace WpfShaderEffects
    /// SmoothMagnifyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: SmoothMagnify.fx
    /// </summary>
-   public sealed partial class SmoothMagnifyShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class SmoothMagnifyShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<SmoothMagnifyShaderEffect>();
    
       public SmoothMagnifyShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(CenterProperty);
          UpdateShaderValue(InnerRadiusProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(SmoothMagnifyShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Center
       public static System.Windows.DependencyProperty CenterProperty = System.Windows.DependencyProperty.Register(
          @"Center",
-         typeof(System.Windows.Point),
+         typeof(Point),
          typeof(SmoothMagnifyShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(0),
             OnCenterCoerceValueStatic)
 #endif
@@ -3903,8 +3660,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnCenterCoerceValue(
-         System.Windows.Point baseValue,
-         ref System.Windows.Point newValue,
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
@@ -3913,13 +3670,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (SmoothMagnifyShaderEffect)instance;
+         var Center = (Point)baseValue;
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Point)baseValue;
-            var newValue = default(System.Windows.Point);
+            var newValue = default(Point);
             var isProcessed = false;
             inst.OnCenterCoerceValue(
-               bv,
+               Center,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -3938,13 +3696,13 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property Center (System.Windows.Point)
+      /// Gets or sets property Center (Point)
       /// </summary>
-      public System.Windows.Point Center
+      public Point Center
       {
          get
          {
-            return (System.Windows.Point)GetValue(CenterProperty);
+            return (Point)GetValue(CenterProperty);
          }
          set
          {
@@ -3985,13 +3743,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (SmoothMagnifyShaderEffect)instance;
+         var InnerRadius = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnInnerRadiusCoerceValue(
-               bv,
+               InnerRadius,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -4036,51 +3795,33 @@ namespace WpfShaderEffects
    /// SwirlShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Swirl.fx
    /// </summary>
-   public sealed partial class SwirlShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class SwirlShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<SwirlShaderEffect>();
    
       public SwirlShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(CenterProperty);
          UpdateShaderValue(SpiralStrengthProperty);
          UpdateShaderValue(AngleFrequencyProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(SwirlShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Center
       public static System.Windows.DependencyProperty CenterProperty = System.Windows.DependencyProperty.Register(
          @"Center",
-         typeof(System.Windows.Point),
+         typeof(Point),
          typeof(SwirlShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(0),
             OnCenterCoerceValueStatic)
 #endif
@@ -4088,8 +3829,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnCenterCoerceValue(
-         System.Windows.Point baseValue,
-         ref System.Windows.Point newValue,
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
@@ -4098,13 +3839,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (SwirlShaderEffect)instance;
+         var Center = (Point)baseValue;
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Point)baseValue;
-            var newValue = default(System.Windows.Point);
+            var newValue = default(Point);
             var isProcessed = false;
             inst.OnCenterCoerceValue(
-               bv,
+               Center,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -4123,13 +3865,13 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property Center (System.Windows.Point)
+      /// Gets or sets property Center (Point)
       /// </summary>
-      public System.Windows.Point Center
+      public Point Center
       {
          get
          {
-            return (System.Windows.Point)GetValue(CenterProperty);
+            return (Point)GetValue(CenterProperty);
          }
          set
          {
@@ -4170,13 +3912,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (SwirlShaderEffect)instance;
+         var SpiralStrength = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnSpiralStrengthCoerceValue(
-               bv,
+               SpiralStrength,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -4216,15 +3959,15 @@ namespace WpfShaderEffects
       // BEGIN_PROPERTY AngleFrequency
       public static System.Windows.DependencyProperty AngleFrequencyProperty = System.Windows.DependencyProperty.Register(
          @"AngleFrequency",
-         typeof(System.Windows.Point),
+         typeof(Point),
          typeof(SwirlShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(2))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(2),
             OnAngleFrequencyCoerceValueStatic)
 #endif
@@ -4232,8 +3975,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnAngleFrequencyCoerceValue(
-         System.Windows.Point baseValue,
-         ref System.Windows.Point newValue,
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
@@ -4242,13 +3985,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (SwirlShaderEffect)instance;
+         var AngleFrequency = (Point)baseValue;
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Point)baseValue;
-            var newValue = default(System.Windows.Point);
+            var newValue = default(Point);
             var isProcessed = false;
             inst.OnAngleFrequencyCoerceValue(
-               bv,
+               AngleFrequency,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -4267,13 +4011,13 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property AngleFrequency (System.Windows.Point)
+      /// Gets or sets property AngleFrequency (Point)
       /// </summary>
-      public System.Windows.Point AngleFrequency
+      public Point AngleFrequency
       {
          get
          {
-            return (System.Windows.Point)GetValue(AngleFrequencyProperty);
+            return (Point)GetValue(AngleFrequencyProperty);
          }
          set
          {
@@ -4293,15 +4037,14 @@ namespace WpfShaderEffects
    /// ToneMappingShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ToneMapping.fx
    /// </summary>
-   public sealed partial class ToneMappingShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class ToneMappingShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ToneMappingShaderEffect>();
    
       public ToneMappingShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(ExposureProperty);
          UpdateShaderValue(DefogProperty);
          UpdateShaderValue(GammaProperty);
@@ -4312,23 +4055,6 @@ namespace WpfShaderEffects
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(ToneMappingShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Exposure
       public static System.Windows.DependencyProperty ExposureProperty = System.Windows.DependencyProperty.Register(
@@ -4359,13 +4085,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ToneMappingShaderEffect)instance;
+         var Exposure = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnExposureCoerceValue(
-               bv,
+               Exposure,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -4431,13 +4158,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ToneMappingShaderEffect)instance;
+         var Defog = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnDefogCoerceValue(
-               bv,
+               Defog,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -4503,13 +4231,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ToneMappingShaderEffect)instance;
+         var Gamma = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnGammaCoerceValue(
-               bv,
+               Gamma,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -4549,15 +4278,15 @@ namespace WpfShaderEffects
       // BEGIN_PROPERTY FogColor
       public static System.Windows.DependencyProperty FogColorProperty = System.Windows.DependencyProperty.Register(
          @"FogColor",
-         typeof(System.Windows.Media.Color),
+         typeof(Color),
          typeof(ToneMappingShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Media.Color),
+            default(Color),
             PixelShaderConstantCallback(3))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Media.Color),
+            default(Color),
             PixelShaderConstantCallback(3),
             OnFogColorCoerceValueStatic)
 #endif
@@ -4565,8 +4294,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnFogColorCoerceValue(
-         System.Windows.Media.Color baseValue,
-         ref System.Windows.Media.Color newValue,
+         Color baseValue,
+         ref Color newValue,
          ref bool isProcessed
          );
 
@@ -4575,13 +4304,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ToneMappingShaderEffect)instance;
+         var FogColor = (Color)baseValue;
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Media.Color)baseValue;
-            var newValue = default(System.Windows.Media.Color);
+            var newValue = default(Color);
             var isProcessed = false;
             inst.OnFogColorCoerceValue(
-               bv,
+               FogColor,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -4600,13 +4330,13 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property FogColor (System.Windows.Media.Color)
+      /// Gets or sets property FogColor (Color)
       /// </summary>
-      public System.Windows.Media.Color FogColor
+      public Color FogColor
       {
          get
          {
-            return (System.Windows.Media.Color)GetValue(FogColorProperty);
+            return (Color)GetValue(FogColorProperty);
          }
          set
          {
@@ -4647,13 +4377,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ToneMappingShaderEffect)instance;
+         var VignetteRadius = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnVignetteRadiusCoerceValue(
-               bv,
+               VignetteRadius,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -4693,15 +4424,15 @@ namespace WpfShaderEffects
       // BEGIN_PROPERTY VignetteCenter
       public static System.Windows.DependencyProperty VignetteCenterProperty = System.Windows.DependencyProperty.Register(
          @"VignetteCenter",
-         typeof(System.Windows.Point),
+         typeof(Point),
          typeof(ToneMappingShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(5))
 #else
          new System.Windows.UIPropertyMetadata(
-            default(System.Windows.Point),
+            default(Point),
             PixelShaderConstantCallback(5),
             OnVignetteCenterCoerceValueStatic)
 #endif
@@ -4709,8 +4440,8 @@ namespace WpfShaderEffects
 
 #if !SILVERLIGHT
       partial void OnVignetteCenterCoerceValue(
-         System.Windows.Point baseValue,
-         ref System.Windows.Point newValue,
+         Point baseValue,
+         ref Point newValue,
          ref bool isProcessed
          );
 
@@ -4719,13 +4450,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ToneMappingShaderEffect)instance;
+         var VignetteCenter = (Point)baseValue;
+      
          if(inst != null)
          {
-            var bv = (System.Windows.Point)baseValue;
-            var newValue = default(System.Windows.Point);
+            var newValue = default(Point);
             var isProcessed = false;
             inst.OnVignetteCenterCoerceValue(
-               bv,
+               VignetteCenter,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -4744,13 +4476,13 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property VignetteCenter (System.Windows.Point)
+      /// Gets or sets property VignetteCenter (Point)
       /// </summary>
-      public System.Windows.Point VignetteCenter
+      public Point VignetteCenter
       {
          get
          {
-            return (System.Windows.Point)GetValue(VignetteCenterProperty);
+            return (Point)GetValue(VignetteCenterProperty);
          }
          set
          {
@@ -4791,13 +4523,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ToneMappingShaderEffect)instance;
+         var BlueShift = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnBlueShiftCoerceValue(
-               bv,
+               BlueShift,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -4842,35 +4575,17 @@ namespace WpfShaderEffects
    /// ToonShaderShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ToonShader.fx
    /// </summary>
-   public sealed partial class ToonShaderShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class ToonShaderShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ToonShaderShaderEffect>();
    
       public ToonShaderShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(ToonShaderShaderEffect), 
-            0);
    
    }
    
@@ -4880,37 +4595,19 @@ namespace WpfShaderEffects
    /// ZoomBlurShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ZoomBlur.fx
    /// </summary>
-   public sealed partial class ZoomBlurShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class ZoomBlurShaderEffect : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ZoomBlurShaderEffect>();
    
       public ZoomBlurShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
          UpdateShaderValue(CenterProperty);
          UpdateShaderValue(BlurAmountProperty);
             
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(ZoomBlurShaderEffect), 
-            0);
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Center
       public static System.Windows.DependencyProperty CenterProperty = System.Windows.DependencyProperty.Register(
@@ -4941,13 +4638,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ZoomBlurShaderEffect)instance;
+         var Center = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnCenterCoerceValue(
-               bv,
+               Center,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -5013,13 +4711,14 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (ZoomBlurShaderEffect)instance;
+         var BlurAmount = (double)baseValue;
+      
          if(inst != null)
          {
-            var bv = (double)baseValue;
             var newValue = default(double);
             var isProcessed = false;
             inst.OnBlurAmountCoerceValue(
-               bv,
+               BlurAmount,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
