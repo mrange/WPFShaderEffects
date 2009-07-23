@@ -6,6 +6,7 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Text.RegularExpressions" #>
 <#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Collections.Generic" #>
 /* ****************************************************************************
  *
  * Copyright (c) Mårten Rånge.
@@ -54,12 +55,60 @@
 // CompilerPath      :     <#=effectCompilerPath#>
 // ShaderSourcePath  :     <#=shaderSourcePath#>
 // ShaderBinaryPath  :     <#=shaderBinaryPath#>
+
+using Color = System.Windows.Media.Color;
+using Point = System.Windows.Point;
+
 #if SILVERLIGHT
 namespace SilverlightShaderEffects
 #else
 namespace WpfShaderEffects
 #endif
 {
+   public abstract partial class BaseShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   {
+      protected BaseShaderEffect(System.Windows.Media.Effects.PixelShader pixelShader)
+      {
+         PixelShader = pixelShader;
+         UpdateShaderValue(InputProperty);
+      }
+      
+      public static readonly System.Windows.DependencyProperty InputProperty =
+         RegisterPixelShaderSamplerProperty(
+            "Input", 
+            typeof(BaseShaderEffect), 
+            0);
+            
+      public System.Windows.Media.Brush Input
+      {
+         get 
+         { 
+            return (System.Windows.Media.Brush)GetValue(InputProperty); 
+         }
+         set 
+         { 
+            SetValue(InputProperty, value); 
+         }
+      }
+
+      protected static Point MakePoint(double x, double y)
+      {
+         return new Point(x, y);
+      }
+
+      protected static double Clamp(double value, double min, double max)
+      {
+         return System.Math.Min(max, System.Math.Max(min, value));
+      }
+      
+      protected static Point Clamp(Point value, Point min, Point max)
+      {
+         return new Point(
+            Clamp(value.X, min.X, max.X),
+            Clamp(value.Y, min.Y, max.Y));
+      }
+   }
+   
 <#
    using(var effectCompiler = (IDisposable)Activator.CreateInstance(effectCompilerType))
    foreach(var shaderFile in shaderFiles)
@@ -80,63 +129,70 @@ namespace WpfShaderEffects
       File.WriteAllBytes(shaderCompiledFileName, shaderCompiled);
       
       var shaderLines = File.ReadAllLines(shaderFile);
-      var shaderParameters = shaderLines
-         .Select(line => matchParameter.Match(line))
-         .Where(match => match.Success)
-         .ToLookup(match => match.Groups["RegisterType"].Value);
+
+      var parsedShaderLines = shaderLines
+         .Select((line, lineNumber) => Support.ParseLine(lineNumber, line))
+         .ToArray();
+         
+      var shaderParameters = parsedShaderLines
+         .OfType<ParameterLine>()
+         .ToLookup(pl => pl.RegisterType);
          
       var shaderContants = shaderParameters["C"].ToArray();
       var shaderSamplers = shaderParameters["S"].ToArray();
 
          
 #>
-   public sealed partial class <#=shaderName#> : System.Windows.Media.Effects.ShaderEffect
+   public sealed partial class <#=shaderName#> : BaseShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<<#=shaderName#>>();
    
       public <#=shaderName#>()
+         :  base(s_pixelShader)
       {
-         PixelShader = s_pixelShader;    
-         UpdateShaderValue(InputProperty);
 <#
       foreach(var shaderParameter in shaderContants)
       {
 #>
-         UpdateShaderValue(<#=shaderParameter.Groups["Name"].Value#>Property);
+         UpdateShaderValue(<#=shaderParameter.Name#>Property);
 <#
       }
 #>            
       }
    
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(<#=shaderName#>), 
-            0);
 <#
       foreach(var shaderParameter in shaderContants)
       {
-         var shaderParameterName       = shaderParameter.Groups["Name"].Value;
-         var shaderParameterHLSLType   = shaderParameter.Groups["Type"].Value;
+         var shaderParameterName       = shaderParameter.Name;
+         var shaderParameterHLSLType   = shaderParameter.Type;
          var shaderParameterType       = Support.MapType(shaderParameterHLSLType);
-         var shaderParameterIndex      = shaderParameter.Groups["RegisterIndex"].Value;
+         var shaderParameterIndex      = shaderParameter.RegisterIndex;
          var defaultValue              = "default(" + shaderParameterType + ")";
+         
+         var descriptionLines          = Support.GetDescriptionLines(
+            parsedShaderLines, 
+            shaderParameter)
+            .ToLookup(line => line.Type);
+
+         var commentLines              = descriptionLines["Comment"];
+         var typeLine                  = descriptionLines["Type"].FirstOrDefault();            
+         var defaultValueLine          = descriptionLines["DefaultValue"].FirstOrDefault();            
+         var coerceLine                = descriptionLines["Coerce"].FirstOrDefault();            
+         
+         if(defaultValueLine != null)
+         {
+            defaultValue = defaultValueLine.Input;
+         }         
+
+         if(typeLine != null)
+         {
+            shaderParameterType = Support.MapType(typeLine, shaderParameterHLSLType);
+         }
+
 #>
       // ----------------------------------------------------------------------
-      // BEGIN_PROPERTY <#=shaderParameter.Groups["Name"].Value#>
+      // BEGIN_PROPERTY <#=shaderParameter.Name#>
       public static System.Windows.DependencyProperty <#=shaderParameterName#>Property = System.Windows.DependencyProperty.Register(
          @"<#=shaderParameterName#>",
          typeof(<#=shaderParameterType#>),
@@ -165,13 +221,22 @@ namespace WpfShaderEffects
          object baseValue)
       {
          var inst = (<#=shaderName#>)instance;
+         var <#=shaderParameterName#> = (<#=shaderParameterType#>)baseValue;
+<#
+      if (coerceLine != null)
+      {
+#>       
+         // Coerce
+         <#=shaderParameterName#> = <#=coerceLine.Input#>;
+<#
+      }
+#>      
          if(inst != null)
          {
-            var bv = (<#=shaderParameterType#>)baseValue;
             var newValue = default(<#=shaderParameterType#>);
             var isProcessed = false;
             inst.On<#=shaderParameterName#>CoerceValue(
-               bv,
+               <#=shaderParameterName#>,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -191,7 +256,21 @@ namespace WpfShaderEffects
 #endif
       /// <summary>
       /// Gets or sets property <#=shaderParameterName#> (<#=shaderParameterType#>)
-      /// </summary>
+<#    
+      foreach(var commentLine in commentLines)
+      {
+#>
+      /// <#=commentLine.Input#>
+<#
+      }
+      if (coerceLine != null)
+      {
+#>
+      /// Value coercion:
+      /// <#=coerceLine.Input#>
+<#
+      }
+#>      /// </summary>
       public <#=shaderParameterType#> <#=shaderParameterName#>
       {
          get
@@ -204,7 +283,7 @@ namespace WpfShaderEffects
          }
       }
 
-      // END_PROPERTY <#=shaderParameter.Groups["Name"].Value#>
+      // END_PROPERTY <#=shaderParameter.Name#>
       // ----------------------------------------------------------------------
       
 <#
@@ -218,20 +297,247 @@ namespace WpfShaderEffects
 
 }
 <#+
+
+   enum LineType
+   {
+      ParameterDescription,
+      Parameter,
+      NotUnderstood,
+   }
+   
+   interface ILine
+   {
+      LineType LineType { get; }   
+      string Line { get; }
+      int LineNumber { get; }
+   }
+
+   abstract class BaseLine : ILine
+   {
+      public abstract LineType LineType { get; }
+      
+      public int LineNumber { get; set; }
+      public string Line { get; set; }
+      
+      
+      protected BaseLine(int lineNumber, string line)
+      {
+         LineNumber = lineNumber;
+         Line = line;
+      }
+   }
+
+   class NotUnderstoodLine : BaseLine
+   {
+      NotUnderstoodLine(int lineNumber, string line)
+         :  base(lineNumber, line)
+      {
+      }
+   
+      public static ILine Create(int lineNumber, string line)
+      {
+         return new NotUnderstoodLine(lineNumber, line);
+      }
+   
+      public override LineType LineType 
+      { 
+         get
+         {
+            return LineType.NotUnderstood;
+         }
+      }   
+      
+      public override string ToString()
+      {
+         return new 
+         {
+            LineType,
+            LineNumber,
+            Line,
+         }.ToString();
+      }
+   }
+
+   class ParameterLine : BaseLine
+   {
+      public readonly string Type;
+      public readonly string Name;
+      public readonly string RegisterType;
+      public readonly string RegisterIndex;
+   
+   
+      ParameterLine(int lineNumber, string line, Match m)
+         :  base(lineNumber, line)
+      {
+         Type           = m.Groups["Type"].Value;
+         Name           = m.Groups["Name"].Value;
+         RegisterType   = m.Groups["RegisterType"].Value;
+         RegisterIndex  = m.Groups["RegisterIndex"].Value;
+      }
+   
+      public static ILine Create(int lineNumber, string line, Match m)
+      {
+         return new ParameterLine(lineNumber, line, m);
+      }
+   
+      public override LineType LineType 
+      { 
+         get
+         {
+            return LineType.Parameter;
+         }
+      }   
+      
+      public override string ToString()
+      {
+         return new 
+         {
+            LineType,
+            LineNumber,
+            Line,
+            Type,
+            Name,
+            RegisterType,
+            RegisterIndex,
+         }.ToString();
+      }
+   }
+
+   class ParameterDescriptionLine : BaseLine
+   {
+      public readonly string Type;
+      public readonly string Input;
+   
+      ParameterDescriptionLine(int lineNumber, string line, Match m)
+         :  base(lineNumber, line)
+      {
+         Type           = m.Groups["Type"].Value;
+         Input          = m.Groups["Input"].Value;
+      }
+   
+      public static ILine Create(int lineNumber, string line, Match m)
+      {
+         return new ParameterDescriptionLine(lineNumber, line, m);
+      }
+   
+      public override LineType LineType 
+      { 
+         get
+         {
+            return LineType.ParameterDescription;
+         }
+      }   
+      
+      public override string ToString()
+      {
+         return new 
+         {
+            LineType,
+            LineNumber,
+            Line,
+            Type,
+            Input,
+         }.ToString();
+      }
+   }
+
+
    static class Support
    {
-      public static string MapType(string type)
+      static Regex s_matchParameter = new Regex(
+         @"^(?<Type>\S+)\s+(?<Name>\S+)\s*\:\s*register\s*\(\s*(?<RegisterType>(S|C))(?<RegisterIndex>\d+)\s*\)\s*;\s*$",
+         RegexOptions.Compiled | RegexOptions.CultureInvariant);
+   
+      static Regex s_matchParameterDescription = new Regex(
+         @"^//\s*Parameter(?<Type>\S*)\s*\:\s*(?<Input>.*)$",
+         RegexOptions.Compiled | RegexOptions.CultureInvariant);
+   
+      static ILine TryLine(
+         Regex matcher, 
+         Func<int, string, Match, ILine> lineCreator, 
+         int lineNumber,
+         string line)
+      {
+         var match = matcher.Match(line);
+         if (match.Success)
+         {
+            return lineCreator(lineNumber, line, match);
+         }
+         else
+         {
+            return null;
+         }
+      }
+   
+      public static ILine ParseLine(
+         int lineNumber,
+         string line)
+      {
+         Func<Regex, Func<int, string, Match, ILine>, ILine> tryLine = (matcher, creator) => 
+            TryLine(
+               matcher, 
+               creator, 
+               lineNumber,
+               line);
+         return 
+               tryLine(s_matchParameterDescription       , ParameterDescriptionLine.Create   )
+            ?? tryLine(s_matchParameter                  , ParameterLine.Create              )
+            ?? NotUnderstoodLine.Create(lineNumber, line);
+         
+      }
+  
+      public static IEnumerable<ParameterDescriptionLine> GetDescriptionLines(
+         ILine[] lines,
+         ParameterLine line)
+      {
+         var foundLines = lines
+            .Take(line.LineNumber)
+            .Reverse()
+            .TakeWhile(ln => ln is ParameterDescriptionLine)
+            .Cast<ParameterDescriptionLine>()
+            .Reverse()
+            .ToList();
+         
+         return foundLines;
+      }
+   
+      static string[] MapToTypes(string type)
       {
          switch(type)
          {
             case "float":
-               return "double";
+               return new [] {"double"};
             case "float4":
-               return "System.Windows.Media.Color";
+               return new [] {"Color"};
             case "float2":
-               return "System.Windows.Point";
+               return new [] {"Point"};
             default:
-               throw new ArgumentException("type");                                             
+               throw new ArgumentException(
+                  string.Format(
+                     "type has illegal value: '{0}'", 
+                     type));
+         }
+      }
+      
+      public static string MapType(string type)
+      {
+         return MapToTypes(type).First();
+      }
+   
+      public static string MapType(ParameterDescriptionLine line, string type)
+      {
+         var types = MapToTypes(type);
+         if(types.Contains(line.Input))
+         {
+            return line.Input;
+         }
+         else
+         {
+            throw new ArgumentException(
+               string.Format(
+                  "line, type has mismatched values: '{0}', {1}", 
+                  line,
+                  type));
          }
       }
    }

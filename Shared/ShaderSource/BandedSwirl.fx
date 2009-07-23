@@ -8,8 +8,20 @@
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
 
+// ParameterComment        :  Center of swirl effect
+// ParameterType           :  Point
+// ParameterDefaultValue   :  MakePoint(0.5,0.5)
+// ParameterCoerce         :  Clamp(Center, MakePoint(0,0), MakePoint(1.0,1.0))
 float2 Center : register(C0);
+
+// ParameterComment        :  Strength of spiral in swirl effect
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.0
 float SpiralStrength : register(C1);
+
+// ParameterComment        :  DistanceThreshold
+// ParameterType           :  double
+// ParameterDefaultValue   :  0.0
 float DistanceThreshold : register(C2);
 
 //--------------------------------------------------------------------------------------
