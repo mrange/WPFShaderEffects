@@ -1,0 +1,396 @@
+﻿<#@ template language="C#v3.5" hostspecific="true" debug="false" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+/* ****************************************************************************
+ *
+ * Copyright (c) Mårten Rånge.
+ *
+ * This source code is subject to terms and conditions of the Microsoft Public License. A 
+ * copy of the license can be found in the License.html file at the root of this distribution. If 
+ * you cannot locate the  Microsoft Public License, please send an email to 
+ * dlr@microsoft.com. By using this source code in any fashion, you are agreeing to be bound 
+ * by the terms of the Microsoft Public License.
+ *
+ * You must not remove this notice, or any other, from this software.
+ *
+ *
+ * ***************************************************************************/
+
+<#
+   foreach(var dependencyObjectClass in DependencyProperties.Classes)
+   {
+      var nameSpace = dependencyObjectClass.NameSpace;
+      var className = dependencyObjectClass.Name;
+      var completeClassName = nameSpace + "." + className;
+#>   
+namespace <#=nameSpace#>
+{
+
+   // -------------------------------------------------------------------------
+   // <#=completeClassName#> class
+   // -------------------------------------------------------------------------
+   /// <summary>
+   /// <#=completeClassName#> class
+   /// </summary>
+   public sealed partial class <#=className#>
+   {
+<#   
+      foreach(var dependencyProperty in dependencyObjectClass.Properties)
+      {
+         var isReadonly             = dependencyProperty.HasFlags(DependencyObjectPropertyFlags.ReadOnly);
+         var isCalculated           = dependencyProperty.HasFlags(DependencyObjectPropertyFlags.Calculated);
+         var isAttached             = dependencyProperty.HasFlags(DependencyObjectPropertyFlags.Attached);
+         
+         var registerAppend         = isAttached ? "Attached" : "";
+         
+         var propertyName           = dependencyProperty.Name;
+         var propertyType           = dependencyProperty.Type;
+         var defaultValue           = dependencyProperty.DefaultValue ?? "default(" + propertyType + ")";
+         
+#>      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY <#=propertyName#>      
+<#
+      if (isReadonly)
+      {
+#>      
+      static System.Windows.DependencyPropertyKey <#=propertyName#>PropertyKey = System.Windows.DependencyProperty.RegisterReadOnly<#=registerAppend#>(
+         "<#=propertyName#>",
+         typeof(<#=propertyType#>),
+         typeof(<#=className#>),
+         new System.Windows.PropertyMetadata(
+            <#=defaultValue#>, 
+<#
+         if(isCalculated)
+         {
+#>                     
+            null, 
+<#
+         }
+         else
+         {
+#>
+            <#=propertyName#>PropertyChangedCallback,             
+<#
+         }
+#>
+            <#=propertyName#>CoerceValueCallback));
+
+      public static System.Windows.DependencyProperty <#=propertyName#>Property = 
+         <#=propertyName#>PropertyKey.DependencyProperty;
+<#
+      }
+      else
+      {      
+#>      
+      public static System.Windows.DependencyProperty <#=propertyName#>Property = System.Windows.DependencyProperty.Register<#=registerAppend#>(
+         "<#=propertyName#>",
+         typeof(<#=propertyType#>),
+         typeof(<#=className#>),
+         new System.Windows.PropertyMetadata(
+            <#=defaultValue#>, 
+            <#=propertyName#>PropertyChangedCallback, 
+            <#=propertyName#>CoerceValueCallback));
+<#
+      }
+#>
+
+<#
+   if (!isAttached)
+   {
+#>   
+<#
+         if(!isCalculated)
+         {
+#>                     
+      partial void On<#=propertyName#>PropertyChanged(
+         <#=propertyType#> oldValue,
+         <#=propertyType#> newValue,
+         ref bool isProcessed);
+         
+      static void <#=propertyName#>PropertyChangedCallback(
+         System.Windows.DependencyObject instance, 
+         System.Windows.DependencyPropertyChangedEventArgs eventArgs)
+      {
+         var typedInstance = (<#=className#>)instance;
+         if (typedInstance != null && eventArgs != null)
+         {
+            var typedOldValue = (<#=propertyType#>)eventArgs.OldValue;
+            var typedNewValue = (<#=propertyType#>)eventArgs.NewValue;
+            
+            var isProcessed = false;
+            
+            typedInstance.On<#=propertyName#>PropertyChanged(
+               typedOldValue,
+               typedNewValue,
+               ref isProcessed);
+            
+         }
+      }
+<#      
+         }
+#>   
+      partial void On<#=propertyName#>CoerceValue(
+         <#=propertyType#> baseValue,
+         ref <#=propertyType#> newValue,
+         ref bool isProcessed);
+         
+      static object <#=propertyName#>CoerceValueCallback(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var typedInstance = (<#=className#>)instance;
+         if (typedInstance != null)
+         {
+            var typedBaseValue = (<#=propertyType#>)baseValue;
+            var typedNewValue = default(<#=propertyType#>);
+            var isProcessed = false;
+            typedInstance.On<#=propertyName#>CoerceValue(
+               typedBaseValue,
+               ref typedNewValue,
+               ref isProcessed);
+            
+            if (isProcessed)
+            {
+               return typedNewValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+
+      /// <summary>
+      /// Gets<#=!isReadonly ? " and sets" : ""#> <#=propertyName#> (<#=propertyType#>)
+      /// </summary>
+      public <#=propertyType#> <#=propertyName#>
+      {
+         get
+         {
+            return (<#=propertyType#>)GetValue(<#=propertyName#>Property);
+         }
+         <#=isReadonly ? "private " : ""#>set
+         {
+            var currentValue = <#=propertyName#>;
+            if (currentValue != value)
+            {
+               SetValue(<#=propertyName#>Property<#=isReadonly ? "Key" : ""#>, value);
+            }
+         }
+      }
+<#
+   }
+   else
+   {
+#>   
+
+<#
+         if(!isCalculated)
+         {
+#>                     
+      static partial void On<#=propertyName#>PropertyChanged(
+         System.Windows.DependencyObject instance,
+         <#=propertyType#> oldValue,
+         <#=propertyType#> newValue,
+         ref bool isProcessed);
+         
+      static void <#=propertyName#>PropertyChangedCallback(
+         System.Windows.DependencyObject instance, 
+         System.Windows.DependencyPropertyChangedEventArgs eventArgs)
+      {
+         if (instance != null && eventArgs != null)
+         {
+            var typedOldValue = (<#=propertyType#>)eventArgs.OldValue;
+            var typedNewValue = (<#=propertyType#>)eventArgs.NewValue;
+            
+            var isProcessed = false;
+            
+            On<#=propertyName#>PropertyChanged(
+               instance,
+               typedOldValue,
+               typedNewValue,
+               ref isProcessed);
+            
+         }
+      }
+<#      
+         }
+#>   
+      static partial void On<#=propertyName#>CoerceValue(
+         System.Windows.DependencyObject instance,
+         <#=propertyType#> baseValue,
+         ref <#=propertyType#> newValue,
+         ref bool isProcessed);
+         
+      static object <#=propertyName#>CoerceValueCallback(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         if (instance != null)
+         {
+            var typedBaseValue = (<#=propertyType#>)baseValue;
+            var typedNewValue = default(<#=propertyType#>);
+            var isProcessed = false;
+            On<#=propertyName#>CoerceValue(
+               instance,
+               typedBaseValue,
+               ref typedNewValue,
+               ref isProcessed);
+            
+            if (isProcessed)
+            {
+               return typedNewValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+
+      /// <summary>
+      /// Gets <#=propertyName#> (<#=propertyType#>)
+      /// </summary>
+      public static <#=propertyType#> Get<#=propertyName#>(System.Windows.DependencyObject instance)
+      {
+         return (<#=propertyType#>)instance.GetValue(<#=propertyName#>Property);
+      }
+      
+
+      /// <summary>
+      /// Sets <#=propertyName#> (<#=propertyType#>)
+      /// </summary>
+      <#=isReadonly ? "" : "public "#>static void Set<#=propertyName#>(System.Windows.DependencyObject instance, <#=propertyType#> value)
+      {
+         var currentValue = Get<#=propertyName#>(instance);
+         if (currentValue != value)
+         {
+            instance.SetValue(<#=propertyName#>Property<#=isReadonly ? "Key" : ""#>, value);
+         }
+      }
+<#
+   }
+#>   
+      // END_PROPERTY <#=propertyName#>
+      // ----------------------------------------------------------------------
+<#
+      }
+#>
+   }
+   // -------------------------------------------------------------------------
+}
+
+<#
+   }
+#>
+<#+
+   static class DependencyProperties
+   {
+      public static DependencyObjectClass[] Classes = new []
+         {
+// ----------------------------------------------------------------------------
+// BEGIN_MODEL
+// ----------------------------------------------------------------------------
+new DependencyObjectClass
+   {
+      NameSpace = "WpfApplication4",
+      Name = "MainWindow",
+      Properties = new DependencyObjectProperty[]
+         {
+            Property("Shaders"         , "System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo>"  , null     , DependencyObjectPropertyFlags.None),
+            Property("CurrentShader"   , "WpfApplication4.ShaderEffectInfo"                        , null     , DependencyObjectPropertyFlags.None),
+            Property("RoiX0"     , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiY0"     , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiX1"     , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiY1"     , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiCenterX" , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiCenterY" , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiLeft"   , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+            Property("RoiTop"    , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+            Property("RoiRight"  , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+            Property("RoiBottom" , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+            Property("RoiWidth"  , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+            Property("RoiHeight" , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+         },
+   },         
+new DependencyObjectClass
+   {
+      NameSpace = "WpfApplication4",
+      Name = "ShaderEffectInfo",
+      Properties = new DependencyObjectProperty[]
+         {
+            Property("Name"            , "string"                                      , null     , DependencyObjectPropertyFlags.None),
+            Property("ShaderEffect"    , "System.Windows.Media.Effects.ShaderEffect"   , null     , DependencyObjectPropertyFlags.None),
+         },
+   },
+new DependencyObjectClass
+   {
+      NameSpace = "WpfApplication4",
+      Name = "MouseDragBehavior",
+      Properties = new DependencyObjectProperty[]
+         {
+            Property("X"         ,  "double"  , "0.0"    , DependencyObjectPropertyFlags.None),
+            Property("Y"         ,  "double"  , "0.0"    , DependencyObjectPropertyFlags.None),
+         },
+   },
+// ----------------------------------------------------------------------------
+// END_MODEL
+// ----------------------------------------------------------------------------
+         };      
+      
+      static DependencyObjectProperty Property(
+         string name, 
+         string type, 
+         string defaultValue,
+         DependencyObjectPropertyFlags flags)
+      {
+         return new DependencyObjectProperty
+            {
+               Name = name,
+               Type = type,
+               Flags = flags,
+               DefaultValue = defaultValue,
+            };
+      }
+   }
+   
+   class DependencyObjectClass
+   {
+      public string Name;
+      public string NameSpace;
+      public DependencyObjectProperty[] Properties;
+   }
+   
+   [Flags]
+   enum DependencyObjectPropertyFlags
+   {
+      None                 = 0x0,
+      ReadOnly             = 0x2,
+      Calculated           = 0x6,
+      Attached             = 0x8,
+   }
+   
+   class DependencyObjectProperty
+   {
+      public string Name;
+      public string Type;
+      public string DefaultValue;
+      public DependencyObjectPropertyFlags Flags;
+
+      public bool HasFlags(DependencyObjectPropertyFlags flags)      
+      {
+         return (Flags & flags) == flags;
+      }
+     
+   }
+#>
