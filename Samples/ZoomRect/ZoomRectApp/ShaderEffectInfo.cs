@@ -14,7 +14,7 @@
  * ***************************************************************************/
 using System.Windows;
 
-namespace WpfApplication4
+namespace ZoomRectApp
 {
    public sealed partial class ShaderEffectInfo : DependencyObject
    {

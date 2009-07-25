@@ -12,7 +12,7 @@
  *
  *
  * ***************************************************************************/
-namespace WpfApplication4
+namespace ZoomRectApp
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

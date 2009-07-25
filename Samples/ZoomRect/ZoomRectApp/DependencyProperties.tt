@@ -35,6 +35,30 @@ namespace <#=nameSpace#>
    /// </summary>
    public sealed partial class <#=className#>
    {
+   
+      public void CoerceAllDependencyProperties()
+      {
+<#   
+      foreach(var dependencyProperty in dependencyObjectClass.Properties)
+      {
+#>
+         CoerceValue(<#=dependencyProperty.Name#>Property);
+<#
+      }
+#>      
+      }
+
+      public void InvalidateAllDependencyProperties()
+      {
+<#   
+      foreach(var dependencyProperty in dependencyObjectClass.Properties)
+      {
+#>
+         InvalidateProperty(<#=dependencyProperty.Name#>Property);
+<#
+      }
+#>      
+      }
 <#   
       foreach(var dependencyProperty in dependencyObjectClass.Properties)
       {
@@ -303,29 +327,41 @@ namespace <#=nameSpace#>
 // ----------------------------------------------------------------------------
 new DependencyObjectClass
    {
-      NameSpace = "WpfApplication4",
+      NameSpace = "ZoomRectApp",
       Name = "MainWindow",
       Properties = new DependencyObjectProperty[]
          {
-            Property("Shaders"         , "System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo>"  , null     , DependencyObjectPropertyFlags.None),
-            Property("CurrentShader"   , "WpfApplication4.ShaderEffectInfo"                        , null     , DependencyObjectPropertyFlags.None),
-            Property("RoiX0"     , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
-            Property("RoiY0"     , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
-            Property("RoiX1"     , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
-            Property("RoiY1"     , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
-            Property("RoiCenterX" , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
-            Property("RoiCenterY" , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
-            Property("RoiLeft"   , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
-            Property("RoiTop"    , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
-            Property("RoiRight"  , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
-            Property("RoiBottom" , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
-            Property("RoiWidth"  , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
-            Property("RoiHeight" , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
          },
    },         
 new DependencyObjectClass
    {
-      NameSpace = "WpfApplication4",
+      NameSpace = "ZoomRectApp",
+      Name = "RegionOfInterest",
+      Properties = new DependencyObjectProperty[]
+         {
+            Property("RoiVisibility", "System.Windows.Visibility"    , "System.Windows.Visibility.Visible"    , DependencyObjectPropertyFlags.None),
+            Property("RoiZoom"      , "decimal" , "1.0M"     , DependencyObjectPropertyFlags.None),
+            Property("RoiZoomFactor", "decimal" , "1.2M"     , DependencyObjectPropertyFlags.None),
+            Property("RoiX0"        , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiY0"        , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiX1"        , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiY1"        , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiCenterX"   , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiCenterY"   , "double"  , "0.0"     , DependencyObjectPropertyFlags.None),
+            Property("RoiLeft"      , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+            Property("RoiTop"       , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+            Property("RoiRight"     , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+            Property("RoiBottom"    , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+            Property("RoiWidth"     , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+            Property("RoiHeight"    , "double"  , "0.0"     , DependencyObjectPropertyFlags.Calculated),
+
+            Property("Shaders"         , "System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>"  , null     , DependencyObjectPropertyFlags.None),
+            Property("CurrentShader"   , "ZoomRectApp.ShaderEffectInfo"                        , null     , DependencyObjectPropertyFlags.None),
+         },
+   },         
+new DependencyObjectClass
+   {
+      NameSpace = "ZoomRectApp",
       Name = "ShaderEffectInfo",
       Properties = new DependencyObjectProperty[]
          {
@@ -335,7 +371,7 @@ new DependencyObjectClass
    },
 new DependencyObjectClass
    {
-      NameSpace = "WpfApplication4",
+      NameSpace = "ZoomRectApp",
       Name = "MouseDragBehavior",
       Properties = new DependencyObjectProperty[]
          {
