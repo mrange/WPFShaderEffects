@@ -50,6 +50,22 @@ namespace ZoomRectApp
                             },
                          new ShaderEffectInfo
                             {
+                               Name = "Sharpen",
+                               ShaderEffect = new SharpenShaderEffect
+                                                  {
+                                                     
+                                                  },
+                            },
+                         new ShaderEffectInfo
+                            {
+                               Name = "Sobel",
+                               ShaderEffect = new SobelShaderEffect
+                                                  {
+                                                     
+                                                  },
+                            },
+                         new ShaderEffectInfo
+                            {
                                Name = "MonoChrome",
                                ShaderEffect = new MonochromeShaderEffect
                                                   {
