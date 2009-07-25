@@ -18,7 +18,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 
-namespace WpfApplication4
+namespace ZoomRectApp
 {
    public partial class MouseDragBehavior : Behavior<FrameworkElement>
    {
@@ -27,6 +27,8 @@ namespace WpfApplication4
       protected override void OnAttached()
       {
          AssociatedObject.MouseLeftButtonDown += AssociatedObjectMouseLeftButtonDown;
+
+         UpdatePosition(new Point(X, Y));
 
          base.OnAttached();
       }

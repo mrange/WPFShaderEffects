@@ -1,0 +1,179 @@
+﻿<#@ template language="C#v3.5" hostspecific="true" debug="false" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+/* ****************************************************************************
+ *
+ * Copyright (c) Mårten Rånge.
+ *
+ * This source code is subject to terms and conditions of the Microsoft Public License. A 
+ * copy of the license can be found in the License.html file at the root of this distribution. If 
+ * you cannot locate the  Microsoft Public License, please send an email to 
+ * dlr@microsoft.com. By using this source code in any fashion, you are agreeing to be bound 
+ * by the terms of the Microsoft Public License.
+ *
+ * You must not remove this notice, or any other, from this software.
+ *
+ *
+ * ***************************************************************************/
+
+using System.Linq;
+<#
+   foreach(var commandClassInfo in Commands.Classes)
+   {
+      var nameSpace = commandClassInfo.NameSpace;
+      var className = commandClassInfo.Name;
+      var completeClassName = nameSpace + "." + className;
+#>   
+namespace <#=nameSpace#>
+{
+   public sealed partial class <#=className#>
+   {
+<#   
+      foreach(var commandInfo in commandClassInfo.Commands)
+      {
+         var commandName = commandInfo.Name;
+#>
+
+      public System.Windows.Input.CommandBinding Add<#=commandName#>(
+         System.Windows.Input.CommandBindingCollection commandBindings)
+      {
+         if(commandBindings != null)
+         {
+            var cb = 
+               new System.Windows.Input.CommandBinding(
+                  <#=commandName#>Command,
+                  <#=commandName#>Executed,
+                  CanExecute<#=commandName#>);
+            commandBindings.Add(cb);
+            return cb;
+         }
+         else
+         {
+            return null;
+         }
+      }
+      
+      public static System.Windows.Input.RoutedCommand <#=commandName#>Command = new System.Windows.Input.RoutedCommand(
+         "<#=commandName#>",
+         typeof(<#=completeClassName#>));
+
+      partial void OnCanExecute<#=commandName#>(ref bool isExecutable, ref bool isProcessed);
+
+      void CanExecute<#=commandName#>(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+      {
+         var isExecutable = false;
+         var isProcessed = false;
+         
+         OnCanExecute<#=commandName#>(ref isExecutable, ref isProcessed);
+         
+         if(isProcessed)
+         {
+            e.CanExecute = isExecutable;
+         }
+         else
+         {
+            e.CanExecute = true;
+         }
+      }
+
+      partial void On<#=commandName#>Executed(ref bool isProcessed);
+      
+      void <#=commandName#>Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+      {
+         var isProcessed = false;
+         
+         On<#=commandName#>Executed(ref isProcessed);
+         
+         e.Handled = isProcessed;
+      }
+<#
+      }
+#>
+
+      public System.Windows.Input.CommandBinding[] AddAllCommands(
+         System.Windows.Input.CommandBindingCollection commandBindings)
+      {
+         var list = new System.Collections.Generic.List<System.Windows.Input.CommandBinding>();
+<#   
+      foreach(var commandInfo in commandClassInfo.Commands)    
+      {
+         var commandName = commandInfo.Name;
+#>
+         list.Add(Add<#=commandName#>(commandBindings));
+<#    
+      }
+#>      
+         return list.ToArray();
+      }
+
+   }
+   // -------------------------------------------------------------------------
+}
+
+<#
+   }
+#>
+<#+
+   static class Commands
+   {
+   
+      public static CommandInfoClass[] Classes = new []
+         {
+// ----------------------------------------------------------------------------
+// BEGIN_MODEL
+// ----------------------------------------------------------------------------
+new CommandInfoClass
+   {
+      NameSpace = "ZoomRectApp",
+      Name = "RegionOfInterest",
+      Commands = new CommandInfo[]
+         {
+            Command("ZoomIn"     ,  CommandInfoFlags.None), 
+            Command("ZoomOut"    ,  CommandInfoFlags.None), 
+            Command("GrowRoi"    ,  CommandInfoFlags.None), 
+            Command("ShrinkRoi"  ,  CommandInfoFlags.None), 
+         },
+   },         
+// ----------------------------------------------------------------------------
+// END_MODEL
+// ----------------------------------------------------------------------------
+         };      
+      
+      static CommandInfo Command(
+         string name, 
+         CommandInfoFlags flags)
+      {
+         return new CommandInfo
+            {
+               Name = name,
+               Flags = flags,
+            };
+      }
+   }
+   
+   class CommandInfoClass
+   {
+      public string Name;
+      public string NameSpace;
+      public CommandInfo[] Commands;
+   }
+   
+   [Flags]
+   enum CommandInfoFlags
+   {
+      None                 = 0x0,
+   }
+   
+   class CommandInfo
+   {
+      public string Name;
+      public CommandInfoFlags Flags;
+
+      public bool HasFlags(CommandInfoFlags flags)      
+      {
+         return (Flags & flags) == flags;
+      }
+     
+   }
+#>

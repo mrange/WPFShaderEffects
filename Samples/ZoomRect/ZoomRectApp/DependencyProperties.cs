@@ -14,50 +14,120 @@
  * ***************************************************************************/
 
    
-namespace WpfApplication4
+namespace ZoomRectApp
 {
 
    // -------------------------------------------------------------------------
-   // WpfApplication4.MainWindow class
+   // ZoomRectApp.MainWindow class
    // -------------------------------------------------------------------------
    /// <summary>
-   /// WpfApplication4.MainWindow class
+   /// ZoomRectApp.MainWindow class
    /// </summary>
    public sealed partial class MainWindow
    {
+   
+      public void CoerceAllDependencyProperties()
+      {
+      
+      }
+
+      public void InvalidateAllDependencyProperties()
+      {
+      
+      }
+   }
+   // -------------------------------------------------------------------------
+}
+
+   
+namespace ZoomRectApp
+{
+
+   // -------------------------------------------------------------------------
+   // ZoomRectApp.RegionOfInterest class
+   // -------------------------------------------------------------------------
+   /// <summary>
+   /// ZoomRectApp.RegionOfInterest class
+   /// </summary>
+   public sealed partial class RegionOfInterest
+   {
+   
+      public void CoerceAllDependencyProperties()
+      {
+         CoerceValue(RoiVisibilityProperty);
+         CoerceValue(RoiZoomProperty);
+         CoerceValue(RoiZoomFactorProperty);
+         CoerceValue(RoiX0Property);
+         CoerceValue(RoiY0Property);
+         CoerceValue(RoiX1Property);
+         CoerceValue(RoiY1Property);
+         CoerceValue(RoiCenterXProperty);
+         CoerceValue(RoiCenterYProperty);
+         CoerceValue(RoiLeftProperty);
+         CoerceValue(RoiTopProperty);
+         CoerceValue(RoiRightProperty);
+         CoerceValue(RoiBottomProperty);
+         CoerceValue(RoiWidthProperty);
+         CoerceValue(RoiHeightProperty);
+         CoerceValue(ShadersProperty);
+         CoerceValue(CurrentShaderProperty);
+      
+      }
+
+      public void InvalidateAllDependencyProperties()
+      {
+         InvalidateProperty(RoiVisibilityProperty);
+         InvalidateProperty(RoiZoomProperty);
+         InvalidateProperty(RoiZoomFactorProperty);
+         InvalidateProperty(RoiX0Property);
+         InvalidateProperty(RoiY0Property);
+         InvalidateProperty(RoiX1Property);
+         InvalidateProperty(RoiY1Property);
+         InvalidateProperty(RoiCenterXProperty);
+         InvalidateProperty(RoiCenterYProperty);
+         InvalidateProperty(RoiLeftProperty);
+         InvalidateProperty(RoiTopProperty);
+         InvalidateProperty(RoiRightProperty);
+         InvalidateProperty(RoiBottomProperty);
+         InvalidateProperty(RoiWidthProperty);
+         InvalidateProperty(RoiHeightProperty);
+         InvalidateProperty(ShadersProperty);
+         InvalidateProperty(CurrentShaderProperty);
+      
+      }
       
       // ----------------------------------------------------------------------
-      // BEGIN_PROPERTY Shaders      
+      // BEGIN_PROPERTY RoiVisibility      
       
-      public static System.Windows.DependencyProperty ShadersProperty = System.Windows.DependencyProperty.Register(
-         "Shaders",
-         typeof(System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo>),
-         typeof(MainWindow),
+      public static System.Windows.DependencyProperty RoiVisibilityProperty = System.Windows.DependencyProperty.Register(
+         "RoiVisibility",
+         typeof(System.Windows.Visibility),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
-            default(System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo>), 
-            ShadersPropertyChangedCallback, 
-            ShadersCoerceValueCallback));
+            System.Windows.Visibility.Visible, 
+            RoiVisibilityPropertyChangedCallback, 
+            RoiVisibilityCoerceValueCallback));
 
    
                      
-      partial void OnShadersPropertyChanged(
-         System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo> oldValue,
-         System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo> newValue,
+      partial void OnRoiVisibilityPropertyChanged(
+         System.Windows.Visibility oldValue,
+         System.Windows.Visibility newValue,
          ref bool isProcessed);
          
-      static void ShadersPropertyChangedCallback(
+      static void RoiVisibilityPropertyChangedCallback(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null && eventArgs != null)
          {
-            var typedOldValue = (System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo>)eventArgs.OldValue;
-            var typedNewValue = (System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo>)eventArgs.NewValue;
+            var typedOldValue = (System.Windows.Visibility)eventArgs.OldValue;
+            var typedNewValue = (System.Windows.Visibility)eventArgs.NewValue;
             
             var isProcessed = false;
             
-            typedInstance.OnShadersPropertyChanged(
+            typedInstance.OnRoiVisibilityPropertyChanged(
                typedOldValue,
                typedNewValue,
                ref isProcessed);
@@ -65,22 +135,22 @@ namespace WpfApplication4
          }
       }
    
-      partial void OnShadersCoerceValue(
-         System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo> baseValue,
-         ref System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo> newValue,
+      partial void OnRoiVisibilityCoerceValue(
+         System.Windows.Visibility baseValue,
+         ref System.Windows.Visibility newValue,
          ref bool isProcessed);
          
-      static object ShadersCoerceValueCallback(
+      static object RoiVisibilityCoerceValueCallback(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
-            var typedBaseValue = (System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo>)baseValue;
-            var typedNewValue = default(System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo>);
+            var typedBaseValue = (System.Windows.Visibility)baseValue;
+            var typedNewValue = default(System.Windows.Visibility);
             var isProcessed = false;
-            typedInstance.OnShadersCoerceValue(
+            typedInstance.OnRoiVisibilityCoerceValue(
                typedBaseValue,
                ref typedNewValue,
                ref isProcessed);
@@ -101,59 +171,59 @@ namespace WpfApplication4
       }
 
       /// <summary>
-      /// Gets and sets Shaders (System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo>)
+      /// Gets and sets RoiVisibility (System.Windows.Visibility)
       /// </summary>
-      public System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo> Shaders
+      public System.Windows.Visibility RoiVisibility
       {
          get
          {
-            return (System.Collections.ObjectModel.ObservableCollection<WpfApplication4.ShaderEffectInfo>)GetValue(ShadersProperty);
+            return (System.Windows.Visibility)GetValue(RoiVisibilityProperty);
          }
          set
          {
-            var currentValue = Shaders;
+            var currentValue = RoiVisibility;
             if (currentValue != value)
             {
-               SetValue(ShadersProperty, value);
+               SetValue(RoiVisibilityProperty, value);
             }
          }
       }
    
-      // END_PROPERTY Shaders
+      // END_PROPERTY RoiVisibility
       // ----------------------------------------------------------------------
       
       // ----------------------------------------------------------------------
-      // BEGIN_PROPERTY CurrentShader      
+      // BEGIN_PROPERTY RoiZoom      
       
-      public static System.Windows.DependencyProperty CurrentShaderProperty = System.Windows.DependencyProperty.Register(
-         "CurrentShader",
-         typeof(WpfApplication4.ShaderEffectInfo),
-         typeof(MainWindow),
+      public static System.Windows.DependencyProperty RoiZoomProperty = System.Windows.DependencyProperty.Register(
+         "RoiZoom",
+         typeof(decimal),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
-            default(WpfApplication4.ShaderEffectInfo), 
-            CurrentShaderPropertyChangedCallback, 
-            CurrentShaderCoerceValueCallback));
+            1.0M, 
+            RoiZoomPropertyChangedCallback, 
+            RoiZoomCoerceValueCallback));
 
    
                      
-      partial void OnCurrentShaderPropertyChanged(
-         WpfApplication4.ShaderEffectInfo oldValue,
-         WpfApplication4.ShaderEffectInfo newValue,
+      partial void OnRoiZoomPropertyChanged(
+         decimal oldValue,
+         decimal newValue,
          ref bool isProcessed);
          
-      static void CurrentShaderPropertyChangedCallback(
+      static void RoiZoomPropertyChangedCallback(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null && eventArgs != null)
          {
-            var typedOldValue = (WpfApplication4.ShaderEffectInfo)eventArgs.OldValue;
-            var typedNewValue = (WpfApplication4.ShaderEffectInfo)eventArgs.NewValue;
+            var typedOldValue = (decimal)eventArgs.OldValue;
+            var typedNewValue = (decimal)eventArgs.NewValue;
             
             var isProcessed = false;
             
-            typedInstance.OnCurrentShaderPropertyChanged(
+            typedInstance.OnRoiZoomPropertyChanged(
                typedOldValue,
                typedNewValue,
                ref isProcessed);
@@ -161,22 +231,22 @@ namespace WpfApplication4
          }
       }
    
-      partial void OnCurrentShaderCoerceValue(
-         WpfApplication4.ShaderEffectInfo baseValue,
-         ref WpfApplication4.ShaderEffectInfo newValue,
+      partial void OnRoiZoomCoerceValue(
+         decimal baseValue,
+         ref decimal newValue,
          ref bool isProcessed);
          
-      static object CurrentShaderCoerceValueCallback(
+      static object RoiZoomCoerceValueCallback(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
-            var typedBaseValue = (WpfApplication4.ShaderEffectInfo)baseValue;
-            var typedNewValue = default(WpfApplication4.ShaderEffectInfo);
+            var typedBaseValue = (decimal)baseValue;
+            var typedNewValue = default(decimal);
             var isProcessed = false;
-            typedInstance.OnCurrentShaderCoerceValue(
+            typedInstance.OnRoiZoomCoerceValue(
                typedBaseValue,
                ref typedNewValue,
                ref isProcessed);
@@ -197,25 +267,121 @@ namespace WpfApplication4
       }
 
       /// <summary>
-      /// Gets and sets CurrentShader (WpfApplication4.ShaderEffectInfo)
+      /// Gets and sets RoiZoom (decimal)
       /// </summary>
-      public WpfApplication4.ShaderEffectInfo CurrentShader
+      public decimal RoiZoom
       {
          get
          {
-            return (WpfApplication4.ShaderEffectInfo)GetValue(CurrentShaderProperty);
+            return (decimal)GetValue(RoiZoomProperty);
          }
          set
          {
-            var currentValue = CurrentShader;
+            var currentValue = RoiZoom;
             if (currentValue != value)
             {
-               SetValue(CurrentShaderProperty, value);
+               SetValue(RoiZoomProperty, value);
             }
          }
       }
    
-      // END_PROPERTY CurrentShader
+      // END_PROPERTY RoiZoom
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY RoiZoomFactor      
+      
+      public static System.Windows.DependencyProperty RoiZoomFactorProperty = System.Windows.DependencyProperty.Register(
+         "RoiZoomFactor",
+         typeof(decimal),
+         typeof(RegionOfInterest),
+         new System.Windows.PropertyMetadata(
+            1.2M, 
+            RoiZoomFactorPropertyChangedCallback, 
+            RoiZoomFactorCoerceValueCallback));
+
+   
+                     
+      partial void OnRoiZoomFactorPropertyChanged(
+         decimal oldValue,
+         decimal newValue,
+         ref bool isProcessed);
+         
+      static void RoiZoomFactorPropertyChangedCallback(
+         System.Windows.DependencyObject instance, 
+         System.Windows.DependencyPropertyChangedEventArgs eventArgs)
+      {
+         var typedInstance = (RegionOfInterest)instance;
+         if (typedInstance != null && eventArgs != null)
+         {
+            var typedOldValue = (decimal)eventArgs.OldValue;
+            var typedNewValue = (decimal)eventArgs.NewValue;
+            
+            var isProcessed = false;
+            
+            typedInstance.OnRoiZoomFactorPropertyChanged(
+               typedOldValue,
+               typedNewValue,
+               ref isProcessed);
+            
+         }
+      }
+   
+      partial void OnRoiZoomFactorCoerceValue(
+         decimal baseValue,
+         ref decimal newValue,
+         ref bool isProcessed);
+         
+      static object RoiZoomFactorCoerceValueCallback(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var typedInstance = (RegionOfInterest)instance;
+         if (typedInstance != null)
+         {
+            var typedBaseValue = (decimal)baseValue;
+            var typedNewValue = default(decimal);
+            var isProcessed = false;
+            typedInstance.OnRoiZoomFactorCoerceValue(
+               typedBaseValue,
+               ref typedNewValue,
+               ref isProcessed);
+            
+            if (isProcessed)
+            {
+               return typedNewValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+
+      /// <summary>
+      /// Gets and sets RoiZoomFactor (decimal)
+      /// </summary>
+      public decimal RoiZoomFactor
+      {
+         get
+         {
+            return (decimal)GetValue(RoiZoomFactorProperty);
+         }
+         set
+         {
+            var currentValue = RoiZoomFactor;
+            if (currentValue != value)
+            {
+               SetValue(RoiZoomFactorProperty, value);
+            }
+         }
+      }
+   
+      // END_PROPERTY RoiZoomFactor
       // ----------------------------------------------------------------------
       
       // ----------------------------------------------------------------------
@@ -224,7 +390,7 @@ namespace WpfApplication4
       public static System.Windows.DependencyProperty RoiX0Property = System.Windows.DependencyProperty.Register(
          "RoiX0",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
             RoiX0PropertyChangedCallback, 
@@ -241,7 +407,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null && eventArgs != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
@@ -266,7 +432,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -320,7 +486,7 @@ namespace WpfApplication4
       public static System.Windows.DependencyProperty RoiY0Property = System.Windows.DependencyProperty.Register(
          "RoiY0",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
             RoiY0PropertyChangedCallback, 
@@ -337,7 +503,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null && eventArgs != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
@@ -362,7 +528,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -416,7 +582,7 @@ namespace WpfApplication4
       public static System.Windows.DependencyProperty RoiX1Property = System.Windows.DependencyProperty.Register(
          "RoiX1",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
             RoiX1PropertyChangedCallback, 
@@ -433,7 +599,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null && eventArgs != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
@@ -458,7 +624,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -512,7 +678,7 @@ namespace WpfApplication4
       public static System.Windows.DependencyProperty RoiY1Property = System.Windows.DependencyProperty.Register(
          "RoiY1",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
             RoiY1PropertyChangedCallback, 
@@ -529,7 +695,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null && eventArgs != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
@@ -554,7 +720,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -608,7 +774,7 @@ namespace WpfApplication4
       public static System.Windows.DependencyProperty RoiCenterXProperty = System.Windows.DependencyProperty.Register(
          "RoiCenterX",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
             RoiCenterXPropertyChangedCallback, 
@@ -625,7 +791,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null && eventArgs != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
@@ -650,7 +816,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -704,7 +870,7 @@ namespace WpfApplication4
       public static System.Windows.DependencyProperty RoiCenterYProperty = System.Windows.DependencyProperty.Register(
          "RoiCenterY",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
             RoiCenterYPropertyChangedCallback, 
@@ -721,7 +887,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null && eventArgs != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
@@ -746,7 +912,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -800,7 +966,7 @@ namespace WpfApplication4
       static System.Windows.DependencyPropertyKey RoiLeftPropertyKey = System.Windows.DependencyProperty.RegisterReadOnly(
          "RoiLeft",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
                      
@@ -821,7 +987,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -875,7 +1041,7 @@ namespace WpfApplication4
       static System.Windows.DependencyPropertyKey RoiTopPropertyKey = System.Windows.DependencyProperty.RegisterReadOnly(
          "RoiTop",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
                      
@@ -896,7 +1062,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -950,7 +1116,7 @@ namespace WpfApplication4
       static System.Windows.DependencyPropertyKey RoiRightPropertyKey = System.Windows.DependencyProperty.RegisterReadOnly(
          "RoiRight",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
                      
@@ -971,7 +1137,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -1025,7 +1191,7 @@ namespace WpfApplication4
       static System.Windows.DependencyPropertyKey RoiBottomPropertyKey = System.Windows.DependencyProperty.RegisterReadOnly(
          "RoiBottom",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
                      
@@ -1046,7 +1212,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -1100,7 +1266,7 @@ namespace WpfApplication4
       static System.Windows.DependencyPropertyKey RoiWidthPropertyKey = System.Windows.DependencyProperty.RegisterReadOnly(
          "RoiWidth",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
                      
@@ -1121,7 +1287,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -1175,7 +1341,7 @@ namespace WpfApplication4
       static System.Windows.DependencyPropertyKey RoiHeightPropertyKey = System.Windows.DependencyProperty.RegisterReadOnly(
          "RoiHeight",
          typeof(double),
-         typeof(MainWindow),
+         typeof(RegionOfInterest),
          new System.Windows.PropertyMetadata(
             0.0, 
                      
@@ -1196,7 +1362,7 @@ namespace WpfApplication4
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var typedInstance = (MainWindow)instance;
+         var typedInstance = (RegionOfInterest)instance;
          if (typedInstance != null)
          {
             var typedBaseValue = (double)baseValue;
@@ -1243,22 +1409,228 @@ namespace WpfApplication4
    
       // END_PROPERTY RoiHeight
       // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Shaders      
+      
+      public static System.Windows.DependencyProperty ShadersProperty = System.Windows.DependencyProperty.Register(
+         "Shaders",
+         typeof(System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>),
+         typeof(RegionOfInterest),
+         new System.Windows.PropertyMetadata(
+            default(System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>), 
+            ShadersPropertyChangedCallback, 
+            ShadersCoerceValueCallback));
+
+   
+                     
+      partial void OnShadersPropertyChanged(
+         System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo> oldValue,
+         System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo> newValue,
+         ref bool isProcessed);
+         
+      static void ShadersPropertyChangedCallback(
+         System.Windows.DependencyObject instance, 
+         System.Windows.DependencyPropertyChangedEventArgs eventArgs)
+      {
+         var typedInstance = (RegionOfInterest)instance;
+         if (typedInstance != null && eventArgs != null)
+         {
+            var typedOldValue = (System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>)eventArgs.OldValue;
+            var typedNewValue = (System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>)eventArgs.NewValue;
+            
+            var isProcessed = false;
+            
+            typedInstance.OnShadersPropertyChanged(
+               typedOldValue,
+               typedNewValue,
+               ref isProcessed);
+            
+         }
+      }
+   
+      partial void OnShadersCoerceValue(
+         System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo> baseValue,
+         ref System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo> newValue,
+         ref bool isProcessed);
+         
+      static object ShadersCoerceValueCallback(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var typedInstance = (RegionOfInterest)instance;
+         if (typedInstance != null)
+         {
+            var typedBaseValue = (System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>)baseValue;
+            var typedNewValue = default(System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>);
+            var isProcessed = false;
+            typedInstance.OnShadersCoerceValue(
+               typedBaseValue,
+               ref typedNewValue,
+               ref isProcessed);
+            
+            if (isProcessed)
+            {
+               return typedNewValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+
+      /// <summary>
+      /// Gets and sets Shaders (System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>)
+      /// </summary>
+      public System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo> Shaders
+      {
+         get
+         {
+            return (System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>)GetValue(ShadersProperty);
+         }
+         set
+         {
+            var currentValue = Shaders;
+            if (currentValue != value)
+            {
+               SetValue(ShadersProperty, value);
+            }
+         }
+      }
+   
+      // END_PROPERTY Shaders
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY CurrentShader      
+      
+      public static System.Windows.DependencyProperty CurrentShaderProperty = System.Windows.DependencyProperty.Register(
+         "CurrentShader",
+         typeof(ZoomRectApp.ShaderEffectInfo),
+         typeof(RegionOfInterest),
+         new System.Windows.PropertyMetadata(
+            default(ZoomRectApp.ShaderEffectInfo), 
+            CurrentShaderPropertyChangedCallback, 
+            CurrentShaderCoerceValueCallback));
+
+   
+                     
+      partial void OnCurrentShaderPropertyChanged(
+         ZoomRectApp.ShaderEffectInfo oldValue,
+         ZoomRectApp.ShaderEffectInfo newValue,
+         ref bool isProcessed);
+         
+      static void CurrentShaderPropertyChangedCallback(
+         System.Windows.DependencyObject instance, 
+         System.Windows.DependencyPropertyChangedEventArgs eventArgs)
+      {
+         var typedInstance = (RegionOfInterest)instance;
+         if (typedInstance != null && eventArgs != null)
+         {
+            var typedOldValue = (ZoomRectApp.ShaderEffectInfo)eventArgs.OldValue;
+            var typedNewValue = (ZoomRectApp.ShaderEffectInfo)eventArgs.NewValue;
+            
+            var isProcessed = false;
+            
+            typedInstance.OnCurrentShaderPropertyChanged(
+               typedOldValue,
+               typedNewValue,
+               ref isProcessed);
+            
+         }
+      }
+   
+      partial void OnCurrentShaderCoerceValue(
+         ZoomRectApp.ShaderEffectInfo baseValue,
+         ref ZoomRectApp.ShaderEffectInfo newValue,
+         ref bool isProcessed);
+         
+      static object CurrentShaderCoerceValueCallback(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var typedInstance = (RegionOfInterest)instance;
+         if (typedInstance != null)
+         {
+            var typedBaseValue = (ZoomRectApp.ShaderEffectInfo)baseValue;
+            var typedNewValue = default(ZoomRectApp.ShaderEffectInfo);
+            var isProcessed = false;
+            typedInstance.OnCurrentShaderCoerceValue(
+               typedBaseValue,
+               ref typedNewValue,
+               ref isProcessed);
+            
+            if (isProcessed)
+            {
+               return typedNewValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+
+      /// <summary>
+      /// Gets and sets CurrentShader (ZoomRectApp.ShaderEffectInfo)
+      /// </summary>
+      public ZoomRectApp.ShaderEffectInfo CurrentShader
+      {
+         get
+         {
+            return (ZoomRectApp.ShaderEffectInfo)GetValue(CurrentShaderProperty);
+         }
+         set
+         {
+            var currentValue = CurrentShader;
+            if (currentValue != value)
+            {
+               SetValue(CurrentShaderProperty, value);
+            }
+         }
+      }
+   
+      // END_PROPERTY CurrentShader
+      // ----------------------------------------------------------------------
    }
    // -------------------------------------------------------------------------
 }
 
    
-namespace WpfApplication4
+namespace ZoomRectApp
 {
 
    // -------------------------------------------------------------------------
-   // WpfApplication4.ShaderEffectInfo class
+   // ZoomRectApp.ShaderEffectInfo class
    // -------------------------------------------------------------------------
    /// <summary>
-   /// WpfApplication4.ShaderEffectInfo class
+   /// ZoomRectApp.ShaderEffectInfo class
    /// </summary>
    public sealed partial class ShaderEffectInfo
    {
+   
+      public void CoerceAllDependencyProperties()
+      {
+         CoerceValue(NameProperty);
+         CoerceValue(ShaderEffectProperty);
+      
+      }
+
+      public void InvalidateAllDependencyProperties()
+      {
+         InvalidateProperty(NameProperty);
+         InvalidateProperty(ShaderEffectProperty);
+      
+      }
       
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Name      
@@ -1456,17 +1828,31 @@ namespace WpfApplication4
 }
 
    
-namespace WpfApplication4
+namespace ZoomRectApp
 {
 
    // -------------------------------------------------------------------------
-   // WpfApplication4.MouseDragBehavior class
+   // ZoomRectApp.MouseDragBehavior class
    // -------------------------------------------------------------------------
    /// <summary>
-   /// WpfApplication4.MouseDragBehavior class
+   /// ZoomRectApp.MouseDragBehavior class
    /// </summary>
    public sealed partial class MouseDragBehavior
    {
+   
+      public void CoerceAllDependencyProperties()
+      {
+         CoerceValue(XProperty);
+         CoerceValue(YProperty);
+      
+      }
+
+      public void InvalidateAllDependencyProperties()
+      {
+         InvalidateProperty(XProperty);
+         InvalidateProperty(YProperty);
+      
+      }
       
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY X      
