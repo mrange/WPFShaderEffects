@@ -166,9 +166,26 @@ namespace WpfShaderEffects
 <#
       foreach(var shaderParameter in shaderContants)
       {
+         var shaderParameterName       = shaderParameter.Name;
+         var shaderParameterIndex      = shaderParameter.RegisterIndex;
+         var descriptionLines          = Support.GetDescriptionLines(
+            parsedShaderLines, 
+            shaderParameter)
+            .ToLookup(line => line.Type);
+         var isDdxDdy                  = descriptionLines["DdxDdy"].FirstOrDefault() != null;            
+         if (!isDdxDdy)
+         {
 #>
          UpdateShaderValue(<#=shaderParameter.Name#>Property);
 <#
+         }
+         else
+         {
+#>
+         DdxUvDdyUvRegisterIndex = <#=shaderParameterIndex#>;
+<#
+         }
+         
       }
 #>            
       }
@@ -191,6 +208,15 @@ namespace WpfShaderEffects
          var typeLine                  = descriptionLines["Type"].FirstOrDefault();            
          var defaultValueLine          = descriptionLines["DefaultValue"].FirstOrDefault();            
          var coerceLine                = descriptionLines["Coerce"].FirstOrDefault();            
+         var isDdxDdy                  = descriptionLines["DdxDdy"].FirstOrDefault() != null;            
+         
+         if (isDdxDdy)
+         {
+#>
+      // Skipped parameter: <#=shaderParameterName#> as it's a DdxDdy register
+<#
+            continue;
+         }
          
          if(defaultValueLine != null)
          {

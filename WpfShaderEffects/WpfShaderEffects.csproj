@@ -134,6 +134,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EffectShaders.cs</LastGenOutput>
     </None>
+    <Resource Include="..\Shared\ShaderBinary\Sobel.fx.ps">
+      <Link>ShaderBinary\Sobel.fx.ps</Link>
+    </Resource>
     <None Include="..\Shared\ShaderSource\BandedSwirl.fx">
       <Link>ShaderSource\BandedSwirl.fx</Link>
     </None>
@@ -190,6 +193,9 @@
     </None>
     <None Include="..\Shared\ShaderSource\SmoothMagnify.fx">
       <Link>ShaderSource\SmoothMagnify.fx</Link>
+    </None>
+    <None Include="..\Shared\ShaderSource\Sobel.fx">
+      <Link>ShaderSource\Sobel.fx</Link>
     </None>
     <None Include="..\Shared\ShaderSource\Swirl.fx">
       <Link>ShaderSource\Swirl.fx</Link>

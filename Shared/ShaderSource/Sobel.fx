@@ -1,24 +1,12 @@
 //--------------------------------------------------------------------------------------
 // 
-// WPF ShaderEffect HLSL -- SharpenEffect
+// WPF ShaderEffect HLSL -- Sobel
 //
 //--------------------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------------------
 // Shader constant register mappings (scalars - float, double, Point, Color, Point3D, etc.)
 //-----------------------------------------------------------------------------------------
-
-// ParameterComment        :  Amount of sharpness
-// ParameterType           :  double
-// ParameterDefaultValue   :  0.4
-// ParameterCoerce         :  Clamp(Amount, -1.0, 1.0)
-float Amount : register(C0);
-
-// ParameterComment        :  Width of sharpness in pixels
-// ParameterType           :  double
-// ParameterDefaultValue   :  2.0
-// ParameterCoerce         :  Clamp(Width, 0.0, double.MaxValue)
-float Width : register(C1);
 
 // ParameterDdxDdy         :  
 float4 ddx_ddy : register(C2);
@@ -34,21 +22,61 @@ sampler2D implicitInputSampler : register(S0);
 // Pixel Shader
 //--------------------------------------------------------------------------------------
 
+const int NUM = 9;
+
+const float pixelsize = 0.0078125;
+
+
+const float2 c[9] = 
+{
+      float2(-1.00,-1.00),
+      float2( 0.00,-1.00),
+      float2( 1.00,-1.00),
+      float2(-1.00, 0.00),
+      float2( 0.00, 0.00),
+      float2( 1.00, 0.00),
+      float2(-1.00, 1.00), 
+      float2( 0.00 ,1.00),
+      float2( 1.00, 1.00),
+};
+
 float4 main(float2 uv : TEXCOORD) : COLOR
 {
+   const float3 rgb2lum = float3(0.30, 0.59, 0.11);
+   
    float2x2 rotater =
       {
          ddx_ddy.x, ddx_ddy.y,
          ddx_ddy.z, ddx_ddy.w,
       };
 
-   float2 top_left      = { -1.0, -1.0 };
-   float2 bottom_right  = {  1.0,  1.0 };
+   float3 col[9];    
+   
+   int i;
+   for (i=0; i < 9; i++) 
+   {
+      col[i] = tex2D(implicitInputSampler, uv + mul(c[i], rotater));
+   }
+
+   float lum[9];
+   for (i = 0; i < 9; i++) 
+   {
+      lum[i] = dot(col[i].xyz, rgb2lum);
+   }
+
+   float gy = 
+       lum[0] + 2*lum[1] + lum[2]
+      -lum[6] - 2*lum[7] - lum[8];
       
-   float4 color = tex2D(implicitInputSampler, uv);
-   color.rgb += tex2D(implicitInputSampler, uv + Width * mul(top_left, rotater)) * Amount;
-   color.rgb -= tex2D(implicitInputSampler, uv + Width * mul(bottom_right, rotater)) * Amount;
-   return color;
+   float gx = 
+       lum[0] + 2*lum[3] + lum[6]
+      -lum[2] - 2*lum[5] - lum[8];
+
+   float newlum = sqrt(gx * gx + gy * gy);
+
+   float4 result;
+   result.rgb = newlum.xxx;
+   result.a = 1.0;
+   
+   return result;
 }
-
-
