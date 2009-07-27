@@ -36,10 +36,15 @@
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -52,6 +57,13 @@
       <DependentUpon>EffectShaders.tt</DependentUpon>
     </Compile>
     <Compile Include="Common\Utility.cs" />
+    <Compile Include="DependencyProperties.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DependencyProperties.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EffectRepeater.cs" />
+    <Compile Include="EffectStacker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +149,9 @@
     <Resource Include="..\Shared\ShaderBinary\Sobel.fx.ps">
       <Link>ShaderBinary\Sobel.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Identity.fx.ps">
+      <Link>ShaderBinary\Identity.fx.ps</Link>
+    </Resource>
     <None Include="..\Shared\ShaderSource\BandedSwirl.fx">
       <Link>ShaderSource\BandedSwirl.fx</Link>
     </None>
@@ -166,6 +181,9 @@
     </None>
     <None Include="..\Shared\ShaderSource\GrowablePoissonDisk.fx">
       <Link>ShaderSource\GrowablePoissonDisk.fx</Link>
+    </None>
+    <None Include="..\Shared\ShaderSource\Identity.fx">
+      <Link>ShaderSource\Identity.fx</Link>
     </None>
     <None Include="..\Shared\ShaderSource\InvertColor.fx">
       <Link>ShaderSource\InvertColor.fx</Link>
@@ -209,6 +227,16 @@
     <None Include="..\Shared\ShaderSource\ZoomBlur.fx">
       <Link>ShaderSource\ZoomBlur.fx</Link>
     </None>
+    <None Include="DependencyProperties.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DependencyProperties.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
