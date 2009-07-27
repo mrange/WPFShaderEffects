@@ -28,9 +28,22 @@
                      <BeginStoryboard Storyboard="{StaticResource RoiRectangleStoryboard}"/>
                   </EventTrigger>
                </ControlTemplate.Triggers>
-               <Grid Visibility="{TemplateBinding RoiVisibility}">
-                  <ContentPresenter x:Name="PART_Content" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" RecognizesAccessKey="True"/>
-                  <Canvas IsHitTestVisible="True" Background="#20000000">
+               <Grid
+                  Margin="{TemplateBinding Margin}" 
+                  Background="{TemplateBinding Background}">
+                  <ContentPresenter 
+                     x:Name="PART_Content" 
+                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                     Margin="{TemplateBinding Padding}" 
+                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                     RecognizesAccessKey="True"
+                     />
+                  <Canvas 
+                     IsHitTestVisible="True" 
+                     Background="#20000000" 
+                     Visibility="{TemplateBinding RoiVisibility}"
+                     >
                      <Grid
                         Canvas.Left="{TemplateBinding RoiLeft}" 
                         Canvas.Top="{TemplateBinding RoiTop}" 
