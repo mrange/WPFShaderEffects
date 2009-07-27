@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Wpf", "1. Wpf", "{80FBDC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9. DirectX", "9. DirectX", "{E10D38D3-B560-4352-A877-3BAFF031405E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfShaderEffects.Experimental", "WpfShaderEffects.Experimental\WpfShaderEffects.Experimental.csproj", "{7688C36A-EBF4-48F9-96B1-83F69287D472}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.1. Experimental", "1.1. Experimental", "{703A9FC3-29AE-451A-BCD1-84EEDFAAF554}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,10 @@ Global
 		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7688C36A-EBF4-48F9-96B1-83F69287D472}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7688C36A-EBF4-48F9-96B1-83F69287D472}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7688C36A-EBF4-48F9-96B1-83F69287D472}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7688C36A-EBF4-48F9-96B1-83F69287D472}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +52,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{01A2E15F-A0A8-4977-A17C-EC61D769192C} = {80FBDC7D-70FF-461B-BEF1-2CAD410DC7C4}
 		{B8703764-3BE4-426E-8689-BD7D865D9D4B} = {80FBDC7D-70FF-461B-BEF1-2CAD410DC7C4}
+		{703A9FC3-29AE-451A-BCD1-84EEDFAAF554} = {80FBDC7D-70FF-461B-BEF1-2CAD410DC7C4}
 		{4BC3EDCD-5870-425D-8CA4-3D9458E17032} = {E10D38D3-B560-4352-A877-3BAFF031405E}
+		{7688C36A-EBF4-48F9-96B1-83F69287D472} = {703A9FC3-29AE-451A-BCD1-84EEDFAAF554}
 	EndGlobalSection
 EndGlobal
