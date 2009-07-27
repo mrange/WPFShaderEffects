@@ -2147,6 +2147,26 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Identity.fx.ps
+   
+   /// <summary>
+   /// IdentityShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: Identity.fx
+   /// </summary>
+   public sealed partial class IdentityShaderEffect : BaseShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<IdentityShaderEffect>();
+   
+      public IdentityShaderEffect()
+         :  base(s_pixelShader)
+      {
+            
+      }
+   
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\InvertColor.fx.ps
    
    /// <summary>

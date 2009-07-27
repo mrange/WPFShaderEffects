@@ -54,6 +54,8 @@
                            <Rectangle.Fill>
                               <VisualBrush 
                                  x:Name="PART_ContentBrush"
+                                 AutoLayoutContent="False"
+                                 ViewboxUnits="Absolute"
                                  Visual="{Binding ElementName=PART_Content,Mode=OneWay}" 
                                  Stretch="None" />
                            </Rectangle.Fill>

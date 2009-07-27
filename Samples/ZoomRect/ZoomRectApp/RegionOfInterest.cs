@@ -47,12 +47,6 @@ namespace ZoomRectApp
          m_roiText = (TextBlock)GetTemplateChild("PART_RoiText");
          m_shaderTarget = (FrameworkElement) GetTemplateChild("PART_ShaderTarget");
 
-         if (m_contentBrush != null)
-         {
-            m_contentBrush.AutoLayoutContent = false;
-            m_contentBrush.ViewboxUnits = BrushMappingMode.Absolute;
-         }
-
          AddAllCommands(CommandBindings);
 
          SetViewBox();
