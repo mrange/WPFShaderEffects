@@ -22,11 +22,6 @@ sampler2D implicitInputSampler : register(S0);
 // Pixel Shader
 //--------------------------------------------------------------------------------------
 
-const int NUM = 9;
-
-const float pixelsize = 0.0078125;
-
-
 const float2 c[9] = 
 {
       float2(-1.00,-1.00),

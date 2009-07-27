@@ -21,6 +21,7 @@ using System.Windows.Media;
 
 namespace ZoomRectApp
 {
+   [TemplatePart(Name = "PART_Content", Type = typeof(ContentPresenter))]
    [TemplatePart(Name = "PART_ContentBrush", Type = typeof(VisualBrush))]
    [TemplatePart(Name = "PART_RoiText", Type = typeof(TextBlock))]
    [TemplatePart(Name = "PART_ShaderTarget", Type = typeof(FrameworkElement))]
@@ -54,17 +55,16 @@ namespace ZoomRectApp
 
          AddAllCommands(CommandBindings);
 
-         MouseWheel += RegionOfInterestMouseWheel;
-
          SetViewBox();
          SetZoom();
          SetShader();
       }
 
-      void RegionOfInterestMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+      protected override void OnMouseWheel(System.Windows.Input.MouseWheelEventArgs e)
       {
          var pow = e.Delta / 40.0;
-         RoiZoom *= (decimal) Math.Pow((double)RoiZoomFactor, pow);
+         RoiZoom *= (decimal)Math.Pow((double)RoiZoomFactor, pow);
+         base.OnMouseWheel(e);
       }
 
       partial void OnCanExecuteZoomOut(ref bool isExecutable, ref bool isProcessed)
