@@ -26,23 +26,32 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Release (Signed)|Any CPU = Release (Signed)|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B8703764-3BE4-426E-8689-BD7D865D9D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8703764-3BE4-426E-8689-BD7D865D9D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8703764-3BE4-426E-8689-BD7D865D9D4B}.Release (Signed)|Any CPU.ActiveCfg = Release (Signed)|Any CPU
+		{B8703764-3BE4-426E-8689-BD7D865D9D4B}.Release (Signed)|Any CPU.Build.0 = Release (Signed)|Any CPU
 		{B8703764-3BE4-426E-8689-BD7D865D9D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8703764-3BE4-426E-8689-BD7D865D9D4B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01A2E15F-A0A8-4977-A17C-EC61D769192C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{01A2E15F-A0A8-4977-A17C-EC61D769192C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01A2E15F-A0A8-4977-A17C-EC61D769192C}.Release (Signed)|Any CPU.ActiveCfg = Release (Signed)|Any CPU
+		{01A2E15F-A0A8-4977-A17C-EC61D769192C}.Release (Signed)|Any CPU.Build.0 = Release (Signed)|Any CPU
 		{01A2E15F-A0A8-4977-A17C-EC61D769192C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01A2E15F-A0A8-4977-A17C-EC61D769192C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Release (Signed)|Any CPU.ActiveCfg = Release (Signed)|Any CPU
+		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Release (Signed)|Any CPU.Build.0 = Release (Signed)|Any CPU
 		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BC3EDCD-5870-425D-8CA4-3D9458E17032}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7688C36A-EBF4-48F9-96B1-83F69287D472}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7688C36A-EBF4-48F9-96B1-83F69287D472}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7688C36A-EBF4-48F9-96B1-83F69287D472}.Release (Signed)|Any CPU.ActiveCfg = Release (Signed)|Any CPU
+		{7688C36A-EBF4-48F9-96B1-83F69287D472}.Release (Signed)|Any CPU.Build.0 = Release (Signed)|Any CPU
 		{7688C36A-EBF4-48F9-96B1-83F69287D472}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7688C36A-EBF4-48F9-96B1-83F69287D472}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
