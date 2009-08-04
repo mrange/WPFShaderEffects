@@ -1,0 +1,103 @@
+﻿<#@ template language="C#v3.5" hostspecific="true" debug="false" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Collections.Generic" #>
+/* ****************************************************************************
+ *
+ * Copyright (c) Mårten Rånge.
+ *
+ * This source code is subject to terms and conditions of the Microsoft Public License. A 
+ * copy of the license can be found in the License.html file at the root of this distribution. If 
+ * you cannot locate the  Microsoft Public License, please send an email to 
+ * dlr@microsoft.com. By using this source code in any fashion, you are agreeing to be bound 
+ * by the terms of the Microsoft Public License.
+ *
+ * You must not remove this notice, or any other, from this software.
+ *
+ *
+ * ***************************************************************************/
+
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
+
+#if SILVERLIGHT
+namespace SilverlightShaderEffects
+#else
+namespace WpfShaderEffects
+#endif
+{
+<#
+   var count = 4;
+   var countToClassName = new []
+      {
+         "BaseSingleInputShaderEffect",
+         "BaseTwoInputsShaderEffect",
+         "BaseThreeInputsShaderEffect",
+         "BaseFourInputsShaderEffect",
+      };
+      
+   var countToPropertyName = new []
+      {
+         "Input",
+         "SecondInput",
+         "ThirdInput",
+         "FourthInput",
+      };
+      
+   for(var iter = 0; iter < count; ++iter)
+   {   
+      var className = countToClassName[iter];  
+#>
+   public abstract partial class <#=className#> : BaseShaderEffect
+   {
+      partial void OnConstruction(PixelShader pixelShader);
+      protected <#=className#>(PixelShader pixelShader) 
+         : base(pixelShader)
+      {
+<#
+      for(var subIter = 0; subIter < iter + 1; ++subIter)
+      {      
+#>
+         UpdateShaderValue(<#=countToPropertyName[subIter]#>Property);
+<#
+      }
+#>
+         OnConstruction(pixelShader);
+      }
+
+<#
+      for(var subIter = 0; subIter < iter + 1; ++subIter)
+      {      
+#>         
+      public static readonly DependencyProperty <#=countToPropertyName[subIter]#>Property =
+         RegisterPixelShaderSamplerProperty(
+            "<#=countToPropertyName[subIter]#>",
+            typeof(<#=className#>),
+            <#=subIter#>);
+
+      public Brush <#=countToPropertyName[subIter]#>
+      {
+         get
+         {
+            return (Brush)GetValue(<#=countToPropertyName[subIter]#>Property);
+         }
+         set
+         {
+            SetValue(<#=countToPropertyName[subIter]#>Property, value);
+         }
+      }
+
+<#      
+      }
+#>         
+   }
+<#
+   }
+#>      
+}

@@ -20,6 +20,9 @@ namespace SilverlightTestApplication
       public MainPage()
       {
          InitializeComponent();
+         RippleStoryBoard.Begin();
+         MulitplyStoryBoard.Begin();
       }
+
    }
 }

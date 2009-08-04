@@ -44,6 +44,12 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\BaseInputShaderEffects.cs">
+      <Link>BaseInputShaderEffects.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\BaseShaderEffect.cs">
+      <Link>BaseShaderEffect.cs</Link>
+    </Compile>
     <Compile Include="..\Shared\EffectShaders.cs">
       <Link>EffectShaders.cs</Link>
     </Compile>
@@ -51,6 +57,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="..\Shared\ShaderBinary\Add.fx.ps">
+      <Link>ShaderBinary\Add.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Addition.fx.ps">
+      <Link>ShaderBinary\Addition.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Alpha.fx.ps">
+      <Link>ShaderBinary\Alpha.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\BandedSwirl.fx.ps">
       <Link>ShaderBinary\BandedSwirl.fx.ps</Link>
     </Resource>
@@ -69,6 +84,12 @@
     <Resource Include="..\Shared\ShaderBinary\ContrastAdjust.fx.ps">
       <Link>ShaderBinary\ContrastAdjust.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Darken.fx.ps">
+      <Link>ShaderBinary\Darken.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Difference.fx.ps">
+      <Link>ShaderBinary\Difference.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\DirectionalBlur.fx.ps">
       <Link>ShaderBinary\DirectionalBlur.fx.ps</Link>
     </Resource>
@@ -81,8 +102,17 @@
     <Resource Include="..\Shared\ShaderBinary\GrowablePoissonDisk.fx.ps">
       <Link>ShaderBinary\GrowablePoissonDisk.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Identity.fx.ps">
+      <Link>ShaderBinary\Identity.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\InverseDifference.fx.ps">
+      <Link>ShaderBinary\InverseDifference.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\InvertColor.fx.ps">
       <Link>ShaderBinary\InvertColor.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Lighten.fx.ps">
+      <Link>ShaderBinary\Lighten.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\LightStreak.fx.ps">
       <Link>ShaderBinary\LightStreak.fx.ps</Link>
@@ -92,6 +122,12 @@
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\Monochrome.fx.ps">
       <Link>ShaderBinary\Monochrome.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Multiply.fx.ps">
+      <Link>ShaderBinary\Multiply.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\NegationDifference.fx.ps">
+      <Link>ShaderBinary\NegationDifference.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\Pinch.fx.ps">
       <Link>ShaderBinary\Pinch.fx.ps</Link>
@@ -108,6 +144,9 @@
     <Resource Include="..\Shared\ShaderBinary\SmoothMagnify.fx.ps">
       <Link>ShaderBinary\SmoothMagnify.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Sobel.fx.ps">
+      <Link>ShaderBinary\Sobel.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\Swirl.fx.ps">
       <Link>ShaderBinary\Swirl.fx.ps</Link>
     </Resource>
@@ -117,18 +156,11 @@
     <Resource Include="..\Shared\ShaderBinary\Toon.fx.ps">
       <Link>ShaderBinary\Toon.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Transition.fx.ps">
+      <Link>ShaderBinary\Transition.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\ZoomBlur.fx.ps">
       <Link>ShaderBinary\ZoomBlur.fx.ps</Link>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="..\Shared\ShaderBinary\Sobel.fx.ps">
-      <Link>ShaderBinary\Sobel.fx.ps</Link>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="..\Shared\ShaderBinary\Identity.fx.ps">
-      <Link>ShaderBinary\Identity.fx.ps</Link>
     </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />

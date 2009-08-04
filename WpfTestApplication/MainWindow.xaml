@@ -3,7 +3,30 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:SE="clr-namespace:WpfShaderEffects;assembly=WpfShaderEffects"
     Title="MainWindow" MinHeight="600" MinWidth="800">
-    <Grid>
+   <Window.Resources>
+      <Storyboard x:Key="RippleStoryBoard" RepeatBehavior="Forever">
+         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="RippleImage" Storyboard.TargetProperty="(UIElement.Effect).(SE:RippleShaderEffect.Phase)">
+            <SplineDoubleKeyFrame KeyTime="00:00:02" Value="3.14159265358979" KeySpline="0.79,0.21,0.4,0.75"/>
+            <SplineDoubleKeyFrame KeyTime="00:00:04" Value="6.28318530717959" KeySpline="0.79,0.21,0.4,0.75"/>
+         </DoubleAnimationUsingKeyFrames>
+      </Storyboard>
+      <Storyboard x:Key="MulitplyStoryBoard" RepeatBehavior="Forever">
+         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MulitplyImage" Storyboard.TargetProperty="(UIElement.Effect).(SE:MultiplyShaderEffect.Alpha)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0.0"/>
+            <SplineDoubleKeyFrame KeyTime="00:00:01" Value="1.0"/>
+            <SplineDoubleKeyFrame KeyTime="00:00:02" Value="1.0"/>
+            <SplineDoubleKeyFrame KeyTime="00:00:03" Value="0.0"/>
+            <SplineDoubleKeyFrame KeyTime="00:00:04" Value="0.0"/>
+         </DoubleAnimationUsingKeyFrames>
+      </Storyboard>
+   </Window.Resources>
+   <Window.Triggers>
+      <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+         <BeginStoryboard Storyboard="{StaticResource RippleStoryBoard}"/>
+         <BeginStoryboard Storyboard="{StaticResource MulitplyStoryBoard}"/>
+      </EventTrigger>
+   </Window.Triggers>
+   <Grid>
       <Grid.ColumnDefinitions>
          <ColumnDefinition Width="0.5*"/>
          <ColumnDefinition Width="0.5*"/>
@@ -26,30 +49,29 @@
          <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Invert</TextBlock>
       </Grid>
       <Grid Grid.Column="1" Grid.Row="0">
-         <Image Source="/WpfTestApplication;component/Tulips.jpg" Stretch="UniformToFill">
+         <Image Name="RippleImage" Source="/WpfTestApplication;component/Tulips.jpg" Stretch="UniformToFill">
             <Image.Effect>
                <SE:RippleShaderEffect 
-                  Center="0.2,0.3" 
-                  Amplitude="0.5" 
-                  Frequency="10" 
-                  Phase="0.4"  />
+                  Center="0.3,0.3" 
+                  Amplitude="1" 
+                  Frequency="5" 
+                  Phase="0"  />
 
             </Image.Effect>
          </Image>
          <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Ripple</TextBlock>
       </Grid>
       <Grid Grid.Column="1" Grid.Row="1">
-         <Image Source="/WpfTestApplication;component/Tulips.jpg" Stretch="UniformToFill">
+         <Image Name="MulitplyImage" Source="/WpfTestApplication;component/Tulips.jpg" Stretch="UniformToFill">
             <Image.Effect>
-               <SE:BloomShaderEffect 
-               BaseIntensity="0.5" 
-               BaseSaturation="4" 
-               BloomIntensity="0.8" 
-               BloomSaturation="1"/>
-
+               <SE:MultiplyShaderEffect Alpha="0">
+                  <SE:MultiplyShaderEffect.SecondInput>
+                     <ImageBrush ImageSource="/WpfTestApplication;component/Chrysanthemum.jpg"/>
+                  </SE:MultiplyShaderEffect.SecondInput>
+               </SE:MultiplyShaderEffect>
             </Image.Effect>
          </Image>              
-         <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Bloom</TextBlock>
+         <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Multiply</TextBlock>
       </Grid>
 
    </Grid>
