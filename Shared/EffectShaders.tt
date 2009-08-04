@@ -24,6 +24,14 @@
 
 
 <#
+   var countToBaseClassName = new []
+      {
+         "BaseSingleInputShaderEffect",
+         "BaseTwoInputsShaderEffect",
+         "BaseThreeInputsShaderEffect",
+         "BaseFourInputsShaderEffect",
+      };
+      
    var effectCompilerPath = Host.ResolvePath(@"..\Output\WpfShaderEffects.DirectX.dll");
    var shaderSourcePath = Host.ResolvePath(@"ShaderSource");
    var shaderBinaryPath = Host.ResolvePath(@"ShaderBinary");
@@ -65,62 +73,6 @@ namespace SilverlightShaderEffects
 namespace WpfShaderEffects
 #endif
 {
-   public abstract partial class BaseShaderEffect : System.Windows.Media.Effects.ShaderEffect
-   {
-      protected BaseShaderEffect(System.Windows.Media.Effects.PixelShader pixelShader)
-      {
-         PixelShader = pixelShader;
-         UpdateShaderValue(InputProperty);
-      }
-      
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(BaseShaderEffect), 
-            0);
-            
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
-      }
-
-      protected const double Pi = System.Math.PI;
-
-      protected static Point MakePoint(double x, double y)
-      {
-         return new Point(x, y);
-      }
-
-      protected static Color MakeColor(byte r, byte g, byte b)
-      {
-         return MakeColor(0xFF, r, g, b);
-      }
-
-      protected static Color MakeColor(byte alpha, byte r, byte g, byte b)
-      {
-         return Color.FromArgb(alpha, r, g, b);
-      }
-
-      protected static double Clamp(double value, double min, double max)
-      {
-         return System.Math.Min(max, System.Math.Max(min, value));
-      }
-      
-      protected static Point Clamp(Point value, Point min, Point max)
-      {
-         return new Point(
-            Clamp(value.X, min.X, max.X),
-            Clamp(value.Y, min.Y, max.Y));
-      }
-   }
-   
 <#
    using(var effectCompiler = (IDisposable)Activator.CreateInstance(effectCompilerType))
    foreach(var shaderFile in shaderFiles)
@@ -152,10 +104,12 @@ namespace WpfShaderEffects
          
       var shaderContants = shaderParameters["C"].ToArray();
       var shaderSamplers = shaderParameters["S"].ToArray();
+      
+      var baseClassName = countToBaseClassName[shaderSamplers.Length - 1];
 
          
 #>
-   public sealed partial class <#=shaderName#> : BaseShaderEffect
+   public sealed partial class <#=shaderName#> : <#=baseClassName#>
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<<#=shaderName#>>();

@@ -27,60 +27,204 @@ namespace SilverlightShaderEffects
 namespace WpfShaderEffects
 #endif
 {
-   public abstract partial class BaseShaderEffect : System.Windows.Media.Effects.ShaderEffect
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Add.fx.ps
+   
+   /// <summary>
+   /// AddShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: Add.fx
+   /// </summary>
+   public sealed partial class AddShaderEffect : BaseTwoInputsShaderEffect
    {
-      protected BaseShaderEffect(System.Windows.Media.Effects.PixelShader pixelShader)
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<AddShaderEffect>();
+   
+      public AddShaderEffect()
+         :  base(s_pixelShader)
       {
-         PixelShader = pixelShader;
-         UpdateShaderValue(InputProperty);
-      }
-      
-      public static readonly System.Windows.DependencyProperty InputProperty =
-         RegisterPixelShaderSamplerProperty(
-            "Input", 
-            typeof(BaseShaderEffect), 
-            0);
+         UpdateShaderValue(AlphaProperty);
             
-      public System.Windows.Media.Brush Input
-      {
-         get 
-         { 
-            return (System.Windows.Media.Brush)GetValue(InputProperty); 
-         }
-         set 
-         { 
-            SetValue(InputProperty, value); 
-         }
       }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Alpha
+      public static System.Windows.DependencyProperty AlphaProperty = System.Windows.DependencyProperty.Register(
+         @"Alpha",
+         typeof(double),
+         typeof(AddShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0),
+            OnAlphaCoerceValueStatic)
+#endif
+         );            
 
-      protected const double Pi = System.Math.PI;
+#if !SILVERLIGHT
+      partial void OnAlphaCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
 
-      protected static Point MakePoint(double x, double y)
+      static object OnAlphaCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
       {
-         return new Point(x, y);
-      }
-
-      protected static Color MakeColor(byte r, byte g, byte b)
-      {
-         return MakeColor(0xFF, r, g, b);
-      }
-
-      protected static Color MakeColor(byte alpha, byte r, byte g, byte b)
-      {
-         return Color.FromArgb(alpha, r, g, b);
-      }
-
-      protected static double Clamp(double value, double min, double max)
-      {
-         return System.Math.Min(max, System.Math.Max(min, value));
-      }
+         var inst = (AddShaderEffect)instance;
+         var Alpha = (double)baseValue;
+       
+         // Coerce
+         Alpha = Clamp(Alpha, 0.0, 1.0);
       
-      protected static Point Clamp(Point value, Point min, Point max)
-      {
-         return new Point(
-            Clamp(value.X, min.X, max.X),
-            Clamp(value.Y, min.Y, max.Y));
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnAlphaCoerceValue(
+               Alpha,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
       }
+#endif
+      /// <summary>
+      /// Gets or sets property Alpha (double)
+      /// Amount of alpha applied on effect
+      /// Value coercion: Clamp(Alpha, 0.0, 1.0)
+      /// Default Value: 1.0
+      /// </summary>
+      public double Alpha
+      {
+         get
+         {
+            return (double)GetValue(AlphaProperty);
+         }
+         set
+         {
+            SetValue(AlphaProperty, value);
+         }
+      }
+
+      // END_PROPERTY Alpha
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Alpha.fx.ps
+   
+   /// <summary>
+   /// AlphaShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: Alpha.fx
+   /// </summary>
+   public sealed partial class AlphaShaderEffect : BaseSingleInputShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<AlphaShaderEffect>();
+   
+      public AlphaShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(AlphaProperty);
+            
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Alpha
+      public static System.Windows.DependencyProperty AlphaProperty = System.Windows.DependencyProperty.Register(
+         @"Alpha",
+         typeof(double),
+         typeof(AlphaShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0),
+            OnAlphaCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnAlphaCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnAlphaCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (AlphaShaderEffect)instance;
+         var Alpha = (double)baseValue;
+       
+         // Coerce
+         Alpha = Clamp(Alpha, 0.0, 1.0);
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnAlphaCoerceValue(
+               Alpha,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Alpha (double)
+      /// Amount of alpha on input
+      /// Value coercion: Clamp(Alpha, 0.0, 1.0)
+      /// Default Value: 1.0
+      /// </summary>
+      public double Alpha
+      {
+         get
+         {
+            return (double)GetValue(AlphaProperty);
+         }
+         set
+         {
+            SetValue(AlphaProperty, value);
+         }
+      }
+
+      // END_PROPERTY Alpha
+      // ----------------------------------------------------------------------
+      
+   
    }
    
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BandedSwirl.fx.ps
@@ -89,7 +233,7 @@ namespace WpfShaderEffects
    /// BandedSwirlShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: BandedSwirl.fx
    /// </summary>
-   public sealed partial class BandedSwirlShaderEffect : BaseShaderEffect
+   public sealed partial class BandedSwirlShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<BandedSwirlShaderEffect>();
@@ -337,7 +481,7 @@ namespace WpfShaderEffects
    /// BloomShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Bloom.fx
    /// </summary>
-   public sealed partial class BloomShaderEffect : BaseShaderEffect
+   public sealed partial class BloomShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<BloomShaderEffect>();
@@ -661,7 +805,7 @@ namespace WpfShaderEffects
    /// BrightExtractShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: BrightExtract.fx
    /// </summary>
-   public sealed partial class BrightExtractShaderEffect : BaseShaderEffect
+   public sealed partial class BrightExtractShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<BrightExtractShaderEffect>();
@@ -761,7 +905,7 @@ namespace WpfShaderEffects
    /// ColorKeyAlphaShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ColorKeyAlpha.fx
    /// </summary>
-   public sealed partial class ColorKeyAlphaShaderEffect : BaseShaderEffect
+   public sealed partial class ColorKeyAlphaShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ColorKeyAlphaShaderEffect>();
@@ -781,7 +925,7 @@ namespace WpfShaderEffects
    /// ColorToneShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ColorTone.fx
    /// </summary>
-   public sealed partial class ColorToneShaderEffect : BaseShaderEffect
+   public sealed partial class ColorToneShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ColorToneShaderEffect>();
@@ -1113,7 +1257,7 @@ namespace WpfShaderEffects
    /// ContrastAdjustShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ContrastAdjust.fx
    /// </summary>
-   public sealed partial class ContrastAdjustShaderEffect : BaseShaderEffect
+   public sealed partial class ContrastAdjustShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ContrastAdjustShaderEffect>();
@@ -1283,13 +1427,293 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Darken.fx.ps
+   
+   /// <summary>
+   /// DarkenShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: Darken.fx
+   /// </summary>
+   public sealed partial class DarkenShaderEffect : BaseTwoInputsShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<DarkenShaderEffect>();
+   
+      public DarkenShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(AlphaProperty);
+            
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Alpha
+      public static System.Windows.DependencyProperty AlphaProperty = System.Windows.DependencyProperty.Register(
+         @"Alpha",
+         typeof(double),
+         typeof(DarkenShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0),
+            OnAlphaCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnAlphaCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnAlphaCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (DarkenShaderEffect)instance;
+         var Alpha = (double)baseValue;
+       
+         // Coerce
+         Alpha = Clamp(Alpha, 0.0, 1.0);
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnAlphaCoerceValue(
+               Alpha,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Alpha (double)
+      /// Amount of alpha applied on effect
+      /// Value coercion: Clamp(Alpha, 0.0, 1.0)
+      /// Default Value: 1.0
+      /// </summary>
+      public double Alpha
+      {
+         get
+         {
+            return (double)GetValue(AlphaProperty);
+         }
+         set
+         {
+            SetValue(AlphaProperty, value);
+         }
+      }
+
+      // END_PROPERTY Alpha
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Difference.fx.ps
+   
+   /// <summary>
+   /// DifferenceShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: Difference.fx
+   /// </summary>
+   public sealed partial class DifferenceShaderEffect : BaseTwoInputsShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<DifferenceShaderEffect>();
+   
+      public DifferenceShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(AlphaProperty);
+         UpdateShaderValue(MultiplierProperty);
+            
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Alpha
+      public static System.Windows.DependencyProperty AlphaProperty = System.Windows.DependencyProperty.Register(
+         @"Alpha",
+         typeof(double),
+         typeof(DifferenceShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0),
+            OnAlphaCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnAlphaCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnAlphaCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (DifferenceShaderEffect)instance;
+         var Alpha = (double)baseValue;
+       
+         // Coerce
+         Alpha = Clamp(Alpha, 0.0, 1.0);
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnAlphaCoerceValue(
+               Alpha,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Alpha (double)
+      /// Amount of alpha applied on effect
+      /// Value coercion: Clamp(Alpha, 0.0, 1.0)
+      /// Default Value: 1.0
+      /// </summary>
+      public double Alpha
+      {
+         get
+         {
+            return (double)GetValue(AlphaProperty);
+         }
+         set
+         {
+            SetValue(AlphaProperty, value);
+         }
+      }
+
+      // END_PROPERTY Alpha
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Multiplier
+      public static System.Windows.DependencyProperty MultiplierProperty = System.Windows.DependencyProperty.Register(
+         @"Multiplier",
+         typeof(double),
+         typeof(DifferenceShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(1),
+            OnMultiplierCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnMultiplierCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnMultiplierCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (DifferenceShaderEffect)instance;
+         var Multiplier = (double)baseValue;
+       
+         // Coerce
+         Multiplier = Clamp(Multiplier, -1.0, 1.0);
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnMultiplierCoerceValue(
+               Multiplier,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Multiplier (double)
+      /// Multiplier to apply at end of calculation (can be used invert the result)
+      /// Value coercion: Clamp(Multiplier, -1.0, 1.0)
+      /// Default Value: 1.0
+      /// </summary>
+      public double Multiplier
+      {
+         get
+         {
+            return (double)GetValue(MultiplierProperty);
+         }
+         set
+         {
+            SetValue(MultiplierProperty, value);
+         }
+      }
+
+      // END_PROPERTY Multiplier
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\DirectionalBlur.fx.ps
    
    /// <summary>
    /// DirectionalBlurShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: DirectionalBlur.fx
    /// </summary>
-   public sealed partial class DirectionalBlurShaderEffect : BaseShaderEffect
+   public sealed partial class DirectionalBlurShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<DirectionalBlurShaderEffect>();
@@ -1469,7 +1893,7 @@ namespace WpfShaderEffects
    /// EmbossedShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Embossed.fx
    /// </summary>
-   public sealed partial class EmbossedShaderEffect : BaseShaderEffect
+   public sealed partial class EmbossedShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<EmbossedShaderEffect>();
@@ -1649,7 +2073,7 @@ namespace WpfShaderEffects
    /// GloomShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Gloom.fx
    /// </summary>
-   public sealed partial class GloomShaderEffect : BaseShaderEffect
+   public sealed partial class GloomShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<GloomShaderEffect>();
@@ -1973,7 +2397,7 @@ namespace WpfShaderEffects
    /// GrowablePoissonDiskShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: GrowablePoissonDisk.fx
    /// </summary>
-   public sealed partial class GrowablePoissonDiskShaderEffect : BaseShaderEffect
+   public sealed partial class GrowablePoissonDiskShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<GrowablePoissonDiskShaderEffect>();
@@ -2153,12 +2577,32 @@ namespace WpfShaderEffects
    /// IdentityShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Identity.fx
    /// </summary>
-   public sealed partial class IdentityShaderEffect : BaseShaderEffect
+   public sealed partial class IdentityShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<IdentityShaderEffect>();
    
       public IdentityShaderEffect()
+         :  base(s_pixelShader)
+      {
+            
+      }
+   
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\InverseDifference.fx.ps
+   
+   /// <summary>
+   /// InverseDifferenceShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: InverseDifference.fx
+   /// </summary>
+   public sealed partial class InverseDifferenceShaderEffect : BaseTwoInputsShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<InverseDifferenceShaderEffect>();
+   
+      public InverseDifferenceShaderEffect()
          :  base(s_pixelShader)
       {
             
@@ -2173,7 +2617,7 @@ namespace WpfShaderEffects
    /// InvertColorShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: InvertColor.fx
    /// </summary>
-   public sealed partial class InvertColorShaderEffect : BaseShaderEffect
+   public sealed partial class InvertColorShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<InvertColorShaderEffect>();
@@ -2187,13 +2631,113 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Lighten.fx.ps
+   
+   /// <summary>
+   /// LightenShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: Lighten.fx
+   /// </summary>
+   public sealed partial class LightenShaderEffect : BaseTwoInputsShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<LightenShaderEffect>();
+   
+      public LightenShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(AlphaProperty);
+            
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Alpha
+      public static System.Windows.DependencyProperty AlphaProperty = System.Windows.DependencyProperty.Register(
+         @"Alpha",
+         typeof(double),
+         typeof(LightenShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0),
+            OnAlphaCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnAlphaCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnAlphaCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (LightenShaderEffect)instance;
+         var Alpha = (double)baseValue;
+       
+         // Coerce
+         Alpha = Clamp(Alpha, 0.0, 1.0);
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnAlphaCoerceValue(
+               Alpha,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Alpha (double)
+      /// Amount of alpha applied on effect
+      /// Value coercion: Clamp(Alpha, 0.0, 1.0)
+      /// Default Value: 1.0
+      /// </summary>
+      public double Alpha
+      {
+         get
+         {
+            return (double)GetValue(AlphaProperty);
+         }
+         set
+         {
+            SetValue(AlphaProperty, value);
+         }
+      }
+
+      // END_PROPERTY Alpha
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\LightStreak.fx.ps
    
    /// <summary>
    /// LightStreakShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: LightStreak.fx
    /// </summary>
-   public sealed partial class LightStreakShaderEffect : BaseShaderEffect
+   public sealed partial class LightStreakShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<LightStreakShaderEffect>();
@@ -2373,7 +2917,7 @@ namespace WpfShaderEffects
    /// MagnifyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Magnify.fx
    /// </summary>
-   public sealed partial class MagnifyShaderEffect : BaseShaderEffect
+   public sealed partial class MagnifyShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<MagnifyShaderEffect>();
@@ -2625,7 +3169,7 @@ namespace WpfShaderEffects
    /// MonochromeShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Monochrome.fx
    /// </summary>
-   public sealed partial class MonochromeShaderEffect : BaseShaderEffect
+   public sealed partial class MonochromeShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<MonochromeShaderEffect>();
@@ -2715,13 +3259,213 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Multiply.fx.ps
+   
+   /// <summary>
+   /// MultiplyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: Multiply.fx
+   /// </summary>
+   public sealed partial class MultiplyShaderEffect : BaseTwoInputsShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<MultiplyShaderEffect>();
+   
+      public MultiplyShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(AlphaProperty);
+            
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Alpha
+      public static System.Windows.DependencyProperty AlphaProperty = System.Windows.DependencyProperty.Register(
+         @"Alpha",
+         typeof(double),
+         typeof(MultiplyShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0),
+            OnAlphaCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnAlphaCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnAlphaCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (MultiplyShaderEffect)instance;
+         var Alpha = (double)baseValue;
+       
+         // Coerce
+         Alpha = Clamp(Alpha, 0.0, 1.0);
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnAlphaCoerceValue(
+               Alpha,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Alpha (double)
+      /// Amount of alpha applied on effect
+      /// Value coercion: Clamp(Alpha, 0.0, 1.0)
+      /// Default Value: 1.0
+      /// </summary>
+      public double Alpha
+      {
+         get
+         {
+            return (double)GetValue(AlphaProperty);
+         }
+         set
+         {
+            SetValue(AlphaProperty, value);
+         }
+      }
+
+      // END_PROPERTY Alpha
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\NegationDifference.fx.ps
+   
+   /// <summary>
+   /// NegationDifferenceShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: NegationDifference.fx
+   /// </summary>
+   public sealed partial class NegationDifferenceShaderEffect : BaseTwoInputsShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<NegationDifferenceShaderEffect>();
+   
+      public NegationDifferenceShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(AlphaProperty);
+            
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Alpha
+      public static System.Windows.DependencyProperty AlphaProperty = System.Windows.DependencyProperty.Register(
+         @"Alpha",
+         typeof(double),
+         typeof(NegationDifferenceShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            1.0,
+            PixelShaderConstantCallback(0),
+            OnAlphaCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnAlphaCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnAlphaCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (NegationDifferenceShaderEffect)instance;
+         var Alpha = (double)baseValue;
+       
+         // Coerce
+         Alpha = Clamp(Alpha, 0.0, 1.0);
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnAlphaCoerceValue(
+               Alpha,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Alpha (double)
+      /// Amount of alpha applied on effect
+      /// Value coercion: Clamp(Alpha, 0.0, 1.0)
+      /// Default Value: 1.0
+      /// </summary>
+      public double Alpha
+      {
+         get
+         {
+            return (double)GetValue(AlphaProperty);
+         }
+         set
+         {
+            SetValue(AlphaProperty, value);
+         }
+      }
+
+      // END_PROPERTY Alpha
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Pinch.fx.ps
    
    /// <summary>
    /// PinchShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Pinch.fx
    /// </summary>
-   public sealed partial class PinchShaderEffect : BaseShaderEffect
+   public sealed partial class PinchShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<PinchShaderEffect>();
@@ -2977,7 +3721,7 @@ namespace WpfShaderEffects
    /// PixelateShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Pixelate.fx
    /// </summary>
-   public sealed partial class PixelateShaderEffect : BaseShaderEffect
+   public sealed partial class PixelateShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<PixelateShaderEffect>();
@@ -3077,7 +3821,7 @@ namespace WpfShaderEffects
    /// RippleShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Ripple.fx
    /// </summary>
-   public sealed partial class RippleShaderEffect : BaseShaderEffect
+   public sealed partial class RippleShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<RippleShaderEffect>();
@@ -3413,7 +4157,7 @@ namespace WpfShaderEffects
    /// SharpenShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Sharpen.fx
    /// </summary>
-   public sealed partial class SharpenShaderEffect : BaseShaderEffect
+   public sealed partial class SharpenShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<SharpenShaderEffect>();
@@ -3595,7 +4339,7 @@ namespace WpfShaderEffects
    /// SmoothMagnifyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: SmoothMagnify.fx
    /// </summary>
-   public sealed partial class SmoothMagnifyShaderEffect : BaseShaderEffect
+   public sealed partial class SmoothMagnifyShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<SmoothMagnifyShaderEffect>();
@@ -3771,7 +4515,7 @@ namespace WpfShaderEffects
    /// SobelShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Sobel.fx
    /// </summary>
-   public sealed partial class SobelShaderEffect : BaseShaderEffect
+   public sealed partial class SobelShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<SobelShaderEffect>();
@@ -3793,7 +4537,7 @@ namespace WpfShaderEffects
    /// SwirlShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Swirl.fx
    /// </summary>
-   public sealed partial class SwirlShaderEffect : BaseShaderEffect
+   public sealed partial class SwirlShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<SwirlShaderEffect>();
@@ -4045,7 +4789,7 @@ namespace WpfShaderEffects
    /// ToneMappingShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ToneMapping.fx
    /// </summary>
-   public sealed partial class ToneMappingShaderEffect : BaseShaderEffect
+   public sealed partial class ToneMappingShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ToneMappingShaderEffect>();
@@ -4605,7 +5349,7 @@ namespace WpfShaderEffects
    /// ToonShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Toon.fx
    /// </summary>
-   public sealed partial class ToonShaderEffect : BaseShaderEffect
+   public sealed partial class ToonShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ToonShaderEffect>();
@@ -4619,13 +5363,113 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Transition.fx.ps
+   
+   /// <summary>
+   /// TransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: Transition.fx
+   /// </summary>
+   public sealed partial class TransitionShaderEffect : BaseTwoInputsShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<TransitionShaderEffect>();
+   
+      public TransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(TransitionProperty);
+            
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Transition
+      public static System.Windows.DependencyProperty TransitionProperty = System.Windows.DependencyProperty.Register(
+         @"Transition",
+         typeof(double),
+         typeof(TransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            0.0,
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            0.0,
+            PixelShaderConstantCallback(0),
+            OnTransitionCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnTransitionCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnTransitionCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (TransitionShaderEffect)instance;
+         var Transition = (double)baseValue;
+       
+         // Coerce
+         Transition = Clamp(Transition, 0.0, 1.0);
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnTransitionCoerceValue(
+               Transition,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Transition (double)
+      /// Transition
+      /// Value coercion: Clamp(Transition, 0.0, 1.0)
+      /// Default Value: 0.0
+      /// </summary>
+      public double Transition
+      {
+         get
+         {
+            return (double)GetValue(TransitionProperty);
+         }
+         set
+         {
+            SetValue(TransitionProperty, value);
+         }
+      }
+
+      // END_PROPERTY Transition
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ZoomBlur.fx.ps
    
    /// <summary>
    /// ZoomBlurShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ZoomBlur.fx
    /// </summary>
-   public sealed partial class ZoomBlurShaderEffect : BaseShaderEffect
+   public sealed partial class ZoomBlurShaderEffect : BaseSingleInputShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ZoomBlurShaderEffect>();

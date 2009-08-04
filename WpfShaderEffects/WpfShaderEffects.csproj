@@ -56,12 +56,20 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\BaseInputShaderEffects.cs">
+      <Link>BaseInputShaderEffects.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseInputShaderEffects.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\Shared\BaseShaderEffect.cs">
+      <Link>BaseShaderEffect.cs</Link>
+    </Compile>
     <Compile Include="..\Shared\EffectShaders.cs">
       <Link>EffectShaders.cs</Link>
       <AutoGen>True</AutoGen>
@@ -75,6 +83,19 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Shared\BaseInputShaderEffects.tt">
+      <Link>BaseInputShaderEffects.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BaseInputShaderEffects.cs</LastGenOutput>
+    </None>
+    <None Include="..\Shared\EffectShaders.tt">
+      <Link>EffectShaders.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EffectShaders.cs</LastGenOutput>
+    </None>
+    <Resource Include="..\Shared\ShaderBinary\Add.fx.ps">
+      <Link>ShaderBinary\Add.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\BandedSwirl.fx.ps">
       <Link>ShaderBinary\BandedSwirl.fx.ps</Link>
     </Resource>
@@ -93,6 +114,12 @@
     <Resource Include="..\Shared\ShaderBinary\ContrastAdjust.fx.ps">
       <Link>ShaderBinary\ContrastAdjust.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Darken.fx.ps">
+      <Link>ShaderBinary\Darken.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Difference.fx.ps">
+      <Link>ShaderBinary\Difference.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\DirectionalBlur.fx.ps">
       <Link>ShaderBinary\DirectionalBlur.fx.ps</Link>
     </Resource>
@@ -105,8 +132,17 @@
     <Resource Include="..\Shared\ShaderBinary\GrowablePoissonDisk.fx.ps">
       <Link>ShaderBinary\GrowablePoissonDisk.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Identity.fx.ps">
+      <Link>ShaderBinary\Identity.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\InverseDifference.fx.ps">
+      <Link>ShaderBinary\InverseDifference.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\InvertColor.fx.ps">
       <Link>ShaderBinary\InvertColor.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Lighten.fx.ps">
+      <Link>ShaderBinary\Lighten.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\LightStreak.fx.ps">
       <Link>ShaderBinary\LightStreak.fx.ps</Link>
@@ -116,6 +152,12 @@
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\Monochrome.fx.ps">
       <Link>ShaderBinary\Monochrome.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Multiply.fx.ps">
+      <Link>ShaderBinary\Multiply.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\NegationDifference.fx.ps">
+      <Link>ShaderBinary\NegationDifference.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\Pinch.fx.ps">
       <Link>ShaderBinary\Pinch.fx.ps</Link>
@@ -132,6 +174,9 @@
     <Resource Include="..\Shared\ShaderBinary\SmoothMagnify.fx.ps">
       <Link>ShaderBinary\SmoothMagnify.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Sobel.fx.ps">
+      <Link>ShaderBinary\Sobel.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\Swirl.fx.ps">
       <Link>ShaderBinary\Swirl.fx.ps</Link>
     </Resource>
@@ -144,19 +189,18 @@
     <Resource Include="..\Shared\ShaderBinary\ZoomBlur.fx.ps">
       <Link>ShaderBinary\ZoomBlur.fx.ps</Link>
     </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Shared\EffectShaders.tt">
-      <Link>EffectShaders.tt</Link>
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EffectShaders.cs</LastGenOutput>
+    <Resource Include="..\Shared\ShaderBinary\Transition.fx.ps">
+      <Link>ShaderBinary\Transition.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\Alpha.fx.ps">
+      <Link>ShaderBinary\Alpha.fx.ps</Link>
+    </Resource>
+    <None Include="..\Shared\ShaderSource\Add.fx">
+      <Link>ShaderSource\Add.fx</Link>
     </None>
-    <Resource Include="..\Shared\ShaderBinary\Sobel.fx.ps">
-      <Link>ShaderBinary\Sobel.fx.ps</Link>
-    </Resource>
-    <Resource Include="..\Shared\ShaderBinary\Identity.fx.ps">
-      <Link>ShaderBinary\Identity.fx.ps</Link>
-    </Resource>
+    <None Include="..\Shared\ShaderSource\Alpha.fx">
+      <Link>ShaderSource\Alpha.fx</Link>
+    </None>
     <None Include="..\Shared\ShaderSource\BandedSwirl.fx">
       <Link>ShaderSource\BandedSwirl.fx</Link>
     </None>
@@ -174,6 +218,12 @@
     </None>
     <None Include="..\Shared\ShaderSource\ContrastAdjust.fx">
       <Link>ShaderSource\ContrastAdjust.fx</Link>
+    </None>
+    <None Include="..\Shared\ShaderSource\Darken.fx">
+      <Link>ShaderSource\Darken.fx</Link>
+    </None>
+    <None Include="..\Shared\ShaderSource\Difference.fx">
+      <Link>ShaderSource\Difference.fx</Link>
     </None>
     <None Include="..\Shared\ShaderSource\DirectionalBlur.fx">
       <Link>ShaderSource\DirectionalBlur.fx</Link>
@@ -193,6 +243,9 @@
     <None Include="..\Shared\ShaderSource\InvertColor.fx">
       <Link>ShaderSource\InvertColor.fx</Link>
     </None>
+    <None Include="..\Shared\ShaderSource\Lighten.fx">
+      <Link>ShaderSource\Lighten.fx</Link>
+    </None>
     <None Include="..\Shared\ShaderSource\LightStreak.fx">
       <Link>ShaderSource\LightStreak.fx</Link>
     </None>
@@ -201,6 +254,12 @@
     </None>
     <None Include="..\Shared\ShaderSource\Monochrome.fx">
       <Link>ShaderSource\Monochrome.fx</Link>
+    </None>
+    <None Include="..\Shared\ShaderSource\Multiply.fx">
+      <Link>ShaderSource\Multiply.fx</Link>
+    </None>
+    <None Include="..\Shared\ShaderSource\NegationDifference.fx">
+      <Link>ShaderSource\NegationDifference.fx</Link>
     </None>
     <None Include="..\Shared\ShaderSource\Pinch.fx">
       <Link>ShaderSource\Pinch.fx</Link>
@@ -228,6 +287,9 @@
     </None>
     <None Include="..\Shared\ShaderSource\Toon.fx">
       <Link>ShaderSource\Toon.fx</Link>
+    </None>
+    <None Include="..\Shared\ShaderSource\Transition.fx">
+      <Link>ShaderSource\Transition.fx</Link>
     </None>
     <None Include="..\Shared\ShaderSource\ZoomBlur.fx">
       <Link>ShaderSource\ZoomBlur.fx</Link>
