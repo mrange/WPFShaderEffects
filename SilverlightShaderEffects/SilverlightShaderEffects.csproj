@@ -60,9 +60,6 @@
     <Resource Include="..\Shared\ShaderBinary\Add.fx.ps">
       <Link>ShaderBinary\Add.fx.ps</Link>
     </Resource>
-    <Resource Include="..\Shared\ShaderBinary\Addition.fx.ps">
-      <Link>ShaderBinary\Addition.fx.ps</Link>
-    </Resource>
     <Resource Include="..\Shared\ShaderBinary\Alpha.fx.ps">
       <Link>ShaderBinary\Alpha.fx.ps</Link>
     </Resource>
@@ -104,9 +101,6 @@
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\Identity.fx.ps">
       <Link>ShaderBinary\Identity.fx.ps</Link>
-    </Resource>
-    <Resource Include="..\Shared\ShaderBinary\InverseDifference.fx.ps">
-      <Link>ShaderBinary\InverseDifference.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\InvertColor.fx.ps">
       <Link>ShaderBinary\InvertColor.fx.ps</Link>
