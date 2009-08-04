@@ -135,9 +135,6 @@
     <Resource Include="..\Shared\ShaderBinary\Identity.fx.ps">
       <Link>ShaderBinary\Identity.fx.ps</Link>
     </Resource>
-    <Resource Include="..\Shared\ShaderBinary\InverseDifference.fx.ps">
-      <Link>ShaderBinary\InverseDifference.fx.ps</Link>
-    </Resource>
     <Resource Include="..\Shared\ShaderBinary\InvertColor.fx.ps">
       <Link>ShaderBinary\InvertColor.fx.ps</Link>
     </Resource>
