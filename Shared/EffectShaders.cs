@@ -33,16 +33,21 @@ namespace WpfShaderEffects
    /// AddShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Add.fx
    /// </summary>
-   public sealed partial class AddShaderEffect : BaseTwoInputsShaderEffect
+   public sealed partial class AddShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<AddShaderEffect>();
    
+      partial void OnConstruction();
+      
       public AddShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(AlphaProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -133,16 +138,21 @@ namespace WpfShaderEffects
    /// AlphaShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Alpha.fx
    /// </summary>
-   public sealed partial class AlphaShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class AlphaShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<AlphaShaderEffect>();
    
+      partial void OnConstruction();
+      
       public AlphaShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(AlphaProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -233,11 +243,15 @@ namespace WpfShaderEffects
    /// BandedSwirlShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: BandedSwirl.fx
    /// </summary>
-   public sealed partial class BandedSwirlShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class BandedSwirlShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<BandedSwirlShaderEffect>();
    
+      partial void OnConstruction();
+      
       public BandedSwirlShaderEffect()
          :  base(s_pixelShader)
       {
@@ -245,6 +259,7 @@ namespace WpfShaderEffects
          UpdateShaderValue(SpiralStrengthProperty);
          UpdateShaderValue(DistanceThresholdProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -475,17 +490,371 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BandedSwirlTransition.fx.ps
+   
+   /// <summary>
+   /// BandedSwirlTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: BandedSwirlTransition.fx
+   /// </summary>
+   public sealed partial class BandedSwirlTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<BandedSwirlTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public BandedSwirlTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+         UpdateShaderValue(TwistAmountProperty);
+         UpdateShaderValue(FrequencyProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(BandedSwirlTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (BandedSwirlTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY TwistAmount
+      public static System.Windows.DependencyProperty TwistAmountProperty = System.Windows.DependencyProperty.Register(
+         @"TwistAmount",
+         typeof(double),
+         typeof(BandedSwirlTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1),
+            OnTwistAmountCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnTwistAmountCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnTwistAmountCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (BandedSwirlTransitionShaderEffect)instance;
+         var TwistAmount = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnTwistAmountCoerceValue(
+               TwistAmount,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property TwistAmount (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double TwistAmount
+      {
+         get
+         {
+            return (double)GetValue(TwistAmountProperty);
+         }
+         set
+         {
+            SetValue(TwistAmountProperty, value);
+         }
+      }
+
+      // END_PROPERTY TwistAmount
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Frequency
+      public static System.Windows.DependencyProperty FrequencyProperty = System.Windows.DependencyProperty.Register(
+         @"Frequency",
+         typeof(double),
+         typeof(BandedSwirlTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(2),
+            OnFrequencyCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnFrequencyCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnFrequencyCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (BandedSwirlTransitionShaderEffect)instance;
+         var Frequency = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnFrequencyCoerceValue(
+               Frequency,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Frequency (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Frequency
+      {
+         get
+         {
+            return (double)GetValue(FrequencyProperty);
+         }
+         set
+         {
+            SetValue(FrequencyProperty, value);
+         }
+      }
+
+      // END_PROPERTY Frequency
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BlindsTransition.fx.ps
+   
+   /// <summary>
+   /// BlindsTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: BlindsTransition.fx
+   /// </summary>
+   public sealed partial class BlindsTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<BlindsTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public BlindsTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(BlindsTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (BlindsTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Bloom.fx.ps
    
    /// <summary>
    /// BloomShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Bloom.fx
    /// </summary>
-   public sealed partial class BloomShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class BloomShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<BloomShaderEffect>();
    
+      partial void OnConstruction();
+      
       public BloomShaderEffect()
          :  base(s_pixelShader)
       {
@@ -494,6 +863,7 @@ namespace WpfShaderEffects
          UpdateShaderValue(BloomSaturationProperty);
          UpdateShaderValue(BaseSaturationProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -805,16 +1175,21 @@ namespace WpfShaderEffects
    /// BrightExtractShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: BrightExtract.fx
    /// </summary>
-   public sealed partial class BrightExtractShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class BrightExtractShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<BrightExtractShaderEffect>();
    
+      partial void OnConstruction();
+      
       public BrightExtractShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(ThresholdProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -899,21 +1274,301 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\CircleRevealTransition.fx.ps
+   
+   /// <summary>
+   /// CircleRevealTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: CircleRevealTransition.fx
+   /// </summary>
+   public sealed partial class CircleRevealTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<CircleRevealTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public CircleRevealTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+         UpdateShaderValue(FuzzyAmountProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(CircleRevealTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (CircleRevealTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY FuzzyAmount
+      public static System.Windows.DependencyProperty FuzzyAmountProperty = System.Windows.DependencyProperty.Register(
+         @"FuzzyAmount",
+         typeof(double),
+         typeof(CircleRevealTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1),
+            OnFuzzyAmountCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnFuzzyAmountCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnFuzzyAmountCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (CircleRevealTransitionShaderEffect)instance;
+         var FuzzyAmount = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnFuzzyAmountCoerceValue(
+               FuzzyAmount,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property FuzzyAmount (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double FuzzyAmount
+      {
+         get
+         {
+            return (double)GetValue(FuzzyAmountProperty);
+         }
+         set
+         {
+            SetValue(FuzzyAmountProperty, value);
+         }
+      }
+
+      // END_PROPERTY FuzzyAmount
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\CircleStretchTransition.fx.ps
+   
+   /// <summary>
+   /// CircleStretchTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: CircleStretchTransition.fx
+   /// </summary>
+   public sealed partial class CircleStretchTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<CircleStretchTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public CircleStretchTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(CircleStretchTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (CircleStretchTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ColorKeyAlpha.fx.ps
    
    /// <summary>
    /// ColorKeyAlphaShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ColorKeyAlpha.fx
    /// </summary>
-   public sealed partial class ColorKeyAlphaShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class ColorKeyAlphaShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ColorKeyAlphaShaderEffect>();
    
+      partial void OnConstruction();
+      
       public ColorKeyAlphaShaderEffect()
          :  base(s_pixelShader)
       {
             
+         OnConstruction();
       }
    
    
@@ -925,11 +1580,15 @@ namespace WpfShaderEffects
    /// ColorToneShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ColorTone.fx
    /// </summary>
-   public sealed partial class ColorToneShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class ColorToneShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ColorToneShaderEffect>();
    
+      partial void OnConstruction();
+      
       public ColorToneShaderEffect()
          :  base(s_pixelShader)
       {
@@ -938,6 +1597,7 @@ namespace WpfShaderEffects
          UpdateShaderValue(LightColorProperty);
          UpdateShaderValue(DarkColorProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -1257,17 +1917,22 @@ namespace WpfShaderEffects
    /// ContrastAdjustShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ContrastAdjust.fx
    /// </summary>
-   public sealed partial class ContrastAdjustShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class ContrastAdjustShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ContrastAdjustShaderEffect>();
    
+      partial void OnConstruction();
+      
       public ContrastAdjustShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(BrightnessProperty);
          UpdateShaderValue(ContrastProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -1433,16 +2098,21 @@ namespace WpfShaderEffects
    /// DarkenShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Darken.fx
    /// </summary>
-   public sealed partial class DarkenShaderEffect : BaseTwoInputsShaderEffect
+   public sealed partial class DarkenShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<DarkenShaderEffect>();
    
+      partial void OnConstruction();
+      
       public DarkenShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(AlphaProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -1533,17 +2203,22 @@ namespace WpfShaderEffects
    /// DifferenceShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Difference.fx
    /// </summary>
-   public sealed partial class DifferenceShaderEffect : BaseTwoInputsShaderEffect
+   public sealed partial class DifferenceShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<DifferenceShaderEffect>();
    
+      partial void OnConstruction();
+      
       public DifferenceShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(AlphaProperty);
          UpdateShaderValue(MultiplierProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -1713,17 +2388,22 @@ namespace WpfShaderEffects
    /// DirectionalBlurShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: DirectionalBlur.fx
    /// </summary>
-   public sealed partial class DirectionalBlurShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class DirectionalBlurShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<DirectionalBlurShaderEffect>();
    
+      partial void OnConstruction();
+      
       public DirectionalBlurShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(AngleProperty);
          UpdateShaderValue(BlurAmountProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -1893,17 +2573,22 @@ namespace WpfShaderEffects
    /// EmbossedShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Embossed.fx
    /// </summary>
-   public sealed partial class EmbossedShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class EmbossedShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<EmbossedShaderEffect>();
    
+      partial void OnConstruction();
+      
       public EmbossedShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(AmountProperty);
          UpdateShaderValue(WidthProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -2067,17 +2752,121 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\FadeTransition.fx.ps
+   
+   /// <summary>
+   /// FadeTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: FadeTransition.fx
+   /// </summary>
+   public sealed partial class FadeTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<FadeTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public FadeTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(FadeTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (FadeTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Gloom.fx.ps
    
    /// <summary>
    /// GloomShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Gloom.fx
    /// </summary>
-   public sealed partial class GloomShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class GloomShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<GloomShaderEffect>();
    
+      partial void OnConstruction();
+      
       public GloomShaderEffect()
          :  base(s_pixelShader)
       {
@@ -2086,6 +2875,7 @@ namespace WpfShaderEffects
          UpdateShaderValue(GloomSaturationProperty);
          UpdateShaderValue(BaseSaturationProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -2397,17 +3187,22 @@ namespace WpfShaderEffects
    /// GrowablePoissonDiskShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: GrowablePoissonDisk.fx
    /// </summary>
-   public sealed partial class GrowablePoissonDiskShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class GrowablePoissonDiskShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<GrowablePoissonDiskShaderEffect>();
    
+      partial void OnConstruction();
+      
       public GrowablePoissonDiskShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(DiscRadiusProperty);
          UpdateShaderValue(ScreenSizeProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -2577,35 +3372,20 @@ namespace WpfShaderEffects
    /// IdentityShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Identity.fx
    /// </summary>
-   public sealed partial class IdentityShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class IdentityShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<IdentityShaderEffect>();
    
+      partial void OnConstruction();
+      
       public IdentityShaderEffect()
          :  base(s_pixelShader)
       {
             
-      }
-   
-   
-   }
-   
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\InverseDifference.fx.ps
-   
-   /// <summary>
-   /// InverseDifferenceShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
-   /// This shader effect is based on the file: InverseDifference.fx
-   /// </summary>
-   public sealed partial class InverseDifferenceShaderEffect : BaseTwoInputsShaderEffect
-   {
-      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
-         Common.Utility.CreatePixelShader<InverseDifferenceShaderEffect>();
-   
-      public InverseDifferenceShaderEffect()
-         :  base(s_pixelShader)
-      {
-            
+         OnConstruction();
       }
    
    
@@ -2617,17 +3397,122 @@ namespace WpfShaderEffects
    /// InvertColorShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: InvertColor.fx
    /// </summary>
-   public sealed partial class InvertColorShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class InvertColorShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<InvertColorShaderEffect>();
    
+      partial void OnConstruction();
+      
       public InvertColorShaderEffect()
          :  base(s_pixelShader)
       {
             
+         OnConstruction();
       }
    
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\LeastBrightTransition.fx.ps
+   
+   /// <summary>
+   /// LeastBrightTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: LeastBrightTransition.fx
+   /// </summary>
+   public sealed partial class LeastBrightTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<LeastBrightTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public LeastBrightTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(LeastBrightTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (LeastBrightTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
    
    }
    
@@ -2637,16 +3522,21 @@ namespace WpfShaderEffects
    /// LightenShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Lighten.fx
    /// </summary>
-   public sealed partial class LightenShaderEffect : BaseTwoInputsShaderEffect
+   public sealed partial class LightenShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<LightenShaderEffect>();
    
+      partial void OnConstruction();
+      
       public LightenShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(AlphaProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -2737,17 +3627,22 @@ namespace WpfShaderEffects
    /// LightStreakShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: LightStreak.fx
    /// </summary>
-   public sealed partial class LightStreakShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class LightStreakShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<LightStreakShaderEffect>();
    
+      partial void OnConstruction();
+      
       public LightStreakShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(BrightThresholdProperty);
          UpdateShaderValue(ScaleProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -2911,17 +3806,421 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\LineRevealTransition.fx.ps
+   
+   /// <summary>
+   /// LineRevealTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: LineRevealTransition.fx
+   /// </summary>
+   public sealed partial class LineRevealTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<LineRevealTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public LineRevealTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+         UpdateShaderValue(LineOriginProperty);
+         UpdateShaderValue(LineNormalProperty);
+         UpdateShaderValue(LineOffsetProperty);
+         UpdateShaderValue(FuzzyAmountProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(LineRevealTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (LineRevealTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY LineOrigin
+      public static System.Windows.DependencyProperty LineOriginProperty = System.Windows.DependencyProperty.Register(
+         @"LineOrigin",
+         typeof(Point),
+         typeof(LineRevealTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(1),
+            OnLineOriginCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnLineOriginCoerceValue(
+         Point baseValue,
+         ref Point newValue,
+         ref bool isProcessed
+         );
+
+      static object OnLineOriginCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (LineRevealTransitionShaderEffect)instance;
+         var LineOrigin = (Point)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(Point);
+            var isProcessed = false;
+            inst.OnLineOriginCoerceValue(
+               LineOrigin,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property LineOrigin (Point)
+      /// Default Value: default(Point)
+      /// </summary>
+      public Point LineOrigin
+      {
+         get
+         {
+            return (Point)GetValue(LineOriginProperty);
+         }
+         set
+         {
+            SetValue(LineOriginProperty, value);
+         }
+      }
+
+      // END_PROPERTY LineOrigin
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY LineNormal
+      public static System.Windows.DependencyProperty LineNormalProperty = System.Windows.DependencyProperty.Register(
+         @"LineNormal",
+         typeof(Point),
+         typeof(LineRevealTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(2),
+            OnLineNormalCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnLineNormalCoerceValue(
+         Point baseValue,
+         ref Point newValue,
+         ref bool isProcessed
+         );
+
+      static object OnLineNormalCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (LineRevealTransitionShaderEffect)instance;
+         var LineNormal = (Point)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(Point);
+            var isProcessed = false;
+            inst.OnLineNormalCoerceValue(
+               LineNormal,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property LineNormal (Point)
+      /// Default Value: default(Point)
+      /// </summary>
+      public Point LineNormal
+      {
+         get
+         {
+            return (Point)GetValue(LineNormalProperty);
+         }
+         set
+         {
+            SetValue(LineNormalProperty, value);
+         }
+      }
+
+      // END_PROPERTY LineNormal
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY LineOffset
+      public static System.Windows.DependencyProperty LineOffsetProperty = System.Windows.DependencyProperty.Register(
+         @"LineOffset",
+         typeof(Point),
+         typeof(LineRevealTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(3))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(3),
+            OnLineOffsetCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnLineOffsetCoerceValue(
+         Point baseValue,
+         ref Point newValue,
+         ref bool isProcessed
+         );
+
+      static object OnLineOffsetCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (LineRevealTransitionShaderEffect)instance;
+         var LineOffset = (Point)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(Point);
+            var isProcessed = false;
+            inst.OnLineOffsetCoerceValue(
+               LineOffset,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property LineOffset (Point)
+      /// Default Value: default(Point)
+      /// </summary>
+      public Point LineOffset
+      {
+         get
+         {
+            return (Point)GetValue(LineOffsetProperty);
+         }
+         set
+         {
+            SetValue(LineOffsetProperty, value);
+         }
+      }
+
+      // END_PROPERTY LineOffset
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY FuzzyAmount
+      public static System.Windows.DependencyProperty FuzzyAmountProperty = System.Windows.DependencyProperty.Register(
+         @"FuzzyAmount",
+         typeof(double),
+         typeof(LineRevealTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(4))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(4),
+            OnFuzzyAmountCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnFuzzyAmountCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnFuzzyAmountCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (LineRevealTransitionShaderEffect)instance;
+         var FuzzyAmount = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnFuzzyAmountCoerceValue(
+               FuzzyAmount,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property FuzzyAmount (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double FuzzyAmount
+      {
+         get
+         {
+            return (double)GetValue(FuzzyAmountProperty);
+         }
+         set
+         {
+            SetValue(FuzzyAmountProperty, value);
+         }
+      }
+
+      // END_PROPERTY FuzzyAmount
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Magnify.fx.ps
    
    /// <summary>
    /// MagnifyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Magnify.fx
    /// </summary>
-   public sealed partial class MagnifyShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class MagnifyShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<MagnifyShaderEffect>();
    
+      partial void OnConstruction();
+      
       public MagnifyShaderEffect()
          :  base(s_pixelShader)
       {
@@ -2929,6 +4228,7 @@ namespace WpfShaderEffects
          UpdateShaderValue(CenterProperty);
          UpdateShaderValue(AmountProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -3169,16 +4469,21 @@ namespace WpfShaderEffects
    /// MonochromeShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Monochrome.fx
    /// </summary>
-   public sealed partial class MonochromeShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class MonochromeShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<MonochromeShaderEffect>();
    
+      partial void OnConstruction();
+      
       public MonochromeShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(FilterColorProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -3259,22 +4564,127 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\MostBrightTransition.fx.ps
+   
+   /// <summary>
+   /// MostBrightTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: MostBrightTransition.fx
+   /// </summary>
+   public sealed partial class MostBrightTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<MostBrightTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public MostBrightTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(MostBrightTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (MostBrightTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Multiply.fx.ps
    
    /// <summary>
    /// MultiplyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Multiply.fx
    /// </summary>
-   public sealed partial class MultiplyShaderEffect : BaseTwoInputsShaderEffect
+   public sealed partial class MultiplyShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<MultiplyShaderEffect>();
    
+      partial void OnConstruction();
+      
       public MultiplyShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(AlphaProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -3365,16 +4775,21 @@ namespace WpfShaderEffects
    /// NegationDifferenceShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: NegationDifference.fx
    /// </summary>
-   public sealed partial class NegationDifferenceShaderEffect : BaseTwoInputsShaderEffect
+   public sealed partial class NegationDifferenceShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<NegationDifferenceShaderEffect>();
    
+      partial void OnConstruction();
+      
       public NegationDifferenceShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(AlphaProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -3465,11 +4880,15 @@ namespace WpfShaderEffects
    /// PinchShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Pinch.fx
    /// </summary>
-   public sealed partial class PinchShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class PinchShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<PinchShaderEffect>();
    
+      partial void OnConstruction();
+      
       public PinchShaderEffect()
          :  base(s_pixelShader)
       {
@@ -3477,6 +4896,7 @@ namespace WpfShaderEffects
          UpdateShaderValue(RadiusProperty);
          UpdateShaderValue(AmountProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -3721,16 +5141,21 @@ namespace WpfShaderEffects
    /// PixelateShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Pixelate.fx
    /// </summary>
-   public sealed partial class PixelateShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class PixelateShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<PixelateShaderEffect>();
    
+      partial void OnConstruction();
+      
       public PixelateShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(PixelCountProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -3815,17 +5240,421 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\PixelateInTransition.fx.ps
+   
+   /// <summary>
+   /// PixelateInTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: PixelateInTransition.fx
+   /// </summary>
+   public sealed partial class PixelateInTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<PixelateInTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public PixelateInTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(PixelateInTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (PixelateInTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\PixelateOutTransition.fx.ps
+   
+   /// <summary>
+   /// PixelateOutTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: PixelateOutTransition.fx
+   /// </summary>
+   public sealed partial class PixelateOutTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<PixelateOutTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public PixelateOutTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(PixelateOutTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (PixelateOutTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\PixelateTransition.fx.ps
+   
+   /// <summary>
+   /// PixelateTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: PixelateTransition.fx
+   /// </summary>
+   public sealed partial class PixelateTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<PixelateTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public PixelateTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(PixelateTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (PixelateTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\RadialBlurTransition.fx.ps
+   
+   /// <summary>
+   /// RadialBlurTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: RadialBlurTransition.fx
+   /// </summary>
+   public sealed partial class RadialBlurTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<RadialBlurTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public RadialBlurTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(RadialBlurTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (RadialBlurTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Ripple.fx.ps
    
    /// <summary>
    /// RippleShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Ripple.fx
    /// </summary>
-   public sealed partial class RippleShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class RippleShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<RippleShaderEffect>();
    
+      partial void OnConstruction();
+      
       public RippleShaderEffect()
          :  base(s_pixelShader)
       {
@@ -3834,6 +5663,7 @@ namespace WpfShaderEffects
          UpdateShaderValue(FrequencyProperty);
          UpdateShaderValue(PhaseProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -4151,17 +5981,221 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\RippleTransition.fx.ps
+   
+   /// <summary>
+   /// RippleTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: RippleTransition.fx
+   /// </summary>
+   public sealed partial class RippleTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<RippleTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public RippleTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(RippleTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (RippleTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SaturateTransition.fx.ps
+   
+   /// <summary>
+   /// SaturateTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: SaturateTransition.fx
+   /// </summary>
+   public sealed partial class SaturateTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<SaturateTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public SaturateTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(SaturateTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (SaturateTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Sharpen.fx.ps
    
    /// <summary>
    /// SharpenShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Sharpen.fx
    /// </summary>
-   public sealed partial class SharpenShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class SharpenShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<SharpenShaderEffect>();
    
+      partial void OnConstruction();
+      
       public SharpenShaderEffect()
          :  base(s_pixelShader)
       {
@@ -4169,6 +6203,7 @@ namespace WpfShaderEffects
          UpdateShaderValue(WidthProperty);
          DdxUvDdyUvRegisterIndex = 2;
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -4333,23 +6368,303 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ShrinkTransition.fx.ps
+   
+   /// <summary>
+   /// ShrinkTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: ShrinkTransition.fx
+   /// </summary>
+   public sealed partial class ShrinkTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<ShrinkTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public ShrinkTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(ShrinkTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (ShrinkTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SlideInTransition.fx.ps
+   
+   /// <summary>
+   /// SlideInTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: SlideInTransition.fx
+   /// </summary>
+   public sealed partial class SlideInTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<SlideInTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public SlideInTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+         UpdateShaderValue(SlideAmountProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(SlideInTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (SlideInTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY SlideAmount
+      public static System.Windows.DependencyProperty SlideAmountProperty = System.Windows.DependencyProperty.Register(
+         @"SlideAmount",
+         typeof(Point),
+         typeof(SlideInTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(1),
+            OnSlideAmountCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnSlideAmountCoerceValue(
+         Point baseValue,
+         ref Point newValue,
+         ref bool isProcessed
+         );
+
+      static object OnSlideAmountCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (SlideInTransitionShaderEffect)instance;
+         var SlideAmount = (Point)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(Point);
+            var isProcessed = false;
+            inst.OnSlideAmountCoerceValue(
+               SlideAmount,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property SlideAmount (Point)
+      /// Default Value: default(Point)
+      /// </summary>
+      public Point SlideAmount
+      {
+         get
+         {
+            return (Point)GetValue(SlideAmountProperty);
+         }
+         set
+         {
+            SetValue(SlideAmountProperty, value);
+         }
+      }
+
+      // END_PROPERTY SlideAmount
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SmoothMagnify.fx.ps
    
    /// <summary>
    /// SmoothMagnifyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: SmoothMagnify.fx
    /// </summary>
-   public sealed partial class SmoothMagnifyShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class SmoothMagnifyShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<SmoothMagnifyShaderEffect>();
    
+      partial void OnConstruction();
+      
       public SmoothMagnifyShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(CenterProperty);
          UpdateShaderValue(InnerRadiusProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -4509,22 +6824,202 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SmoothSwirlGridTransition.fx.ps
+   
+   /// <summary>
+   /// SmoothSwirlGridTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: SmoothSwirlGridTransition.fx
+   /// </summary>
+   public sealed partial class SmoothSwirlGridTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<SmoothSwirlGridTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public SmoothSwirlGridTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+         UpdateShaderValue(TwistAmountProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(SmoothSwirlGridTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (SmoothSwirlGridTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY TwistAmount
+      public static System.Windows.DependencyProperty TwistAmountProperty = System.Windows.DependencyProperty.Register(
+         @"TwistAmount",
+         typeof(Point),
+         typeof(SmoothSwirlGridTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(1),
+            OnTwistAmountCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnTwistAmountCoerceValue(
+         Point baseValue,
+         ref Point newValue,
+         ref bool isProcessed
+         );
+
+      static object OnTwistAmountCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (SmoothSwirlGridTransitionShaderEffect)instance;
+         var TwistAmount = (Point)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(Point);
+            var isProcessed = false;
+            inst.OnTwistAmountCoerceValue(
+               TwistAmount,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property TwistAmount (Point)
+      /// Default Value: default(Point)
+      /// </summary>
+      public Point TwistAmount
+      {
+         get
+         {
+            return (Point)GetValue(TwistAmountProperty);
+         }
+         set
+         {
+            SetValue(TwistAmountProperty, value);
+         }
+      }
+
+      // END_PROPERTY TwistAmount
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Sobel.fx.ps
    
    /// <summary>
    /// SobelShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Sobel.fx
    /// </summary>
-   public sealed partial class SobelShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class SobelShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<SobelShaderEffect>();
    
+      partial void OnConstruction();
+      
       public SobelShaderEffect()
          :  base(s_pixelShader)
       {
          DdxUvDdyUvRegisterIndex = 2;
             
+         OnConstruction();
       }
    
       // Skipped parameter: ddx_ddy as it's a DdxDdy register
@@ -4537,11 +7032,15 @@ namespace WpfShaderEffects
    /// SwirlShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Swirl.fx
    /// </summary>
-   public sealed partial class SwirlShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class SwirlShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<SwirlShaderEffect>();
    
+      partial void OnConstruction();
+      
       public SwirlShaderEffect()
          :  base(s_pixelShader)
       {
@@ -4549,6 +7048,7 @@ namespace WpfShaderEffects
          UpdateShaderValue(SpiralStrengthProperty);
          UpdateShaderValue(AngleFrequencyProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -4783,17 +7283,371 @@ namespace WpfShaderEffects
    
    }
    
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SwirlGridTransition.fx.ps
+   
+   /// <summary>
+   /// SwirlGridTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: SwirlGridTransition.fx
+   /// </summary>
+   public sealed partial class SwirlGridTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<SwirlGridTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public SwirlGridTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+         UpdateShaderValue(TwistAmountProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(SwirlGridTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (SwirlGridTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY TwistAmount
+      public static System.Windows.DependencyProperty TwistAmountProperty = System.Windows.DependencyProperty.Register(
+         @"TwistAmount",
+         typeof(Point),
+         typeof(SwirlGridTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(1),
+            OnTwistAmountCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnTwistAmountCoerceValue(
+         Point baseValue,
+         ref Point newValue,
+         ref bool isProcessed
+         );
+
+      static object OnTwistAmountCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (SwirlGridTransitionShaderEffect)instance;
+         var TwistAmount = (Point)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(Point);
+            var isProcessed = false;
+            inst.OnTwistAmountCoerceValue(
+               TwistAmount,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property TwistAmount (Point)
+      /// Default Value: default(Point)
+      /// </summary>
+      public Point TwistAmount
+      {
+         get
+         {
+            return (Point)GetValue(TwistAmountProperty);
+         }
+         set
+         {
+            SetValue(TwistAmountProperty, value);
+         }
+      }
+
+      // END_PROPERTY TwistAmount
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SwirlTransition.fx.ps
+   
+   /// <summary>
+   /// SwirlTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: SwirlTransition.fx
+   /// </summary>
+   public sealed partial class SwirlTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<SwirlTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public SwirlTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+         UpdateShaderValue(TwistAmountProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(SwirlTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (SwirlTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY TwistAmount
+      public static System.Windows.DependencyProperty TwistAmountProperty = System.Windows.DependencyProperty.Register(
+         @"TwistAmount",
+         typeof(Point),
+         typeof(SwirlTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(Point),
+            PixelShaderConstantCallback(1),
+            OnTwistAmountCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnTwistAmountCoerceValue(
+         Point baseValue,
+         ref Point newValue,
+         ref bool isProcessed
+         );
+
+      static object OnTwistAmountCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (SwirlTransitionShaderEffect)instance;
+         var TwistAmount = (Point)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(Point);
+            var isProcessed = false;
+            inst.OnTwistAmountCoerceValue(
+               TwistAmount,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property TwistAmount (Point)
+      /// Default Value: default(Point)
+      /// </summary>
+      public Point TwistAmount
+      {
+         get
+         {
+            return (Point)GetValue(TwistAmountProperty);
+         }
+         set
+         {
+            SetValue(TwistAmountProperty, value);
+         }
+      }
+
+      // END_PROPERTY TwistAmount
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
    // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ToneMapping.fx.ps
    
    /// <summary>
    /// ToneMappingShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ToneMapping.fx
    /// </summary>
-   public sealed partial class ToneMappingShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class ToneMappingShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ToneMappingShaderEffect>();
    
+      partial void OnConstruction();
+      
       public ToneMappingShaderEffect()
          :  base(s_pixelShader)
       {
@@ -4805,6 +7659,7 @@ namespace WpfShaderEffects
          UpdateShaderValue(VignetteCenterProperty);
          UpdateShaderValue(BlueShiftProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
@@ -5349,79 +8204,87 @@ namespace WpfShaderEffects
    /// ToonShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: Toon.fx
    /// </summary>
-   public sealed partial class ToonShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class ToonShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ToonShaderEffect>();
    
+      partial void OnConstruction();
+      
       public ToonShaderEffect()
          :  base(s_pixelShader)
       {
             
+         OnConstruction();
       }
    
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Transition.fx.ps
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\WaterTransition.fx.ps
    
    /// <summary>
-   /// TransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
-   /// This shader effect is based on the file: Transition.fx
+   /// WaterTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: WaterTransition.fx
    /// </summary>
-   public sealed partial class TransitionShaderEffect : BaseTwoInputsShaderEffect
+   public sealed partial class WaterTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
-         Common.Utility.CreatePixelShader<TransitionShaderEffect>();
+         Common.Utility.CreatePixelShader<WaterTransitionShaderEffect>();
    
-      public TransitionShaderEffect()
+      partial void OnConstruction();
+      
+      public WaterTransitionShaderEffect()
          :  base(s_pixelShader)
       {
-         UpdateShaderValue(TransitionProperty);
+         UpdateShaderValue(ProgressProperty);
+         UpdateShaderValue(RandomSeedProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------
-      // BEGIN_PROPERTY Transition
-      public static System.Windows.DependencyProperty TransitionProperty = System.Windows.DependencyProperty.Register(
-         @"Transition",
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
          typeof(double),
-         typeof(TransitionShaderEffect),
+         typeof(WaterTransitionShaderEffect),
 #if SILVERLIGHT
          new System.Windows.PropertyMetadata(
-            0.0,
+            default(double),
             PixelShaderConstantCallback(0))
 #else
          new System.Windows.UIPropertyMetadata(
-            0.0,
+            default(double),
             PixelShaderConstantCallback(0),
-            OnTransitionCoerceValueStatic)
+            OnProgressCoerceValueStatic)
 #endif
          );            
 
 #if !SILVERLIGHT
-      partial void OnTransitionCoerceValue(
+      partial void OnProgressCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed
          );
 
-      static object OnTransitionCoerceValueStatic(
+      static object OnProgressCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
-         var inst = (TransitionShaderEffect)instance;
-         var Transition = (double)baseValue;
-       
-         // Coerce
-         Transition = Clamp(Transition, 0.0, 1.0);
+         var inst = (WaterTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
       
          if(inst != null)
          {
             var newValue = default(double);
             var isProcessed = false;
-            inst.OnTransitionCoerceValue(
-               Transition,
+            inst.OnProgressCoerceValue(
+               Progress,
                ref newValue,
                ref isProcessed);
             if (isProcessed)
@@ -5440,24 +8303,196 @@ namespace WpfShaderEffects
       }
 #endif
       /// <summary>
-      /// Gets or sets property Transition (double)
-      /// Transition
-      /// Value coercion: Clamp(Transition, 0.0, 1.0)
-      /// Default Value: 0.0
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
       /// </summary>
-      public double Transition
+      public double Progress
       {
          get
          {
-            return (double)GetValue(TransitionProperty);
+            return (double)GetValue(ProgressProperty);
          }
          set
          {
-            SetValue(TransitionProperty, value);
+            SetValue(ProgressProperty, value);
          }
       }
 
-      // END_PROPERTY Transition
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY RandomSeed
+      public static System.Windows.DependencyProperty RandomSeedProperty = System.Windows.DependencyProperty.Register(
+         @"RandomSeed",
+         typeof(double),
+         typeof(WaterTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(1),
+            OnRandomSeedCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnRandomSeedCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnRandomSeedCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (WaterTransitionShaderEffect)instance;
+         var RandomSeed = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnRandomSeedCoerceValue(
+               RandomSeed,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property RandomSeed (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double RandomSeed
+      {
+         get
+         {
+            return (double)GetValue(RandomSeedProperty);
+         }
+         set
+         {
+            SetValue(RandomSeedProperty, value);
+         }
+      }
+
+      // END_PROPERTY RandomSeed
+      // ----------------------------------------------------------------------
+      
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\WaveTransition.fx.ps
+   
+   /// <summary>
+   /// WaveTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: WaveTransition.fx
+   /// </summary>
+   public sealed partial class WaveTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<WaveTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public WaveTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(WaveTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            default(double),
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (WaveTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Default Value: default(double)
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
       // ----------------------------------------------------------------------
       
    
@@ -5469,17 +8504,22 @@ namespace WpfShaderEffects
    /// ZoomBlurShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
    /// This shader effect is based on the file: ZoomBlur.fx
    /// </summary>
-   public sealed partial class ZoomBlurShaderEffect : BaseSingleInputShaderEffect
+   public sealed partial class ZoomBlurShaderEffect 
+      : BaseSingleInputShaderEffect 
+      
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<ZoomBlurShaderEffect>();
    
+      partial void OnConstruction();
+      
       public ZoomBlurShaderEffect()
          :  base(s_pixelShader)
       {
          UpdateShaderValue(CenterProperty);
          UpdateShaderValue(BlurAmountProperty);
             
+         OnConstruction();
       }
    
       // ----------------------------------------------------------------------

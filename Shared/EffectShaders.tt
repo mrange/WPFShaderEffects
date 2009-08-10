@@ -80,6 +80,7 @@ namespace WpfShaderEffects
       var shaderFileName = Path.GetFileName(shaderFile);
       var shaderName = Path.GetFileNameWithoutExtension(shaderFile) + "ShaderEffect";
       var shaderCompiledFileName = shaderBinaryPath + @"\" + shaderFileName + ".ps";
+      var isTransition = shaderFileName.EndsWith(@"Transition.fx");
 #>
    // Wrote to <#=shaderCompiledFileName#>
    
@@ -109,11 +110,15 @@ namespace WpfShaderEffects
 
          
 #>
-   public sealed partial class <#=shaderName#> : <#=baseClassName#>
+   public sealed partial class <#=shaderName#> 
+      : <#=baseClassName#> 
+      <#=isTransition ? ", ITransitionShaderEffect" : "" #>
    {
       readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
          Common.Utility.CreatePixelShader<<#=shaderName#>>();
    
+      partial void OnConstruction();
+      
       public <#=shaderName#>()
          :  base(s_pixelShader)
       {
@@ -142,6 +147,7 @@ namespace WpfShaderEffects
          
       }
 #>            
+         OnConstruction();
       }
    
 <#

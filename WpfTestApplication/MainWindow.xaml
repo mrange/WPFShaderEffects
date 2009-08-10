@@ -10,8 +10,8 @@
             <SplineDoubleKeyFrame KeyTime="00:00:04" Value="6.28318530717959" KeySpline="0.79,0.21,0.4,0.75"/>
          </DoubleAnimationUsingKeyFrames>
       </Storyboard>
-      <Storyboard x:Key="MulitplyStoryBoard" RepeatBehavior="Forever">
-         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="MulitplyImage" Storyboard.TargetProperty="(UIElement.Effect).(SE:MultiplyShaderEffect.Alpha)">
+      <Storyboard x:Key="TransitionStoryBoard" RepeatBehavior="Forever">
+         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Transition" Storyboard.TargetProperty="Mix">
             <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0.0"/>
             <SplineDoubleKeyFrame KeyTime="00:00:01" Value="1.0"/>
             <SplineDoubleKeyFrame KeyTime="00:00:02" Value="1.0"/>
@@ -23,7 +23,7 @@
    <Window.Triggers>
       <EventTrigger RoutedEvent="FrameworkElement.Loaded">
          <BeginStoryboard Storyboard="{StaticResource RippleStoryBoard}"/>
-         <BeginStoryboard Storyboard="{StaticResource MulitplyStoryBoard}"/>
+         <BeginStoryboard Storyboard="{StaticResource TransitionStoryBoard}"/>
       </EventTrigger>
    </Window.Triggers>
    <Grid>
@@ -62,16 +62,18 @@
          <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Ripple</TextBlock>
       </Grid>
       <Grid Grid.Column="1" Grid.Row="1">
-         <Image Name="MulitplyImage" Source="/WpfTestApplication;component/Tulips.jpg" Stretch="UniformToFill">
-            <Image.Effect>
-               <SE:MultiplyShaderEffect Alpha="0">
-                  <SE:MultiplyShaderEffect.SecondInput>
-                     <ImageBrush ImageSource="/WpfTestApplication;component/Chrysanthemum.jpg"/>
-                  </SE:MultiplyShaderEffect.SecondInput>
-               </SE:MultiplyShaderEffect>
-            </Image.Effect>
-         </Image>              
-         <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Multiply</TextBlock>
+         <SE:TransitionEffectMixer Name="Transition">
+            <SE:TransitionEffectMixer.Left>
+               <Image Source="/WpfTestApplication;component/Tulips.jpg" Stretch="UniformToFill"/>
+            </SE:TransitionEffectMixer.Left>
+            <SE:TransitionEffectMixer.Right>
+               <Image Source="/WpfTestApplication;component/Chrysanthemum.jpg" Stretch="UniformToFill"/>
+            </SE:TransitionEffectMixer.Right>
+            <SE:TransitionEffectMixer.TransitionShaderEffect>
+               <SE:WaveTransitionShaderEffect/>
+            </SE:TransitionEffectMixer.TransitionShaderEffect>
+         </SE:TransitionEffectMixer>
+         <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Transition</TextBlock>
       </Grid>
 
    </Grid>
