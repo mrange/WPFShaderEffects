@@ -67,6 +67,9 @@
     <Compile Include="..\Shared\EffectShaders.cs">
       <Link>EffectShaders.cs</Link>
     </Compile>
+    <Compile Include="..\Shared\ITransitionShaderEffect.cs">
+      <Link>ITransitionShaderEffect.cs</Link>
+    </Compile>
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -80,11 +83,23 @@
     <Resource Include="..\Shared\ShaderBinary\BandedSwirl.fx.ps">
       <Link>ShaderBinary\BandedSwirl.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\BandedSwirlTransition.fx.ps">
+      <Link>ShaderBinary\BandedSwirlTransition.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\BlindsTransition.fx.ps">
+      <Link>ShaderBinary\BlindsTransition.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\Bloom.fx.ps">
       <Link>ShaderBinary\Bloom.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\BrightExtract.fx.ps">
       <Link>ShaderBinary\BrightExtract.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\CircleRevealTransition.fx.ps">
+      <Link>ShaderBinary\CircleRevealTransition.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\CircleStretchTransition.fx.ps">
+      <Link>ShaderBinary\CircleStretchTransition.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\ColorKeyAlpha.fx.ps">
       <Link>ShaderBinary\ColorKeyAlpha.fx.ps</Link>
@@ -107,6 +122,9 @@
     <Resource Include="..\Shared\ShaderBinary\Embossed.fx.ps">
       <Link>ShaderBinary\Embossed.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\FadeTransition.fx.ps">
+      <Link>ShaderBinary\FadeTransition.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\Gloom.fx.ps">
       <Link>ShaderBinary\Gloom.fx.ps</Link>
     </Resource>
@@ -119,17 +137,26 @@
     <Resource Include="..\Shared\ShaderBinary\InvertColor.fx.ps">
       <Link>ShaderBinary\InvertColor.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\LeastBrightTransition.fx.ps">
+      <Link>ShaderBinary\LeastBrightTransition.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\Lighten.fx.ps">
       <Link>ShaderBinary\Lighten.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\LightStreak.fx.ps">
       <Link>ShaderBinary\LightStreak.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\LineRevealTransition.fx.ps">
+      <Link>ShaderBinary\LineRevealTransition.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\Magnify.fx.ps">
       <Link>ShaderBinary\Magnify.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\Monochrome.fx.ps">
       <Link>ShaderBinary\Monochrome.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\MostBrightTransition.fx.ps">
+      <Link>ShaderBinary\MostBrightTransition.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\Multiply.fx.ps">
       <Link>ShaderBinary\Multiply.fx.ps</Link>
@@ -143,14 +170,41 @@
     <Resource Include="..\Shared\ShaderBinary\Pixelate.fx.ps">
       <Link>ShaderBinary\Pixelate.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\PixelateInTransition.fx.ps">
+      <Link>ShaderBinary\PixelateInTransition.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\PixelateOutTransition.fx.ps">
+      <Link>ShaderBinary\PixelateOutTransition.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\PixelateTransition.fx.ps">
+      <Link>ShaderBinary\PixelateTransition.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\RadialBlurTransition.fx.ps">
+      <Link>ShaderBinary\RadialBlurTransition.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\Ripple.fx.ps">
       <Link>ShaderBinary\Ripple.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\RippleTransition.fx.ps">
+      <Link>ShaderBinary\RippleTransition.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\SaturateTransition.fx.ps">
+      <Link>ShaderBinary\SaturateTransition.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\Sharpen.fx.ps">
       <Link>ShaderBinary\Sharpen.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\ShrinkTransition.fx.ps">
+      <Link>ShaderBinary\ShrinkTransition.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\SlideInTransition.fx.ps">
+      <Link>ShaderBinary\SlideInTransition.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\SmoothMagnify.fx.ps">
       <Link>ShaderBinary\SmoothMagnify.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\SmoothSwirlGridTransition.fx.ps">
+      <Link>ShaderBinary\SmoothSwirlGridTransition.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\Sobel.fx.ps">
       <Link>ShaderBinary\Sobel.fx.ps</Link>
@@ -158,20 +212,27 @@
     <Resource Include="..\Shared\ShaderBinary\Swirl.fx.ps">
       <Link>ShaderBinary\Swirl.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\SwirlGridTransition.fx.ps">
+      <Link>ShaderBinary\SwirlGridTransition.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\SwirlTransition.fx.ps">
+      <Link>ShaderBinary\SwirlTransition.fx.ps</Link>
+    </Resource>
     <Resource Include="..\Shared\ShaderBinary\ToneMapping.fx.ps">
       <Link>ShaderBinary\ToneMapping.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\Toon.fx.ps">
       <Link>ShaderBinary\Toon.fx.ps</Link>
     </Resource>
-    <Resource Include="..\Shared\ShaderBinary\Transition.fx.ps">
-      <Link>ShaderBinary\Transition.fx.ps</Link>
+    <Resource Include="..\Shared\ShaderBinary\WaterTransition.fx.ps">
+      <Link>ShaderBinary\WaterTransition.fx.ps</Link>
+    </Resource>
+    <Resource Include="..\Shared\ShaderBinary\WaveTransition.fx.ps">
+      <Link>ShaderBinary\WaveTransition.fx.ps</Link>
     </Resource>
     <Resource Include="..\Shared\ShaderBinary\ZoomBlur.fx.ps">
       <Link>ShaderBinary\ZoomBlur.fx.ps</Link>
     </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\Shared\WpfShaderEffects.pfx">
       <Link>WpfShaderEffects.pfx</Link>
     </None>
