@@ -233,6 +233,9 @@
     <Resource Include="..\Shared\ShaderBinary\ZoomBlur.fx.ps">
       <Link>ShaderBinary\ZoomBlur.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\BandedTransition.fx.ps">
+      <Link>ShaderBinary\BandedTransition.fx.ps</Link>
+    </Resource>
     <None Include="..\Shared\WpfShaderEffects.pfx">
       <Link>WpfShaderEffects.pfx</Link>
     </None>
