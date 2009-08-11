@@ -33,6 +33,7 @@ namespace WpfShaderEffects
 
       enum State
       {
+         Unknown,
          ShowingLeft,
          ShowingRight,
          InTransition,
@@ -42,7 +43,7 @@ namespace WpfShaderEffects
 
       bool m_settingEffect;
 
-      State m_state;
+      State m_state = State.Unknown;
 #if SILVERLIGHT
       partial void OnConstruction()
       {
@@ -106,7 +107,6 @@ namespace WpfShaderEffects
                m_right.IsHitTestVisible = false;
                m_left.Visibility = Visibility.Visible;
                m_right.Visibility = Visibility.Collapsed;
-               m_right.Effect = null;
                m_state = State.ShowingLeft;
             }
             else if (mix > (1 - MinDiff) && m_state != State.ShowingRight)
@@ -115,7 +115,6 @@ namespace WpfShaderEffects
                m_right.IsHitTestVisible = true;
                m_left.Visibility = Visibility.Collapsed;
                m_right.Visibility = Visibility.Visible;
-               m_right.Effect = null;
                m_state = State.ShowingRight;
             }
             else if(m_state != State.InTransition)
@@ -127,7 +126,16 @@ namespace WpfShaderEffects
                m_state = State.InTransition;
             }
 
-            if (m_state == State.InTransition)
+            if (m_state != State.InTransition)
+            {
+               var oldEffect = m_right.Effect as ITransitionShaderEffect;
+               if (oldEffect != null)
+               {
+                  m_right.Effect = null;
+                  oldEffect.SecondInput = null;
+               }
+            }
+            else
             {
                var oldEffect = m_right.Effect as ITransitionShaderEffect;
                var transitionShaderEffect = TransitionShaderEffect;
@@ -152,12 +160,11 @@ namespace WpfShaderEffects
                   m_right.Effect = newEffect;
                }
                if (
-                     transitionShaderEffect != null 
+                  transitionShaderEffect != null
                   && Math.Abs(transitionShaderEffect.Progress - mix) > MinDiff)
                {
                   transitionShaderEffect.Progress = mix;
                }
-
             }
          }
          finally
