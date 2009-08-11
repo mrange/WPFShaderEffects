@@ -29,18 +29,33 @@ namespace WpfShaderEffects
    [TemplatePart(Name = "PART_Right", Type = typeof(ContentControl))]
    public partial class TransitionEffectMixer : Control
    {
+      const double MinDiff = 0.0001;
+
+      enum State
+      {
+         ShowingLeft,
+         ShowingRight,
+         InTransition,
+      }
       ContentControl m_left;
       ContentControl m_right;
 
       bool m_settingEffect;
 
+      State m_state;
+#if SILVERLIGHT
+      partial void OnConstruction()
+      {
+         DefaultStyleKey = typeof(TransitionEffectMixer);
+      }
+#else
       static TransitionEffectMixer()
       {
          DefaultStyleKeyProperty.OverrideMetadata(
             typeof(TransitionEffectMixer),
             new FrameworkPropertyMetadata(typeof(TransitionEffectMixer)));
       }
-
+#endif
       public override void OnApplyTemplate()
       {
          base.OnApplyTemplate();
@@ -50,6 +65,7 @@ namespace WpfShaderEffects
          SetEffect();
       }
 
+#if !SILVERLIGHT
       partial void OnMixCoerceValue(double baseValue, ref double newValue, ref bool isProcessed)
       {
          newValue = Math.Max(0.0, Math.Min(1.0, baseValue));
@@ -62,6 +78,17 @@ namespace WpfShaderEffects
          isProcessed = true;
       }
 
+      partial void OnTransitionShaderEffectCoerceValue(ITransitionShaderEffect baseValue, ref ITransitionShaderEffect newValue, ref bool isProcessed)
+      {
+         if (!(baseValue is Effect))
+         {
+            newValue = null;
+            isProcessed = true;
+         }
+      }
+
+#endif
+
       void SetEffect()
       {
          if (m_left == null || m_right == null || m_settingEffect)
@@ -73,53 +100,69 @@ namespace WpfShaderEffects
          try
          {
             var mix = Mix;
-            if (mix < 0.001)
+            if (mix < MinDiff && m_state != State.ShowingLeft)
             {
                m_left.IsHitTestVisible = true;
                m_right.IsHitTestVisible = false;
                m_left.Visibility = Visibility.Visible;
-               m_right.Visibility = Visibility.Hidden;
+               m_right.Visibility = Visibility.Collapsed;
                m_right.Effect = null;
+               m_state = State.ShowingLeft;
             }
-            else if (mix > 0.999)
+            else if (mix > (1 - MinDiff) && m_state != State.ShowingRight)
             {
                m_left.IsHitTestVisible = false;
                m_right.IsHitTestVisible = true;
-               m_left.Visibility = Visibility.Hidden;
+               m_left.Visibility = Visibility.Collapsed;
                m_right.Visibility = Visibility.Visible;
                m_right.Effect = null;
+               m_state = State.ShowingRight;
             }
-            else
+            else if(m_state != State.InTransition)
             {
                m_left.IsHitTestVisible = false;
                m_right.IsHitTestVisible = false;
                m_left.Visibility = Visibility.Visible;
                m_right.Visibility = Visibility.Visible;
+               m_state = State.InTransition;
+            }
+
+            if (m_state == State.InTransition)
+            {
+               var oldEffect = m_right.Effect as ITransitionShaderEffect;
                var transitionShaderEffect = TransitionShaderEffect;
-               m_right.Effect = (Effect) transitionShaderEffect;
-               if (transitionShaderEffect != null)
+               if (!ReferenceEquals(oldEffect, transitionShaderEffect))
                {
-                  transitionShaderEffect.SecondInput =
-                     new VisualBrush(m_left)
-                        {
-                           AutoLayoutContent = false,
-                        };
+                  if (oldEffect != null)
+                  {
+                     oldEffect.SecondInput = null;
+                  }
+
+                  var newEffect = transitionShaderEffect as Effect;
+
+                  if (newEffect != null && transitionShaderEffect != null)
+                  {
+                     transitionShaderEffect.SecondInput =
+                        new VisualBrush(m_left)
+                           {
+                              AutoLayoutContent = false,
+                           };
+                  }
+
+                  m_right.Effect = newEffect;
+               }
+               if (
+                     transitionShaderEffect != null 
+                  && Math.Abs(transitionShaderEffect.Progress - mix) > MinDiff)
+               {
                   transitionShaderEffect.Progress = mix;
                }
+
             }
          }
          finally
          {
             m_settingEffect = false;
-         }
-      }
-
-      partial void OnTransitionShaderEffectCoerceValue(ITransitionShaderEffect baseValue, ref ITransitionShaderEffect newValue, ref bool isProcessed)
-      {
-         if (!(baseValue is Effect))
-         {
-            newValue = null;
-            isProcessed = true;
          }
       }
 

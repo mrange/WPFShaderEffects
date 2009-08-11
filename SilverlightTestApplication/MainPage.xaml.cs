@@ -21,7 +21,7 @@ namespace SilverlightTestApplication
       {
          InitializeComponent();
          RippleStoryBoard.Begin();
-         MulitplyStoryBoard.Begin();
+         TransitionStoryBoard.Begin();
       }
 
    }

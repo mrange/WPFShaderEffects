@@ -13,14 +13,13 @@
  *
  * ***************************************************************************/
 
-   
 #if SILVERLIGHT
 namespace SilverlightShaderEffects
 #else
 namespace WpfShaderEffects
 #endif
 {
-
+   
    // -------------------------------------------------------------------------
    // WpfShaderEffects.TransitionEffectMixer class
    // -------------------------------------------------------------------------
@@ -33,27 +32,9 @@ namespace WpfShaderEffects
       
       public TransitionEffectMixer()
       {
-         CoerceAllDependencyProperties();
          OnConstruction();
       }
-   
-      public void CoerceAllDependencyProperties()
-      {
-         CoerceValue(LeftProperty);
-         CoerceValue(RightProperty);
-         CoerceValue(MixProperty);
-         CoerceValue(TransitionShaderEffectProperty);
       
-      }
-
-      public void InvalidateAllDependencyProperties()
-      {
-         InvalidateProperty(LeftProperty);
-         InvalidateProperty(RightProperty);
-         InvalidateProperty(MixProperty);
-         InvalidateProperty(TransitionShaderEffectProperty);
-      
-      }
       
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Left      
@@ -62,10 +43,16 @@ namespace WpfShaderEffects
          "Left",
          typeof(object),
          typeof(TransitionEffectMixer),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            null,
+            LeftPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             null, 
-            LeftPropertyChangedCallback, 
-            LeftCoerceValueCallback));
+            LeftPropertyChangedStatic,
+            LeftCoerceValueStatic));
+#endif
 
    
                      
@@ -74,12 +61,12 @@ namespace WpfShaderEffects
          object newValue,
          ref bool isProcessed);
          
-      static void LeftPropertyChangedCallback(
+      static void LeftPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (TransitionEffectMixer)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (object)eventArgs.OldValue;
             var typedNewValue = (object)eventArgs.NewValue;
@@ -94,12 +81,13 @@ namespace WpfShaderEffects
          }
       }
    
+#if !SILVERLIGHT
       partial void OnLeftCoerceValue(
          object baseValue,
          ref object newValue,
          ref bool isProcessed);
          
-      static object LeftCoerceValueCallback(
+      static object LeftCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -128,7 +116,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets Left (object)
       /// </summary>
@@ -158,10 +146,16 @@ namespace WpfShaderEffects
          "Right",
          typeof(object),
          typeof(TransitionEffectMixer),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            null,
+            RightPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             null, 
-            RightPropertyChangedCallback, 
-            RightCoerceValueCallback));
+            RightPropertyChangedStatic,
+            RightCoerceValueStatic));
+#endif
 
    
                      
@@ -170,12 +164,12 @@ namespace WpfShaderEffects
          object newValue,
          ref bool isProcessed);
          
-      static void RightPropertyChangedCallback(
+      static void RightPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (TransitionEffectMixer)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (object)eventArgs.OldValue;
             var typedNewValue = (object)eventArgs.NewValue;
@@ -190,12 +184,13 @@ namespace WpfShaderEffects
          }
       }
    
+#if !SILVERLIGHT
       partial void OnRightCoerceValue(
          object baseValue,
          ref object newValue,
          ref bool isProcessed);
          
-      static object RightCoerceValueCallback(
+      static object RightCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -224,7 +219,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets Right (object)
       /// </summary>
@@ -254,10 +249,16 @@ namespace WpfShaderEffects
          "Mix",
          typeof(double),
          typeof(TransitionEffectMixer),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            MixPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-            MixPropertyChangedCallback, 
-            MixCoerceValueCallback));
+            MixPropertyChangedStatic,
+            MixCoerceValueStatic));
+#endif
 
    
                      
@@ -266,12 +267,12 @@ namespace WpfShaderEffects
          double newValue,
          ref bool isProcessed);
          
-      static void MixPropertyChangedCallback(
+      static void MixPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (TransitionEffectMixer)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
             var typedNewValue = (double)eventArgs.NewValue;
@@ -286,12 +287,13 @@ namespace WpfShaderEffects
          }
       }
    
+#if !SILVERLIGHT
       partial void OnMixCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object MixCoerceValueCallback(
+      static object MixCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -320,7 +322,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets Mix (double)
       /// </summary>
@@ -350,10 +352,16 @@ namespace WpfShaderEffects
          "TransitionShaderEffect",
          typeof(ITransitionShaderEffect),
          typeof(TransitionEffectMixer),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            null,
+            TransitionShaderEffectPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             null, 
-            TransitionShaderEffectPropertyChangedCallback, 
-            TransitionShaderEffectCoerceValueCallback));
+            TransitionShaderEffectPropertyChangedStatic,
+            TransitionShaderEffectCoerceValueStatic));
+#endif
 
    
                      
@@ -362,12 +370,12 @@ namespace WpfShaderEffects
          ITransitionShaderEffect newValue,
          ref bool isProcessed);
          
-      static void TransitionShaderEffectPropertyChangedCallback(
+      static void TransitionShaderEffectPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (TransitionEffectMixer)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (ITransitionShaderEffect)eventArgs.OldValue;
             var typedNewValue = (ITransitionShaderEffect)eventArgs.NewValue;
@@ -382,12 +390,13 @@ namespace WpfShaderEffects
          }
       }
    
+#if !SILVERLIGHT
       partial void OnTransitionShaderEffectCoerceValue(
          ITransitionShaderEffect baseValue,
          ref ITransitionShaderEffect newValue,
          ref bool isProcessed);
          
-      static object TransitionShaderEffectCoerceValueCallback(
+      static object TransitionShaderEffectCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -416,7 +425,7 @@ namespace WpfShaderEffects
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets TransitionShaderEffect (ITransitionShaderEffect)
       /// </summary>
@@ -440,5 +449,5 @@ namespace WpfShaderEffects
       // ----------------------------------------------------------------------
    }
    // -------------------------------------------------------------------------
-}
 
+}
