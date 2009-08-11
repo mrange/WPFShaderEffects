@@ -99,12 +99,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Alpha;
             }
          }
          else
          {
-            return baseValue;
+            return Alpha;
          }
       }
 #endif
@@ -204,12 +204,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Alpha;
             }
          }
          else
          {
-            return baseValue;
+            return Alpha;
          }
       }
 #endif
@@ -308,12 +308,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Center;
             }
          }
          else
          {
-            return baseValue;
+            return Center;
          }
       }
 #endif
@@ -383,12 +383,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return SpiralStrength;
             }
          }
          else
          {
-            return baseValue;
+            return SpiralStrength;
          }
       }
 #endif
@@ -458,12 +458,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return DistanceThreshold;
             }
          }
          else
          {
-            return baseValue;
+            return DistanceThreshold;
          }
       }
 #endif
@@ -561,12 +561,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -635,12 +635,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return TwistAmount;
             }
          }
          else
          {
-            return baseValue;
+            return TwistAmount;
          }
       }
 #endif
@@ -709,12 +709,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Frequency;
             }
          }
          else
          {
-            return baseValue;
+            return Frequency;
          }
       }
 #endif
@@ -737,6 +737,273 @@ namespace WpfShaderEffects
       // END_PROPERTY Frequency
       // ----------------------------------------------------------------------
       
+   
+   }
+   
+   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BandedTransition.fx.ps
+   
+   /// <summary>
+   /// BandedTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
+   /// This shader effect is based on the file: BandedTransition.fx
+   /// </summary>
+   public sealed partial class BandedTransitionShaderEffect 
+      : BaseTwoInputsShaderEffect 
+      , ITransitionShaderEffect
+   {
+      readonly static System.Windows.Media.Effects.PixelShader s_pixelShader = 
+         Common.Utility.CreatePixelShader<BandedTransitionShaderEffect>();
+   
+      partial void OnConstruction();
+      
+      public BandedTransitionShaderEffect()
+         :  base(s_pixelShader)
+      {
+         UpdateShaderValue(ProgressProperty);
+         UpdateShaderValue(BandHeightProperty);
+         UpdateShaderValue(BandOffsetProperty);
+         DdxUvDdyUvRegisterIndex = 3;
+            
+         OnConstruction();
+      }
+   
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY Progress
+      public static System.Windows.DependencyProperty ProgressProperty = System.Windows.DependencyProperty.Register(
+         @"Progress",
+         typeof(double),
+         typeof(BandedTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            0.0,
+            PixelShaderConstantCallback(0))
+#else
+         new System.Windows.UIPropertyMetadata(
+            0.0,
+            PixelShaderConstantCallback(0),
+            OnProgressCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnProgressCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnProgressCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (BandedTransitionShaderEffect)instance;
+         var Progress = (double)baseValue;
+       
+         // Coerce
+         Progress = Clamp(Progress, 0.0, 1.0);
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnProgressCoerceValue(
+               Progress,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return Progress;
+            }
+         }
+         else
+         {
+            return Progress;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property Progress (double)
+      /// Progress of transition
+      /// Value coercion: Clamp(Progress, 0.0, 1.0)
+      /// Default Value: 0.0
+      /// </summary>
+      public double Progress
+      {
+         get
+         {
+            return (double)GetValue(ProgressProperty);
+         }
+         set
+         {
+            SetValue(ProgressProperty, value);
+         }
+      }
+
+      // END_PROPERTY Progress
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY BandHeight
+      public static System.Windows.DependencyProperty BandHeightProperty = System.Windows.DependencyProperty.Register(
+         @"BandHeight",
+         typeof(double),
+         typeof(BandedTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            0.2,
+            PixelShaderConstantCallback(1))
+#else
+         new System.Windows.UIPropertyMetadata(
+            0.2,
+            PixelShaderConstantCallback(1),
+            OnBandHeightCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnBandHeightCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnBandHeightCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (BandedTransitionShaderEffect)instance;
+         var BandHeight = (double)baseValue;
+       
+         // Coerce
+         BandHeight = Clamp(BandHeight, 0.0, 1.0);
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnBandHeightCoerceValue(
+               BandHeight,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return BandHeight;
+            }
+         }
+         else
+         {
+            return BandHeight;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property BandHeight (double)
+      /// Height of bands
+      /// Value coercion: Clamp(BandHeight, 0.0, 1.0)
+      /// Default Value: 0.2
+      /// </summary>
+      public double BandHeight
+      {
+         get
+         {
+            return (double)GetValue(BandHeightProperty);
+         }
+         set
+         {
+            SetValue(BandHeightProperty, value);
+         }
+      }
+
+      // END_PROPERTY BandHeight
+      // ----------------------------------------------------------------------
+      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY BandOffset
+      public static System.Windows.DependencyProperty BandOffsetProperty = System.Windows.DependencyProperty.Register(
+         @"BandOffset",
+         typeof(double),
+         typeof(BandedTransitionShaderEffect),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            0.0,
+            PixelShaderConstantCallback(2))
+#else
+         new System.Windows.UIPropertyMetadata(
+            0.0,
+            PixelShaderConstantCallback(2),
+            OnBandOffsetCoerceValueStatic)
+#endif
+         );            
+
+#if !SILVERLIGHT
+      partial void OnBandOffsetCoerceValue(
+         double baseValue,
+         ref double newValue,
+         ref bool isProcessed
+         );
+
+      static object OnBandOffsetCoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var inst = (BandedTransitionShaderEffect)instance;
+         var BandOffset = (double)baseValue;
+       
+         // Coerce
+         BandOffset = Clamp(BandOffset, 0.0, 1.0);
+      
+         if(inst != null)
+         {
+            var newValue = default(double);
+            var isProcessed = false;
+            inst.OnBandOffsetCoerceValue(
+               BandOffset,
+               ref newValue,
+               ref isProcessed);
+            if (isProcessed)
+            {
+               return newValue;
+            }
+            else
+            {
+               return BandOffset;
+            }
+         }
+         else
+         {
+            return BandOffset;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets or sets property BandOffset (double)
+      /// Offset of bands
+      /// Value coercion: Clamp(BandOffset, 0.0, 1.0)
+      /// Default Value: 0.0
+      /// </summary>
+      public double BandOffset
+      {
+         get
+         {
+            return (double)GetValue(BandOffsetProperty);
+         }
+         set
+         {
+            SetValue(BandOffsetProperty, value);
+         }
+      }
+
+      // END_PROPERTY BandOffset
+      // ----------------------------------------------------------------------
+      
+      // Skipped parameter: ddx_ddy as it's a DdxDdy register
    
    }
    
@@ -809,12 +1076,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -912,12 +1179,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return BloomIntensity;
             }
          }
          else
          {
-            return baseValue;
+            return BloomIntensity;
          }
       }
 #endif
@@ -987,12 +1254,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return BaseIntensity;
             }
          }
          else
          {
-            return baseValue;
+            return BaseIntensity;
          }
       }
 #endif
@@ -1062,12 +1329,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return BloomSaturation;
             }
          }
          else
          {
-            return baseValue;
+            return BloomSaturation;
          }
       }
 #endif
@@ -1137,12 +1404,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return BaseSaturation;
             }
          }
          else
          {
-            return baseValue;
+            return BaseSaturation;
          }
       }
 #endif
@@ -1241,12 +1508,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Threshold;
             }
          }
          else
          {
-            return baseValue;
+            return Threshold;
          }
       }
 #endif
@@ -1344,12 +1611,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -1418,12 +1685,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return FuzzyAmount;
             }
          }
          else
          {
-            return baseValue;
+            return FuzzyAmount;
          }
       }
 #endif
@@ -1518,12 +1785,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -1649,12 +1916,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Desaturation;
             }
          }
          else
          {
-            return baseValue;
+            return Desaturation;
          }
       }
 #endif
@@ -1728,12 +1995,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Toned;
             }
          }
          else
          {
-            return baseValue;
+            return Toned;
          }
       }
 #endif
@@ -1804,12 +2071,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return LightColor;
             }
          }
          else
          {
-            return baseValue;
+            return LightColor;
          }
       }
 #endif
@@ -1879,12 +2146,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return DarkColor;
             }
          }
          else
          {
-            return baseValue;
+            return DarkColor;
          }
       }
 #endif
@@ -1981,12 +2248,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Brightness;
             }
          }
          else
          {
-            return baseValue;
+            return Brightness;
          }
       }
 #endif
@@ -2059,12 +2326,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Contrast;
             }
          }
          else
          {
-            return baseValue;
+            return Contrast;
          }
       }
 #endif
@@ -2164,12 +2431,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Alpha;
             }
          }
          else
          {
-            return baseValue;
+            return Alpha;
          }
       }
 #endif
@@ -2270,12 +2537,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Alpha;
             }
          }
          else
          {
-            return baseValue;
+            return Alpha;
          }
       }
 #endif
@@ -2349,12 +2616,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Multiplier;
             }
          }
          else
          {
-            return baseValue;
+            return Multiplier;
          }
       }
 #endif
@@ -2455,12 +2722,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Angle;
             }
          }
          else
          {
-            return baseValue;
+            return Angle;
          }
       }
 #endif
@@ -2534,12 +2801,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return BlurAmount;
             }
          }
          else
          {
-            return baseValue;
+            return BlurAmount;
          }
       }
 #endif
@@ -2640,12 +2907,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Amount;
             }
          }
          else
          {
-            return baseValue;
+            return Amount;
          }
       }
 #endif
@@ -2719,12 +2986,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Width;
             }
          }
          else
          {
-            return baseValue;
+            return Width;
          }
       }
 #endif
@@ -2821,12 +3088,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -2924,12 +3191,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return GloomIntensity;
             }
          }
          else
          {
-            return baseValue;
+            return GloomIntensity;
          }
       }
 #endif
@@ -2999,12 +3266,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return BaseIntensity;
             }
          }
          else
          {
-            return baseValue;
+            return BaseIntensity;
          }
       }
 #endif
@@ -3074,12 +3341,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return GloomSaturation;
             }
          }
          else
          {
-            return baseValue;
+            return GloomSaturation;
          }
       }
 #endif
@@ -3149,12 +3416,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return BaseSaturation;
             }
          }
          else
          {
-            return baseValue;
+            return BaseSaturation;
          }
       }
 #endif
@@ -3254,12 +3521,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return DiscRadius;
             }
          }
          else
          {
-            return baseValue;
+            return DiscRadius;
          }
       }
 #endif
@@ -3333,12 +3600,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return ScreenSize;
             }
          }
          else
          {
-            return baseValue;
+            return ScreenSize;
          }
       }
 #endif
@@ -3485,12 +3752,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -3588,12 +3855,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Alpha;
             }
          }
          else
          {
-            return baseValue;
+            return Alpha;
          }
       }
 #endif
@@ -3694,12 +3961,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return BrightThreshold;
             }
          }
          else
          {
-            return baseValue;
+            return BrightThreshold;
          }
       }
 #endif
@@ -3773,12 +4040,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Scale;
             }
          }
          else
          {
-            return baseValue;
+            return Scale;
          }
       }
 #endif
@@ -3879,12 +4146,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -3953,12 +4220,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return LineOrigin;
             }
          }
          else
          {
-            return baseValue;
+            return LineOrigin;
          }
       }
 #endif
@@ -4027,12 +4294,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return LineNormal;
             }
          }
          else
          {
-            return baseValue;
+            return LineNormal;
          }
       }
 #endif
@@ -4101,12 +4368,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return LineOffset;
             }
          }
          else
          {
-            return baseValue;
+            return LineOffset;
          }
       }
 #endif
@@ -4175,12 +4442,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return FuzzyAmount;
             }
          }
          else
          {
-            return baseValue;
+            return FuzzyAmount;
          }
       }
 #endif
@@ -4280,12 +4547,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Radii;
             }
          }
          else
          {
-            return baseValue;
+            return Radii;
          }
       }
 #endif
@@ -4356,12 +4623,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Center;
             }
          }
          else
          {
-            return baseValue;
+            return Center;
          }
       }
 #endif
@@ -4431,12 +4698,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Amount;
             }
          }
          else
          {
-            return baseValue;
+            return Amount;
          }
       }
 #endif
@@ -4532,12 +4799,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return FilterColor;
             }
          }
          else
          {
-            return baseValue;
+            return FilterColor;
          }
       }
 #endif
@@ -4633,12 +4900,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -4736,12 +5003,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Alpha;
             }
          }
          else
          {
-            return baseValue;
+            return Alpha;
          }
       }
 #endif
@@ -4841,12 +5108,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Alpha;
             }
          }
          else
          {
-            return baseValue;
+            return Alpha;
          }
       }
 #endif
@@ -4945,12 +5212,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Center;
             }
          }
          else
          {
-            return baseValue;
+            return Center;
          }
       }
 #endif
@@ -5023,12 +5290,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Radius;
             }
          }
          else
          {
-            return baseValue;
+            return Radius;
          }
       }
 #endif
@@ -5102,12 +5369,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Amount;
             }
          }
          else
          {
-            return baseValue;
+            return Amount;
          }
       }
 #endif
@@ -5207,12 +5474,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return PixelCount;
             }
          }
          else
          {
-            return baseValue;
+            return PixelCount;
          }
       }
 #endif
@@ -5309,12 +5576,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -5409,12 +5676,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -5509,12 +5776,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -5609,12 +5876,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -5712,12 +5979,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Center;
             }
          }
          else
          {
-            return baseValue;
+            return Center;
          }
       }
 #endif
@@ -5790,12 +6057,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Amplitude;
             }
          }
          else
          {
-            return baseValue;
+            return Amplitude;
          }
       }
 #endif
@@ -5869,12 +6136,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Frequency;
             }
          }
          else
          {
-            return baseValue;
+            return Frequency;
          }
       }
 #endif
@@ -5948,12 +6215,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Phase;
             }
          }
          else
          {
-            return baseValue;
+            return Phase;
          }
       }
 #endif
@@ -6050,12 +6317,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -6150,12 +6417,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -6255,12 +6522,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Amount;
             }
          }
          else
          {
-            return baseValue;
+            return Amount;
          }
       }
 #endif
@@ -6334,12 +6601,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Width;
             }
          }
          else
          {
-            return baseValue;
+            return Width;
          }
       }
 #endif
@@ -6437,12 +6704,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -6538,12 +6805,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -6612,12 +6879,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return SlideAmount;
             }
          }
          else
          {
-            return baseValue;
+            return SlideAmount;
          }
       }
 #endif
@@ -6713,12 +6980,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Center;
             }
          }
          else
          {
-            return baseValue;
+            return Center;
          }
       }
 #endif
@@ -6791,12 +7058,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return InnerRadius;
             }
          }
          else
          {
-            return baseValue;
+            return InnerRadius;
          }
       }
 #endif
@@ -6894,12 +7161,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -6968,12 +7235,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return TwistAmount;
             }
          }
          else
          {
-            return baseValue;
+            return TwistAmount;
          }
       }
 #endif
@@ -7097,12 +7364,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Center;
             }
          }
          else
          {
-            return baseValue;
+            return Center;
          }
       }
 #endif
@@ -7172,12 +7439,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return SpiralStrength;
             }
          }
          else
          {
-            return baseValue;
+            return SpiralStrength;
          }
       }
 #endif
@@ -7250,12 +7517,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return AngleFrequency;
             }
          }
          else
          {
-            return baseValue;
+            return AngleFrequency;
          }
       }
 #endif
@@ -7353,12 +7620,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -7427,12 +7694,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return TwistAmount;
             }
          }
          else
          {
-            return baseValue;
+            return TwistAmount;
          }
       }
 #endif
@@ -7528,12 +7795,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -7602,12 +7869,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return TwistAmount;
             }
          }
          else
          {
-            return baseValue;
+            return TwistAmount;
          }
       }
 #endif
@@ -7708,12 +7975,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Exposure;
             }
          }
          else
          {
-            return baseValue;
+            return Exposure;
          }
       }
 #endif
@@ -7783,12 +8050,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Defog;
             }
          }
          else
          {
-            return baseValue;
+            return Defog;
          }
       }
 #endif
@@ -7858,12 +8125,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Gamma;
             }
          }
          else
          {
-            return baseValue;
+            return Gamma;
          }
       }
 #endif
@@ -7933,12 +8200,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return FogColor;
             }
          }
          else
          {
-            return baseValue;
+            return FogColor;
          }
       }
 #endif
@@ -8011,12 +8278,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return VignetteRadius;
             }
          }
          else
          {
-            return baseValue;
+            return VignetteRadius;
          }
       }
 #endif
@@ -8087,12 +8354,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return VignetteCenter;
             }
          }
          else
          {
-            return baseValue;
+            return VignetteCenter;
          }
       }
 #endif
@@ -8165,12 +8432,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return BlueShift;
             }
          }
          else
          {
-            return baseValue;
+            return BlueShift;
          }
       }
 #endif
@@ -8293,12 +8560,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -8367,12 +8634,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return RandomSeed;
             }
          }
          else
          {
-            return baseValue;
+            return RandomSeed;
          }
       }
 #endif
@@ -8467,12 +8734,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Progress;
             }
          }
          else
          {
-            return baseValue;
+            return Progress;
          }
       }
 #endif
@@ -8568,12 +8835,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return Center;
             }
          }
          else
          {
-            return baseValue;
+            return Center;
          }
       }
 #endif
@@ -8646,12 +8913,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return BlurAmount;
             }
          }
          else
          {
-            return baseValue;
+            return BlurAmount;
          }
       }
 #endif

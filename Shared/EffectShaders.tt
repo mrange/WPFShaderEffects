@@ -243,12 +243,12 @@ namespace WpfShaderEffects
             }
             else
             {
-               return baseValue;
+               return <#=shaderParameterName#>;
             }
          }
          else
          {
-            return baseValue;
+            return <#=shaderParameterName#>;
          }
       }
 #endif

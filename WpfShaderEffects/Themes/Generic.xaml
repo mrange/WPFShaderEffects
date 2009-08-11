@@ -4,12 +4,14 @@
     xmlns:local="clr-namespace:WpfShaderEffects">
 
    <Style TargetType="{x:Type local:TransitionEffectMixer}">
+      <Setter Property="Background" Value="White"/>
       <Setter Property="Template">
          <Setter.Value>
             <ControlTemplate TargetType="{x:Type local:TransitionEffectMixer}">
                <Grid>
                   <ContentControl 
                      x:Name="PART_Left"
+                     Background="{TemplateBinding Background}"
                      IsHitTestVisible="True"
                      Visibility="Visible"
                      HorizontalAlignment="Stretch" 
@@ -19,7 +21,8 @@
                   <ContentControl 
                      x:Name="PART_Right"
                      IsHitTestVisible="False"
-                     Visibility="Hidden"
+                     Background="{TemplateBinding Background}"
+                     Visibility="Collapsed"
                      HorizontalAlignment="Stretch" 
                      VerticalAlignment="Stretch" 
                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 

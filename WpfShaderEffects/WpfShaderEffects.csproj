@@ -271,6 +271,9 @@
     <Resource Include="..\Shared\ShaderBinary\ZoomBlur.fx.ps">
       <Link>ShaderBinary\ZoomBlur.fx.ps</Link>
     </Resource>
+    <Resource Include="..\Shared\ShaderBinary\BandedTransition.fx.ps">
+      <Link>ShaderBinary\BandedTransition.fx.ps</Link>
+    </Resource>
     <None Include="..\Shared\ShaderSource\Add.fx">
       <Link>ShaderSource\Add.fx</Link>
     </None>
@@ -282,6 +285,9 @@
     </None>
     <None Include="..\Shared\ShaderSource\BandedSwirlTransition.fx">
       <Link>ShaderSource\BandedSwirlTransition.fx</Link>
+    </None>
+    <None Include="..\Shared\ShaderSource\BandedTransition.fx">
+      <Link>ShaderSource\BandedTransition.fx</Link>
     </None>
     <None Include="..\Shared\ShaderSource\BlindsTransition.fx">
       <Link>ShaderSource\BlindsTransition.fx</Link>
