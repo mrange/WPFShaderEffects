@@ -17,10 +17,7 @@
 
    <Grid>
       <ZoomRectApp:RegionOfInterest x:Name="Roi">
-         <Grid>
-            <MediaElement Source="file://J:\\Movies\\Better.Off.Ted.S01E02.HDTV.XviD-LOL.avi"/>
-            <Button Width="100" Height="24" Content="Test"/>
-         </Grid>
+         <Image Source="/ZoomRectApp;component/Tulips.jpg"/>
       </ZoomRectApp:RegionOfInterest>
    </Grid>
    
