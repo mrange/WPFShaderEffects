@@ -13,6 +13,15 @@
  *
  * ***************************************************************************/
 
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
+// ReSharper disable HeuristicUnreachableCode
+// ReSharper disable InconsistentNaming
+// ReSharper disable PartialMethodWithSinglePart
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable RedundantAssignment
+// ReSharper disable RedundantCast
+// ReSharper disable RedundantIfElseBlock
+
 #if SILVERLIGHT
 namespace SilverlightShaderEffects
 #else

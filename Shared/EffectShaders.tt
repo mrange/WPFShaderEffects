@@ -22,6 +22,12 @@
  *
  * ***************************************************************************/
 
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
+// ReSharper disable HeuristicUnreachableCode
+// ReSharper disable InconsistentNaming
+// ReSharper disable PartialMethodWithSinglePart
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable RedundantIfElseBlock
 
 <#
    var countToBaseClassName = new []
