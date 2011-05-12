@@ -13,6 +13,12 @@
  *
  * ***************************************************************************/
 
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
+// ReSharper disable HeuristicUnreachableCode
+// ReSharper disable InconsistentNaming
+// ReSharper disable PartialMethodWithSinglePart
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable RedundantIfElseBlock
 
 // CompilerPath      :     F:\Projects\wpfshadereffects\Shared\..\Output\WpfShaderEffects.DirectX.dll
 // ShaderSourcePath  :     F:\Projects\wpfshadereffects\Shared\ShaderSource

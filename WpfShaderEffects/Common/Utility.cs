@@ -48,7 +48,7 @@ namespace WpfShaderEffects.Common
 
          var uriString =
             string.Format(
-               @"pack://application:,,,/{0};component/{1}",
+               @"pack://application:,,,/{0};component/ShaderBinary/{1}",
                assemblyShortName,
                relativeFile);
 

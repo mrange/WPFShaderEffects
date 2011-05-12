@@ -17,7 +17,9 @@
 
    <Grid>
       <ZoomRectApp:RegionOfInterest x:Name="Roi">
-         <Image Source="/ZoomRectApp;component/Tulips.jpg"/>
+         <ZoomRectApp:RegionOfInterest.Content>
+            <Image Source="/ZoomRectApp;component/Images/Tulips.jpg"/>
+         </ZoomRectApp:RegionOfInterest.Content>
       </ZoomRectApp:RegionOfInterest>
    </Grid>
    
