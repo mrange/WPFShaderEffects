@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoomRectApp", "ZoomRectApp\ZoomRectApp.csproj", "{4D4E5438-9D4F-4B67-8AFC-F0B3874457A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfShaderEffects", "..\..\WpfShaderEffects\WpfShaderEffects.csproj", "{B8703764-3BE4-426E-8689-BD7D865D9D4B}"

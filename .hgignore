@@ -1,0 +1,10 @@
+relre:^Output/
+relre:\.user$
+relre:\.suo$
+relre:/bin/
+relre:/obj/
+relre:^_ReSharper\.
+relre:^_ReSharper\.
+relre:/_ReSharper\.
+syntax: regexp
+^SilverlightOutput/

@@ -49,7 +49,7 @@ namespace SilverlightShaderEffects.Common
 
          var uriString =
             string.Format(
-               @"/{0};component/{1}",
+               @"/{0};component/ShaderBinary/{1}",
                assemblyShortName,
                relativeFile);
 

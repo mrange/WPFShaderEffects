@@ -14,9 +14,9 @@
  * ***************************************************************************/
 
 
-// CompilerPath      :     H:\wpfshadereffects\Shared\..\Output\WpfShaderEffects.DirectX.dll
-// ShaderSourcePath  :     H:\wpfshadereffects\Shared\ShaderSource
-// ShaderBinaryPath  :     H:\wpfshadereffects\Shared\ShaderBinary
+// CompilerPath      :     F:\Projects\wpfshadereffects\Shared\..\Output\WpfShaderEffects.DirectX.dll
+// ShaderSourcePath  :     F:\Projects\wpfshadereffects\Shared\ShaderSource
+// ShaderBinaryPath  :     F:\Projects\wpfshadereffects\Shared\ShaderBinary
 
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
@@ -27,7 +27,7 @@ namespace SilverlightShaderEffects
 namespace WpfShaderEffects
 #endif
 {
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Add.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Add.fx.ps
    
    /// <summary>
    /// AddShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -132,7 +132,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Alpha.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Alpha.fx.ps
    
    /// <summary>
    /// AlphaShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -237,7 +237,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BandedSwirl.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\BandedSwirl.fx.ps
    
    /// <summary>
    /// BandedSwirlShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -490,7 +490,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BandedSwirlTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\BandedSwirlTransition.fx.ps
    
    /// <summary>
    /// BandedSwirlTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -740,7 +740,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BandedTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\BandedTransition.fx.ps
    
    /// <summary>
    /// BandedTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1007,7 +1007,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BlindsTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\BlindsTransition.fx.ps
    
    /// <summary>
    /// BlindsTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1107,7 +1107,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Bloom.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Bloom.fx.ps
    
    /// <summary>
    /// BloomShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1436,7 +1436,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\BrightExtract.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\BrightExtract.fx.ps
    
    /// <summary>
    /// BrightExtractShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1541,7 +1541,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\CircleRevealTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\CircleRevealTransition.fx.ps
    
    /// <summary>
    /// CircleRevealTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1716,7 +1716,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\CircleStretchTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\CircleStretchTransition.fx.ps
    
    /// <summary>
    /// CircleStretchTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1816,7 +1816,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ColorKeyAlpha.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\ColorKeyAlpha.fx.ps
    
    /// <summary>
    /// ColorKeyAlphaShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -1841,7 +1841,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ColorTone.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\ColorTone.fx.ps
    
    /// <summary>
    /// ColorToneShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -2178,7 +2178,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ContrastAdjust.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\ContrastAdjust.fx.ps
    
    /// <summary>
    /// ContrastAdjustShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -2359,7 +2359,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Darken.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Darken.fx.ps
    
    /// <summary>
    /// DarkenShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -2464,7 +2464,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Difference.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Difference.fx.ps
    
    /// <summary>
    /// DifferenceShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -2649,7 +2649,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\DirectionalBlur.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\DirectionalBlur.fx.ps
    
    /// <summary>
    /// DirectionalBlurShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -2834,7 +2834,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Embossed.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Embossed.fx.ps
    
    /// <summary>
    /// EmbossedShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3019,7 +3019,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\FadeTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\FadeTransition.fx.ps
    
    /// <summary>
    /// FadeTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3119,7 +3119,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Gloom.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Gloom.fx.ps
    
    /// <summary>
    /// GloomShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3448,7 +3448,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\GrowablePoissonDisk.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\GrowablePoissonDisk.fx.ps
    
    /// <summary>
    /// GrowablePoissonDiskShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3633,7 +3633,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Identity.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Identity.fx.ps
    
    /// <summary>
    /// IdentityShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3658,7 +3658,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\InvertColor.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\InvertColor.fx.ps
    
    /// <summary>
    /// InvertColorShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3683,7 +3683,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\LeastBrightTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\LeastBrightTransition.fx.ps
    
    /// <summary>
    /// LeastBrightTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3783,7 +3783,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Lighten.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Lighten.fx.ps
    
    /// <summary>
    /// LightenShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -3888,7 +3888,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\LightStreak.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\LightStreak.fx.ps
    
    /// <summary>
    /// LightStreakShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -4073,7 +4073,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\LineRevealTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\LineRevealTransition.fx.ps
    
    /// <summary>
    /// LineRevealTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -4473,7 +4473,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Magnify.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Magnify.fx.ps
    
    /// <summary>
    /// MagnifyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -4730,7 +4730,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Monochrome.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Monochrome.fx.ps
    
    /// <summary>
    /// MonochromeShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -4831,7 +4831,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\MostBrightTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\MostBrightTransition.fx.ps
    
    /// <summary>
    /// MostBrightTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -4931,7 +4931,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Multiply.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Multiply.fx.ps
    
    /// <summary>
    /// MultiplyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -5036,7 +5036,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\NegationDifference.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\NegationDifference.fx.ps
    
    /// <summary>
    /// NegationDifferenceShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -5141,7 +5141,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Pinch.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Pinch.fx.ps
    
    /// <summary>
    /// PinchShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -5402,7 +5402,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Pixelate.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Pixelate.fx.ps
    
    /// <summary>
    /// PixelateShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -5507,7 +5507,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\PixelateInTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\PixelateInTransition.fx.ps
    
    /// <summary>
    /// PixelateInTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -5607,7 +5607,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\PixelateOutTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\PixelateOutTransition.fx.ps
    
    /// <summary>
    /// PixelateOutTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -5707,7 +5707,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\PixelateTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\PixelateTransition.fx.ps
    
    /// <summary>
    /// PixelateTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -5807,7 +5807,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\RadialBlurTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\RadialBlurTransition.fx.ps
    
    /// <summary>
    /// RadialBlurTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -5907,7 +5907,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Ripple.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Ripple.fx.ps
    
    /// <summary>
    /// RippleShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -6248,7 +6248,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\RippleTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\RippleTransition.fx.ps
    
    /// <summary>
    /// RippleTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -6348,7 +6348,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SaturateTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\SaturateTransition.fx.ps
    
    /// <summary>
    /// SaturateTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -6448,7 +6448,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Sharpen.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Sharpen.fx.ps
    
    /// <summary>
    /// SharpenShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -6635,7 +6635,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ShrinkTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\ShrinkTransition.fx.ps
    
    /// <summary>
    /// ShrinkTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -6735,7 +6735,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SlideInTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\SlideInTransition.fx.ps
    
    /// <summary>
    /// SlideInTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -6910,7 +6910,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SmoothMagnify.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\SmoothMagnify.fx.ps
    
    /// <summary>
    /// SmoothMagnifyShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -7091,7 +7091,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SmoothSwirlGridTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\SmoothSwirlGridTransition.fx.ps
    
    /// <summary>
    /// SmoothSwirlGridTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -7266,7 +7266,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Sobel.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Sobel.fx.ps
    
    /// <summary>
    /// SobelShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -7293,7 +7293,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Swirl.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Swirl.fx.ps
    
    /// <summary>
    /// SwirlShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -7550,7 +7550,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SwirlGridTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\SwirlGridTransition.fx.ps
    
    /// <summary>
    /// SwirlGridTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -7725,7 +7725,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\SwirlTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\SwirlTransition.fx.ps
    
    /// <summary>
    /// SwirlTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -7900,7 +7900,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ToneMapping.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\ToneMapping.fx.ps
    
    /// <summary>
    /// ToneMappingShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -8465,7 +8465,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\Toon.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\Toon.fx.ps
    
    /// <summary>
    /// ToonShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -8490,7 +8490,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\WaterTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\WaterTransition.fx.ps
    
    /// <summary>
    /// WaterTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -8665,7 +8665,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\WaveTransition.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\WaveTransition.fx.ps
    
    /// <summary>
    /// WaveTransitionShaderEffect inherits System.Windows.Media.Effects.ShaderEffect
@@ -8765,7 +8765,7 @@ namespace WpfShaderEffects
    
    }
    
-   // Wrote to H:\wpfshadereffects\Shared\ShaderBinary\ZoomBlur.fx.ps
+   // Wrote to F:\Projects\wpfshadereffects\Shared\ShaderBinary\ZoomBlur.fx.ps
    
    /// <summary>
    /// ZoomBlurShaderEffect inherits System.Windows.Media.Effects.ShaderEffect

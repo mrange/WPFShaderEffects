@@ -1,15 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfShaderEffects", "WpfShaderEffects\WpfShaderEffects.csproj", "{B8703764-3BE4-426E-8689-BD7D865D9D4B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{4BC3EDCD-5870-425D-8CA4-3D9458E17032} = {4BC3EDCD-5870-425D-8CA4-3D9458E17032}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTestApplication", "WpfTestApplication\WpfTestApplication.csproj", "{01A2E15F-A0A8-4977-A17C-EC61D769192C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfShaderEffects.DirectX", "WpfShaderEffects.DirectX\WpfShaderEffects.DirectX.csproj", "{4BC3EDCD-5870-425D-8CA4-3D9458E17032}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. License", "0. License", "{CA451B2B-A8EA-451F-ACE4-C42C406DA957}"
 	ProjectSection(SolutionItems) = preProject
 		license.html = license.html
@@ -21,13 +12,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9. DirectX", "9. DirectX", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Silverlight", "2. Silverlight", "{51A922FB-F1FA-4F33-9533-7099D661021F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.1. Experimental", "1.1. Experimental", "{C3CB8251-03FF-4961-9985-F4454199D6CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfShaderEffects", "WpfShaderEffects\WpfShaderEffects.csproj", "{B8703764-3BE4-426E-8689-BD7D865D9D4B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4BC3EDCD-5870-425D-8CA4-3D9458E17032} = {4BC3EDCD-5870-425D-8CA4-3D9458E17032}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTestApplication", "WpfTestApplication\WpfTestApplication.csproj", "{01A2E15F-A0A8-4977-A17C-EC61D769192C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfShaderEffects.DirectX", "WpfShaderEffects.DirectX\WpfShaderEffects.DirectX.csproj", "{4BC3EDCD-5870-425D-8CA4-3D9458E17032}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightShaderEffects", "SilverlightShaderEffects\SilverlightShaderEffects.csproj", "{DD41CE5A-6791-49CE-90F2-304B89EF2EC3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightTestApplication", "SilverlightTestApplication\SilverlightTestApplication.csproj", "{F5532A9F-9AB8-48D1-9CFA-7D776715B7FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfShaderEffects.Experimental", "WpfShaderEffects.Experimental\WpfShaderEffects.Experimental.csproj", "{7688C36A-EBF4-48F9-96B1-83F69287D472}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.1. Experimental", "1.1. Experimental", "{C3CB8251-03FF-4961-9985-F4454199D6CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,9 +77,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{01A2E15F-A0A8-4977-A17C-EC61D769192C} = {80FBDC7D-70FF-461B-BEF1-2CAD410DC7C4}
-		{B8703764-3BE4-426E-8689-BD7D865D9D4B} = {80FBDC7D-70FF-461B-BEF1-2CAD410DC7C4}
 		{C3CB8251-03FF-4961-9985-F4454199D6CE} = {80FBDC7D-70FF-461B-BEF1-2CAD410DC7C4}
+		{B8703764-3BE4-426E-8689-BD7D865D9D4B} = {80FBDC7D-70FF-461B-BEF1-2CAD410DC7C4}
+		{01A2E15F-A0A8-4977-A17C-EC61D769192C} = {80FBDC7D-70FF-461B-BEF1-2CAD410DC7C4}
 		{4BC3EDCD-5870-425D-8CA4-3D9458E17032} = {E10D38D3-B560-4352-A877-3BAFF031405E}
 		{DD41CE5A-6791-49CE-90F2-304B89EF2EC3} = {51A922FB-F1FA-4F33-9533-7099D661021F}
 		{F5532A9F-9AB8-48D1-9CFA-7D776715B7FC} = {51A922FB-F1FA-4F33-9533-7099D661021F}
