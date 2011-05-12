@@ -34,7 +34,7 @@ namespace WpfShaderEffects.DirectX
          {
             var shader = effect.CompileShader(
                "main",
-               "ps_2_0",
+               "ps_3_0",
                CompilerOptions.None);
 
             if (shader.CompileSucceeded)
