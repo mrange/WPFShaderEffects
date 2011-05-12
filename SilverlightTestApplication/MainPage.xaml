@@ -32,11 +32,11 @@
          <RowDefinition Height="0.5*"/>
       </Grid.RowDefinitions>
       <Grid Grid.Column="0" Grid.Row="0">
-         <Image Source="Tulips.jpg" Stretch="UniformToFill"/>
+         <Image Source="Images/Tulips.jpg" Stretch="UniformToFill"/>
          <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Normal</TextBlock>
       </Grid>
       <Grid Grid.Column="0" Grid.Row="1">
-         <Image Source="Tulips.jpg" Stretch="UniformToFill">
+         <Image Source="Images/Tulips.jpg" Stretch="UniformToFill">
             <Image.Effect>
                <SE:InvertColorShaderEffect />
 
@@ -45,7 +45,7 @@
          <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Invert</TextBlock>
       </Grid>
       <Grid Grid.Column="1" Grid.Row="0">
-         <Image Name="RippleImage" Source="Tulips.jpg" Stretch="UniformToFill">
+         <Image Name="RippleImage" Source="Images/Tulips.jpg" Stretch="UniformToFill">
             <Image.Effect>
                <SE:RippleShaderEffect 
                   Center="0.3,0.3" 
@@ -58,11 +58,11 @@
          <TextBlock FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Ripple</TextBlock>
       </Grid>
       <Grid Grid.Column="1" Grid.Row="1">
-         <Image Name="TransitionImage" Source="Tulips.jpg" Stretch="UniformToFill">
+         <Image Name="TransitionImage" Source="Images/Tulips.jpg" Stretch="UniformToFill">
             <Image.Effect>
                <SE:WaterTransitionShaderEffect>
                   <SE:WaterTransitionShaderEffect.SecondInput>
-                     <ImageBrush ImageSource="Chrysanthemum.jpg"/>
+                     <ImageBrush ImageSource="Images/Chrysanthemum.jpg"/>
                   </SE:WaterTransitionShaderEffect.SecondInput>
                </SE:WaterTransitionShaderEffect>
             </Image.Effect>
