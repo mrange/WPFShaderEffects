@@ -7,6 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0. License", "0. License", 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Wpf", "1. Wpf", "{80FBDC7D-70FF-461B-BEF1-2CAD410DC7C4}"
+	ProjectSection(SolutionItems) = preProject
+		Shared\DependencyProperties.ttinclude = Shared\DependencyProperties.ttinclude
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9. DirectX", "9. DirectX", "{E10D38D3-B560-4352-A877-3BAFF031405E}"
 EndProject
