@@ -1,0 +1,372 @@
+﻿<#@ template language="C#" hostspecific="true" debug="false" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+/* ****************************************************************************
+ *
+ * Copyright (c) Mårten Rånge.
+ *
+ * This source code is subject to terms and conditions of the Microsoft Public License. A 
+ * copy of the license can be found in the License.html file at the root of this distribution. If 
+ * you cannot locate the  Microsoft Public License, please send an email to 
+ * dlr@microsoft.com. By using this source code in any fashion, you are agreeing to be bound 
+ * by the terms of the Microsoft Public License.
+ *
+ * You must not remove this notice, or any other, from this software.
+ *
+ *
+ * ***************************************************************************/
+
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
+// ReSharper disable HeuristicUnreachableCode
+// ReSharper disable InconsistentNaming
+// ReSharper disable PartialMethodWithSinglePart
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable RedundantAssignment
+// ReSharper disable RedundantCast
+// ReSharper disable RedundantIfElseBlock
+
+#if SILVERLIGHT
+namespace SilverlightShaderEffects
+#else
+namespace <#=namespaceName#>
+#endif
+{
+<#
+   foreach(var dependencyObjectClass in model)
+   {
+      var className = dependencyObjectClass.Name;
+      var completeClassName = "WpfShaderEffects." + className;
+#>   
+   // -------------------------------------------------------------------------
+   // <#=completeClassName#> class
+   // -------------------------------------------------------------------------
+   /// <summary>
+   /// <#=completeClassName#> class
+   /// </summary>
+   public sealed partial class <#=className#>
+   {
+      partial void OnConstruction();
+      
+      public <#=className#>()
+      {
+<#   
+      foreach(var dependencyProperty in dependencyObjectClass.Properties)
+      {
+#>
+         CoerceValue (<#=dependencyProperty.Name#>Property);
+<#
+      }
+#>
+
+         OnConstruction();
+      }
+      
+<#   
+      foreach(var dependencyProperty in dependencyObjectClass.Properties)
+      {
+         var isReadonly             = dependencyProperty.HasFlags(DependencyObjectPropertyFlags.ReadOnly);
+         var isCalculated           = dependencyProperty.HasFlags(DependencyObjectPropertyFlags.Calculated);
+         var isAttached             = dependencyProperty.HasFlags(DependencyObjectPropertyFlags.Attached);
+         
+         var registerAppend         = isAttached ? "Attached" : "";
+         
+         var propertyName           = dependencyProperty.Name;
+         var propertyType           = dependencyProperty.Type;
+         var defaultValue           = dependencyProperty.DefaultValue ?? "default(" + propertyType + ")";
+
+         var changeCallback         = isCalculated 
+            ? "null"
+            :  string.Format(@"{0}PropertyChangedStatic", propertyName);
+         
+#>      
+      // ----------------------------------------------------------------------
+      // BEGIN_PROPERTY <#=propertyName#>      
+<#
+      if (isReadonly)
+      {
+#>      
+      static System.Windows.DependencyPropertyKey <#=propertyName#>PropertyKey = System.Windows.DependencyProperty.RegisterReadOnly<#=registerAppend#>(
+         "<#=propertyName#>",
+         typeof(<#=propertyType#>),
+         typeof(<#=className#>),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            <#=defaultValue#>,
+            <#=changeCallback#>));
+#else
+         new System.Windows.UIPropertyMetadata(
+            <#=defaultValue#>, 
+            <#=changeCallback#>,
+            <#=propertyName#>CoerceValueStatic));
+#endif
+
+      public static System.Windows.DependencyProperty <#=propertyName#>Property = 
+         <#=propertyName#>PropertyKey.DependencyProperty;
+<#
+      }
+      else
+      {      
+#>      
+      public static System.Windows.DependencyProperty <#=propertyName#>Property = System.Windows.DependencyProperty.Register<#=registerAppend#>(
+         "<#=propertyName#>",
+         typeof(<#=propertyType#>),
+         typeof(<#=className#>),
+#if SILVERLIGHT
+         new System.Windows.PropertyMetadata(
+            <#=defaultValue#>,
+            <#=propertyName#>PropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
+            <#=defaultValue#>, 
+            <#=propertyName#>PropertyChangedStatic,
+            <#=propertyName#>CoerceValueStatic));
+#endif
+<#
+      }
+#>
+
+<#
+   if (!isAttached)
+   {
+#>   
+<#
+         if(!isCalculated)
+         {
+#>                     
+      partial void On<#=propertyName#>PropertyChanged(
+         <#=propertyType#> oldValue,
+         <#=propertyType#> newValue,
+         ref bool isProcessed);
+         
+      static void <#=propertyName#>PropertyChangedStatic(
+         System.Windows.DependencyObject instance, 
+         System.Windows.DependencyPropertyChangedEventArgs eventArgs)
+      {
+         var typedInstance = (<#=className#>)instance;
+         if (typedInstance != null)
+         {
+            var typedOldValue = (<#=propertyType#>)eventArgs.OldValue;
+            var typedNewValue = (<#=propertyType#>)eventArgs.NewValue;
+            
+            var isProcessed = false;
+            
+            typedInstance.On<#=propertyName#>PropertyChanged(
+               typedOldValue,
+               typedNewValue,
+               ref isProcessed);
+            
+         }
+      }
+<#      
+         }
+#>   
+#if !SILVERLIGHT
+      partial void On<#=propertyName#>CoerceValue(
+         <#=propertyType#> baseValue,
+         ref <#=propertyType#> newValue,
+         ref bool isProcessed);
+         
+      static object <#=propertyName#>CoerceValueStatic(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         var typedInstance = (<#=className#>)instance;
+         if (typedInstance != null)
+         {
+            var typedBaseValue = (<#=propertyType#>)baseValue;
+            var typedNewValue = default(<#=propertyType#>);
+            var isProcessed = false;
+            typedInstance.On<#=propertyName#>CoerceValue(
+               typedBaseValue,
+               ref typedNewValue,
+               ref isProcessed);
+            
+            if (isProcessed)
+            {
+               return typedNewValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets<#=!isReadonly ? " and sets" : ""#> <#=propertyName#> (<#=propertyType#>)
+      /// </summary>
+      public <#=propertyType#> <#=propertyName#>
+      {
+         get
+         {
+            return (<#=propertyType#>)GetValue(<#=propertyName#>Property);
+         }
+         <#=isReadonly ? "private " : ""#>set
+         {
+            var currentValue = <#=propertyName#>;
+            if (currentValue != value)
+            {
+               SetValue(<#=propertyName#>Property<#=isReadonly ? "Key" : ""#>, value);
+            }
+         }
+      }
+<#
+   }
+   else
+   {
+#>   
+
+<#
+         if(!isCalculated)
+         {
+#>                     
+      static partial void On<#=propertyName#>PropertyChanged(
+         System.Windows.DependencyObject instance,
+         <#=propertyType#> oldValue,
+         <#=propertyType#> newValue,
+         ref bool isProcessed);
+         
+      static void <#=propertyName#>PropertyChangedCallback(
+         System.Windows.DependencyObject instance, 
+         System.Windows.DependencyPropertyChangedEventArgs eventArgs)
+      {
+         if (instance != null && eventArgs != null)
+         {
+            var typedOldValue = (<#=propertyType#>)eventArgs.OldValue;
+            var typedNewValue = (<#=propertyType#>)eventArgs.NewValue;
+            
+            var isProcessed = false;
+            
+            On<#=propertyName#>PropertyChanged(
+               instance,
+               typedOldValue,
+               typedNewValue,
+               ref isProcessed);
+            
+         }
+      }
+<#      
+         }
+#>   
+#if !SILVERLIGHT
+      static partial void On<#=propertyName#>CoerceValue(
+         System.Windows.DependencyObject instance,
+         <#=propertyType#> baseValue,
+         ref <#=propertyType#> newValue,
+         ref bool isProcessed);
+         
+      static object <#=propertyName#>CoerceValueCallback(
+         System.Windows.DependencyObject instance, 
+         object baseValue)
+      {
+         if (instance != null)
+         {
+            var typedBaseValue = (<#=propertyType#>)baseValue;
+            var typedNewValue = default(<#=propertyType#>);
+            var isProcessed = false;
+            On<#=propertyName#>CoerceValue(
+               instance,
+               typedBaseValue,
+               ref typedNewValue,
+               ref isProcessed);
+            
+            if (isProcessed)
+            {
+               return typedNewValue;
+            }
+            else
+            {
+               return baseValue;
+            }
+         }
+         else
+         {
+            return baseValue;
+         }
+      }
+#endif
+      /// <summary>
+      /// Gets <#=propertyName#> (<#=propertyType#>)
+      /// </summary>
+      public static <#=propertyType#> Get<#=propertyName#>(System.Windows.DependencyObject instance)
+      {
+         return (<#=propertyType#>)instance.GetValue(<#=propertyName#>Property);
+      }
+      
+
+      /// <summary>
+      /// Sets <#=propertyName#> (<#=propertyType#>)
+      /// </summary>
+      <#=isReadonly ? "" : "public "#>static void Set<#=propertyName#>(System.Windows.DependencyObject instance, <#=propertyType#> value)
+      {
+         var currentValue = Get<#=propertyName#>(instance);
+         if (currentValue != value)
+         {
+            instance.SetValue(<#=propertyName#>Property<#=isReadonly ? "Key" : ""#>, value);
+         }
+      }
+<#
+   }
+#>   
+      // END_PROPERTY <#=propertyName#>
+      // ----------------------------------------------------------------------
+<#
+      }
+#>
+   }
+   // -------------------------------------------------------------------------
+
+<#
+   }
+#>
+}
+<#+
+   static DependencyObjectProperty Property(
+      string name, 
+      string type, 
+      string defaultValue,
+      DependencyObjectPropertyFlags flags)
+   {
+      return new DependencyObjectProperty
+         {
+            Name = name,
+            Type = type,
+            Flags = flags,
+            DefaultValue = defaultValue,
+         };
+   }
+   
+   class DependencyObjectClass
+   {
+      public string Name;
+      public DependencyObjectProperty[] Properties;
+   }
+   
+   [Flags]
+   enum DependencyObjectPropertyFlags
+   {
+      None                 = 0x0,
+      ReadOnly             = 0x2,
+      Calculated           = 0x6,
+      Attached             = 0x8,
+   }
+   
+   class DependencyObjectProperty
+   {
+      public string Name;
+      public string Type;
+      public string DefaultValue;
+      public DependencyObjectPropertyFlags Flags;
+
+      public bool HasFlags(DependencyObjectPropertyFlags flags)      
+      {
+         return (Flags & flags) == flags;
+      }
+     
+   }
+#>

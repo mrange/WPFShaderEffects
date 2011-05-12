@@ -47,11 +47,5 @@ namespace WpfShaderEffects.Experimental
             isProcessed = true;
          }
       }
-
-      public EffectRepeater()
-      {
-         CoerceAllDependencyProperties();
-      }
-
    }
 }

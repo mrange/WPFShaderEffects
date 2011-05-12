@@ -1,4 +1,5 @@
-﻿/* ****************************************************************************
+﻿
+/* ****************************************************************************
  *
  * Copyright (c) Mårten Rånge.
  *
@@ -13,30 +14,39 @@
  *
  * ***************************************************************************/
 
-   
-namespace WpfShaderEffects.Experimental
-{
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
+// ReSharper disable HeuristicUnreachableCode
+// ReSharper disable InconsistentNaming
+// ReSharper disable PartialMethodWithSinglePart
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable RedundantAssignment
+// ReSharper disable RedundantCast
+// ReSharper disable RedundantIfElseBlock
 
+#if SILVERLIGHT
+namespace SilverlightShaderEffects
+#else
+namespace WpfShaderEffects.Experimental
+#endif
+{
+   
    // -------------------------------------------------------------------------
-   // WpfShaderEffects.Experimental.EffectStacker class
+   // WpfShaderEffects.EffectStacker class
    // -------------------------------------------------------------------------
    /// <summary>
-   /// WpfShaderEffects.Experimental.EffectStacker class
+   /// WpfShaderEffects.EffectStacker class
    /// </summary>
    public sealed partial class EffectStacker
    {
-   
-      public void CoerceAllDependencyProperties()
-      {
-         CoerceValue(EffectsProperty);
+      partial void OnConstruction();
       
-      }
+      public EffectStacker()
+      {
+         CoerceValue (EffectsProperty);
 
-      public void InvalidateAllDependencyProperties()
-      {
-         InvalidateProperty(EffectsProperty);
-      
+         OnConstruction();
       }
+      
       
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Effects      
@@ -45,10 +55,16 @@ namespace WpfShaderEffects.Experimental
          "Effects",
          typeof(System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>),
          typeof(EffectStacker),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            null,
+            EffectsPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             null, 
-            EffectsPropertyChangedCallback, 
-            EffectsCoerceValueCallback));
+            EffectsPropertyChangedStatic,
+            EffectsCoerceValueStatic));
+#endif
 
    
                      
@@ -57,12 +73,12 @@ namespace WpfShaderEffects.Experimental
          System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect> newValue,
          ref bool isProcessed);
          
-      static void EffectsPropertyChangedCallback(
+      static void EffectsPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (EffectStacker)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>)eventArgs.OldValue;
             var typedNewValue = (System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>)eventArgs.NewValue;
@@ -77,12 +93,13 @@ namespace WpfShaderEffects.Experimental
          }
       }
    
+#if !SILVERLIGHT
       partial void OnEffectsCoerceValue(
          System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect> baseValue,
          ref System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect> newValue,
          ref bool isProcessed);
          
-      static object EffectsCoerceValueCallback(
+      static object EffectsCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -111,7 +128,7 @@ namespace WpfShaderEffects.Experimental
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets Effects (System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>)
       /// </summary>
@@ -135,36 +152,27 @@ namespace WpfShaderEffects.Experimental
       // ----------------------------------------------------------------------
    }
    // -------------------------------------------------------------------------
-}
 
    
-namespace WpfShaderEffects.Experimental
-{
-
    // -------------------------------------------------------------------------
-   // WpfShaderEffects.Experimental.EffectRepeater class
+   // WpfShaderEffects.EffectRepeater class
    // -------------------------------------------------------------------------
    /// <summary>
-   /// WpfShaderEffects.Experimental.EffectRepeater class
+   /// WpfShaderEffects.EffectRepeater class
    /// </summary>
    public sealed partial class EffectRepeater
    {
-   
-      public void CoerceAllDependencyProperties()
-      {
-         CoerceValue(BeforeContentEffectsProperty);
-         CoerceValue(AfterContentEffectsProperty);
-         CoerceValue(ContentVisibilityProperty);
+      partial void OnConstruction();
       
-      }
+      public EffectRepeater()
+      {
+         CoerceValue (BeforeContentEffectsProperty);
+         CoerceValue (AfterContentEffectsProperty);
+         CoerceValue (ContentVisibilityProperty);
 
-      public void InvalidateAllDependencyProperties()
-      {
-         InvalidateProperty(BeforeContentEffectsProperty);
-         InvalidateProperty(AfterContentEffectsProperty);
-         InvalidateProperty(ContentVisibilityProperty);
-      
+         OnConstruction();
       }
+      
       
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY BeforeContentEffects      
@@ -173,10 +181,16 @@ namespace WpfShaderEffects.Experimental
          "BeforeContentEffects",
          typeof(System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>),
          typeof(EffectRepeater),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            null,
+            BeforeContentEffectsPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             null, 
-            BeforeContentEffectsPropertyChangedCallback, 
-            BeforeContentEffectsCoerceValueCallback));
+            BeforeContentEffectsPropertyChangedStatic,
+            BeforeContentEffectsCoerceValueStatic));
+#endif
 
    
                      
@@ -185,12 +199,12 @@ namespace WpfShaderEffects.Experimental
          System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect> newValue,
          ref bool isProcessed);
          
-      static void BeforeContentEffectsPropertyChangedCallback(
+      static void BeforeContentEffectsPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (EffectRepeater)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>)eventArgs.OldValue;
             var typedNewValue = (System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>)eventArgs.NewValue;
@@ -205,12 +219,13 @@ namespace WpfShaderEffects.Experimental
          }
       }
    
+#if !SILVERLIGHT
       partial void OnBeforeContentEffectsCoerceValue(
          System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect> baseValue,
          ref System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect> newValue,
          ref bool isProcessed);
          
-      static object BeforeContentEffectsCoerceValueCallback(
+      static object BeforeContentEffectsCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -239,7 +254,7 @@ namespace WpfShaderEffects.Experimental
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets BeforeContentEffects (System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>)
       /// </summary>
@@ -269,10 +284,16 @@ namespace WpfShaderEffects.Experimental
          "AfterContentEffects",
          typeof(System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>),
          typeof(EffectRepeater),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            null,
+            AfterContentEffectsPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             null, 
-            AfterContentEffectsPropertyChangedCallback, 
-            AfterContentEffectsCoerceValueCallback));
+            AfterContentEffectsPropertyChangedStatic,
+            AfterContentEffectsCoerceValueStatic));
+#endif
 
    
                      
@@ -281,12 +302,12 @@ namespace WpfShaderEffects.Experimental
          System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect> newValue,
          ref bool isProcessed);
          
-      static void AfterContentEffectsPropertyChangedCallback(
+      static void AfterContentEffectsPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (EffectRepeater)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>)eventArgs.OldValue;
             var typedNewValue = (System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>)eventArgs.NewValue;
@@ -301,12 +322,13 @@ namespace WpfShaderEffects.Experimental
          }
       }
    
+#if !SILVERLIGHT
       partial void OnAfterContentEffectsCoerceValue(
          System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect> baseValue,
          ref System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect> newValue,
          ref bool isProcessed);
          
-      static object AfterContentEffectsCoerceValueCallback(
+      static object AfterContentEffectsCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -335,7 +357,7 @@ namespace WpfShaderEffects.Experimental
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets AfterContentEffects (System.Collections.ObjectModel.ObservableCollection<System.Windows.Media.Effects.Effect>)
       /// </summary>
@@ -365,10 +387,16 @@ namespace WpfShaderEffects.Experimental
          "ContentVisibility",
          typeof(System.Windows.Visibility),
          typeof(EffectRepeater),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            System.Windows.Visibility.Visible,
+            ContentVisibilityPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             System.Windows.Visibility.Visible, 
-            ContentVisibilityPropertyChangedCallback, 
-            ContentVisibilityCoerceValueCallback));
+            ContentVisibilityPropertyChangedStatic,
+            ContentVisibilityCoerceValueStatic));
+#endif
 
    
                      
@@ -377,12 +405,12 @@ namespace WpfShaderEffects.Experimental
          System.Windows.Visibility newValue,
          ref bool isProcessed);
          
-      static void ContentVisibilityPropertyChangedCallback(
+      static void ContentVisibilityPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (EffectRepeater)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (System.Windows.Visibility)eventArgs.OldValue;
             var typedNewValue = (System.Windows.Visibility)eventArgs.NewValue;
@@ -397,12 +425,13 @@ namespace WpfShaderEffects.Experimental
          }
       }
    
+#if !SILVERLIGHT
       partial void OnContentVisibilityCoerceValue(
          System.Windows.Visibility baseValue,
          ref System.Windows.Visibility newValue,
          ref bool isProcessed);
          
-      static object ContentVisibilityCoerceValueCallback(
+      static object ContentVisibilityCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -431,7 +460,7 @@ namespace WpfShaderEffects.Experimental
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets ContentVisibility (System.Windows.Visibility)
       /// </summary>
@@ -455,5 +484,6 @@ namespace WpfShaderEffects.Experimental
       // ----------------------------------------------------------------------
    }
    // -------------------------------------------------------------------------
+
 }
 

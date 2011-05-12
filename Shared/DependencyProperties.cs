@@ -1,4 +1,5 @@
-﻿/* ****************************************************************************
+﻿
+/* ****************************************************************************
  *
  * Copyright (c) Mårten Rånge.
  *
@@ -41,6 +42,11 @@ namespace WpfShaderEffects
       
       public TransitionEffectMixer()
       {
+         CoerceValue (LeftProperty);
+         CoerceValue (RightProperty);
+         CoerceValue (MixProperty);
+         CoerceValue (TransitionShaderEffectProperty);
+
          OnConstruction();
       }
       
@@ -460,3 +466,4 @@ namespace WpfShaderEffects
    // -------------------------------------------------------------------------
 
 }
+

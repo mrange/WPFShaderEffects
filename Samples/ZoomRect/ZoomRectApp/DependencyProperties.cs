@@ -1,4 +1,5 @@
-﻿/* ****************************************************************************
+﻿
+/* ****************************************************************************
  *
  * Copyright (c) Mårten Rånge.
  *
@@ -13,88 +14,75 @@
  *
  * ***************************************************************************/
 
-   
-namespace ZoomRectApp
-{
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
+// ReSharper disable HeuristicUnreachableCode
+// ReSharper disable InconsistentNaming
+// ReSharper disable PartialMethodWithSinglePart
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable RedundantAssignment
+// ReSharper disable RedundantCast
+// ReSharper disable RedundantIfElseBlock
 
+#if SILVERLIGHT
+namespace SilverlightShaderEffects
+#else
+namespace ZoomRectApp
+#endif
+{
+   
    // -------------------------------------------------------------------------
-   // ZoomRectApp.MainWindow class
+   // WpfShaderEffects.MainWindow class
    // -------------------------------------------------------------------------
    /// <summary>
-   /// ZoomRectApp.MainWindow class
+   /// WpfShaderEffects.MainWindow class
    /// </summary>
    public sealed partial class MainWindow
    {
-   
-      public void CoerceAllDependencyProperties()
-      {
+      partial void OnConstruction();
       
-      }
+      public MainWindow()
+      {
 
-      public void InvalidateAllDependencyProperties()
-      {
-      
+         OnConstruction();
       }
+      
    }
    // -------------------------------------------------------------------------
-}
 
    
-namespace ZoomRectApp
-{
-
    // -------------------------------------------------------------------------
-   // ZoomRectApp.RegionOfInterest class
+   // WpfShaderEffects.RegionOfInterest class
    // -------------------------------------------------------------------------
    /// <summary>
-   /// ZoomRectApp.RegionOfInterest class
+   /// WpfShaderEffects.RegionOfInterest class
    /// </summary>
    public sealed partial class RegionOfInterest
    {
-   
-      public void CoerceAllDependencyProperties()
-      {
-         CoerceValue(RoiVisibilityProperty);
-         CoerceValue(RoiZoomProperty);
-         CoerceValue(RoiZoomFactorProperty);
-         CoerceValue(RoiX0Property);
-         CoerceValue(RoiY0Property);
-         CoerceValue(RoiX1Property);
-         CoerceValue(RoiY1Property);
-         CoerceValue(RoiCenterXProperty);
-         CoerceValue(RoiCenterYProperty);
-         CoerceValue(RoiLeftProperty);
-         CoerceValue(RoiTopProperty);
-         CoerceValue(RoiRightProperty);
-         CoerceValue(RoiBottomProperty);
-         CoerceValue(RoiWidthProperty);
-         CoerceValue(RoiHeightProperty);
-         CoerceValue(ShadersProperty);
-         CoerceValue(CurrentShaderProperty);
+      partial void OnConstruction();
       
-      }
+      public RegionOfInterest()
+      {
+         CoerceValue (RoiVisibilityProperty);
+         CoerceValue (RoiZoomProperty);
+         CoerceValue (RoiZoomFactorProperty);
+         CoerceValue (RoiX0Property);
+         CoerceValue (RoiY0Property);
+         CoerceValue (RoiX1Property);
+         CoerceValue (RoiY1Property);
+         CoerceValue (RoiCenterXProperty);
+         CoerceValue (RoiCenterYProperty);
+         CoerceValue (RoiLeftProperty);
+         CoerceValue (RoiTopProperty);
+         CoerceValue (RoiRightProperty);
+         CoerceValue (RoiBottomProperty);
+         CoerceValue (RoiWidthProperty);
+         CoerceValue (RoiHeightProperty);
+         CoerceValue (ShadersProperty);
+         CoerceValue (CurrentShaderProperty);
 
-      public void InvalidateAllDependencyProperties()
-      {
-         InvalidateProperty(RoiVisibilityProperty);
-         InvalidateProperty(RoiZoomProperty);
-         InvalidateProperty(RoiZoomFactorProperty);
-         InvalidateProperty(RoiX0Property);
-         InvalidateProperty(RoiY0Property);
-         InvalidateProperty(RoiX1Property);
-         InvalidateProperty(RoiY1Property);
-         InvalidateProperty(RoiCenterXProperty);
-         InvalidateProperty(RoiCenterYProperty);
-         InvalidateProperty(RoiLeftProperty);
-         InvalidateProperty(RoiTopProperty);
-         InvalidateProperty(RoiRightProperty);
-         InvalidateProperty(RoiBottomProperty);
-         InvalidateProperty(RoiWidthProperty);
-         InvalidateProperty(RoiHeightProperty);
-         InvalidateProperty(ShadersProperty);
-         InvalidateProperty(CurrentShaderProperty);
-      
+         OnConstruction();
       }
+      
       
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY RoiVisibility      
@@ -103,10 +91,16 @@ namespace ZoomRectApp
          "RoiVisibility",
          typeof(System.Windows.Visibility),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            System.Windows.Visibility.Visible,
+            RoiVisibilityPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             System.Windows.Visibility.Visible, 
-            RoiVisibilityPropertyChangedCallback, 
-            RoiVisibilityCoerceValueCallback));
+            RoiVisibilityPropertyChangedStatic,
+            RoiVisibilityCoerceValueStatic));
+#endif
 
    
                      
@@ -115,12 +109,12 @@ namespace ZoomRectApp
          System.Windows.Visibility newValue,
          ref bool isProcessed);
          
-      static void RoiVisibilityPropertyChangedCallback(
+      static void RoiVisibilityPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (RegionOfInterest)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (System.Windows.Visibility)eventArgs.OldValue;
             var typedNewValue = (System.Windows.Visibility)eventArgs.NewValue;
@@ -135,12 +129,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnRoiVisibilityCoerceValue(
          System.Windows.Visibility baseValue,
          ref System.Windows.Visibility newValue,
          ref bool isProcessed);
          
-      static object RoiVisibilityCoerceValueCallback(
+      static object RoiVisibilityCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -169,7 +164,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets RoiVisibility (System.Windows.Visibility)
       /// </summary>
@@ -199,10 +194,16 @@ namespace ZoomRectApp
          "RoiZoom",
          typeof(decimal),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            1.0M,
+            RoiZoomPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             1.0M, 
-            RoiZoomPropertyChangedCallback, 
-            RoiZoomCoerceValueCallback));
+            RoiZoomPropertyChangedStatic,
+            RoiZoomCoerceValueStatic));
+#endif
 
    
                      
@@ -211,12 +212,12 @@ namespace ZoomRectApp
          decimal newValue,
          ref bool isProcessed);
          
-      static void RoiZoomPropertyChangedCallback(
+      static void RoiZoomPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (RegionOfInterest)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (decimal)eventArgs.OldValue;
             var typedNewValue = (decimal)eventArgs.NewValue;
@@ -231,12 +232,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnRoiZoomCoerceValue(
          decimal baseValue,
          ref decimal newValue,
          ref bool isProcessed);
          
-      static object RoiZoomCoerceValueCallback(
+      static object RoiZoomCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -265,7 +267,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets RoiZoom (decimal)
       /// </summary>
@@ -295,10 +297,16 @@ namespace ZoomRectApp
          "RoiZoomFactor",
          typeof(decimal),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            1.2M,
+            RoiZoomFactorPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             1.2M, 
-            RoiZoomFactorPropertyChangedCallback, 
-            RoiZoomFactorCoerceValueCallback));
+            RoiZoomFactorPropertyChangedStatic,
+            RoiZoomFactorCoerceValueStatic));
+#endif
 
    
                      
@@ -307,12 +315,12 @@ namespace ZoomRectApp
          decimal newValue,
          ref bool isProcessed);
          
-      static void RoiZoomFactorPropertyChangedCallback(
+      static void RoiZoomFactorPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (RegionOfInterest)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (decimal)eventArgs.OldValue;
             var typedNewValue = (decimal)eventArgs.NewValue;
@@ -327,12 +335,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnRoiZoomFactorCoerceValue(
          decimal baseValue,
          ref decimal newValue,
          ref bool isProcessed);
          
-      static object RoiZoomFactorCoerceValueCallback(
+      static object RoiZoomFactorCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -361,7 +370,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets RoiZoomFactor (decimal)
       /// </summary>
@@ -391,10 +400,16 @@ namespace ZoomRectApp
          "RoiX0",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            RoiX0PropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-            RoiX0PropertyChangedCallback, 
-            RoiX0CoerceValueCallback));
+            RoiX0PropertyChangedStatic,
+            RoiX0CoerceValueStatic));
+#endif
 
    
                      
@@ -403,12 +418,12 @@ namespace ZoomRectApp
          double newValue,
          ref bool isProcessed);
          
-      static void RoiX0PropertyChangedCallback(
+      static void RoiX0PropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (RegionOfInterest)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
             var typedNewValue = (double)eventArgs.NewValue;
@@ -423,12 +438,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnRoiX0CoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiX0CoerceValueCallback(
+      static object RoiX0CoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -457,7 +473,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets RoiX0 (double)
       /// </summary>
@@ -487,10 +503,16 @@ namespace ZoomRectApp
          "RoiY0",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            RoiY0PropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-            RoiY0PropertyChangedCallback, 
-            RoiY0CoerceValueCallback));
+            RoiY0PropertyChangedStatic,
+            RoiY0CoerceValueStatic));
+#endif
 
    
                      
@@ -499,12 +521,12 @@ namespace ZoomRectApp
          double newValue,
          ref bool isProcessed);
          
-      static void RoiY0PropertyChangedCallback(
+      static void RoiY0PropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (RegionOfInterest)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
             var typedNewValue = (double)eventArgs.NewValue;
@@ -519,12 +541,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnRoiY0CoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiY0CoerceValueCallback(
+      static object RoiY0CoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -553,7 +576,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets RoiY0 (double)
       /// </summary>
@@ -583,10 +606,16 @@ namespace ZoomRectApp
          "RoiX1",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            RoiX1PropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-            RoiX1PropertyChangedCallback, 
-            RoiX1CoerceValueCallback));
+            RoiX1PropertyChangedStatic,
+            RoiX1CoerceValueStatic));
+#endif
 
    
                      
@@ -595,12 +624,12 @@ namespace ZoomRectApp
          double newValue,
          ref bool isProcessed);
          
-      static void RoiX1PropertyChangedCallback(
+      static void RoiX1PropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (RegionOfInterest)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
             var typedNewValue = (double)eventArgs.NewValue;
@@ -615,12 +644,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnRoiX1CoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiX1CoerceValueCallback(
+      static object RoiX1CoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -649,7 +679,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets RoiX1 (double)
       /// </summary>
@@ -679,10 +709,16 @@ namespace ZoomRectApp
          "RoiY1",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            RoiY1PropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-            RoiY1PropertyChangedCallback, 
-            RoiY1CoerceValueCallback));
+            RoiY1PropertyChangedStatic,
+            RoiY1CoerceValueStatic));
+#endif
 
    
                      
@@ -691,12 +727,12 @@ namespace ZoomRectApp
          double newValue,
          ref bool isProcessed);
          
-      static void RoiY1PropertyChangedCallback(
+      static void RoiY1PropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (RegionOfInterest)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
             var typedNewValue = (double)eventArgs.NewValue;
@@ -711,12 +747,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnRoiY1CoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiY1CoerceValueCallback(
+      static object RoiY1CoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -745,7 +782,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets RoiY1 (double)
       /// </summary>
@@ -775,10 +812,16 @@ namespace ZoomRectApp
          "RoiCenterX",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            RoiCenterXPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-            RoiCenterXPropertyChangedCallback, 
-            RoiCenterXCoerceValueCallback));
+            RoiCenterXPropertyChangedStatic,
+            RoiCenterXCoerceValueStatic));
+#endif
 
    
                      
@@ -787,12 +830,12 @@ namespace ZoomRectApp
          double newValue,
          ref bool isProcessed);
          
-      static void RoiCenterXPropertyChangedCallback(
+      static void RoiCenterXPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (RegionOfInterest)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
             var typedNewValue = (double)eventArgs.NewValue;
@@ -807,12 +850,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnRoiCenterXCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiCenterXCoerceValueCallback(
+      static object RoiCenterXCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -841,7 +885,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets RoiCenterX (double)
       /// </summary>
@@ -871,10 +915,16 @@ namespace ZoomRectApp
          "RoiCenterY",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            RoiCenterYPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-            RoiCenterYPropertyChangedCallback, 
-            RoiCenterYCoerceValueCallback));
+            RoiCenterYPropertyChangedStatic,
+            RoiCenterYCoerceValueStatic));
+#endif
 
    
                      
@@ -883,12 +933,12 @@ namespace ZoomRectApp
          double newValue,
          ref bool isProcessed);
          
-      static void RoiCenterYPropertyChangedCallback(
+      static void RoiCenterYPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (RegionOfInterest)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
             var typedNewValue = (double)eventArgs.NewValue;
@@ -903,12 +953,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnRoiCenterYCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiCenterYCoerceValueCallback(
+      static object RoiCenterYCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -937,7 +988,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets RoiCenterY (double)
       /// </summary>
@@ -967,23 +1018,29 @@ namespace ZoomRectApp
          "RoiLeft",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            null));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-                     
-            null, 
-            RoiLeftCoerceValueCallback));
+            null,
+            RoiLeftCoerceValueStatic));
+#endif
 
       public static System.Windows.DependencyProperty RoiLeftProperty = 
          RoiLeftPropertyKey.DependencyProperty;
 
    
    
+#if !SILVERLIGHT
       partial void OnRoiLeftCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiLeftCoerceValueCallback(
+      static object RoiLeftCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -1012,7 +1069,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets RoiLeft (double)
       /// </summary>
@@ -1042,23 +1099,29 @@ namespace ZoomRectApp
          "RoiTop",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            null));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-                     
-            null, 
-            RoiTopCoerceValueCallback));
+            null,
+            RoiTopCoerceValueStatic));
+#endif
 
       public static System.Windows.DependencyProperty RoiTopProperty = 
          RoiTopPropertyKey.DependencyProperty;
 
    
    
+#if !SILVERLIGHT
       partial void OnRoiTopCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiTopCoerceValueCallback(
+      static object RoiTopCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -1087,7 +1150,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets RoiTop (double)
       /// </summary>
@@ -1117,23 +1180,29 @@ namespace ZoomRectApp
          "RoiRight",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            null));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-                     
-            null, 
-            RoiRightCoerceValueCallback));
+            null,
+            RoiRightCoerceValueStatic));
+#endif
 
       public static System.Windows.DependencyProperty RoiRightProperty = 
          RoiRightPropertyKey.DependencyProperty;
 
    
    
+#if !SILVERLIGHT
       partial void OnRoiRightCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiRightCoerceValueCallback(
+      static object RoiRightCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -1162,7 +1231,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets RoiRight (double)
       /// </summary>
@@ -1192,23 +1261,29 @@ namespace ZoomRectApp
          "RoiBottom",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            null));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-                     
-            null, 
-            RoiBottomCoerceValueCallback));
+            null,
+            RoiBottomCoerceValueStatic));
+#endif
 
       public static System.Windows.DependencyProperty RoiBottomProperty = 
          RoiBottomPropertyKey.DependencyProperty;
 
    
    
+#if !SILVERLIGHT
       partial void OnRoiBottomCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiBottomCoerceValueCallback(
+      static object RoiBottomCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -1237,7 +1312,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets RoiBottom (double)
       /// </summary>
@@ -1267,23 +1342,29 @@ namespace ZoomRectApp
          "RoiWidth",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            null));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-                     
-            null, 
-            RoiWidthCoerceValueCallback));
+            null,
+            RoiWidthCoerceValueStatic));
+#endif
 
       public static System.Windows.DependencyProperty RoiWidthProperty = 
          RoiWidthPropertyKey.DependencyProperty;
 
    
    
+#if !SILVERLIGHT
       partial void OnRoiWidthCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiWidthCoerceValueCallback(
+      static object RoiWidthCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -1312,7 +1393,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets RoiWidth (double)
       /// </summary>
@@ -1342,23 +1423,29 @@ namespace ZoomRectApp
          "RoiHeight",
          typeof(double),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            null));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-                     
-            null, 
-            RoiHeightCoerceValueCallback));
+            null,
+            RoiHeightCoerceValueStatic));
+#endif
 
       public static System.Windows.DependencyProperty RoiHeightProperty = 
          RoiHeightPropertyKey.DependencyProperty;
 
    
    
+#if !SILVERLIGHT
       partial void OnRoiHeightCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object RoiHeightCoerceValueCallback(
+      static object RoiHeightCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -1387,7 +1474,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets RoiHeight (double)
       /// </summary>
@@ -1417,10 +1504,16 @@ namespace ZoomRectApp
          "Shaders",
          typeof(System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            default(System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>),
+            ShadersPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             default(System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>), 
-            ShadersPropertyChangedCallback, 
-            ShadersCoerceValueCallback));
+            ShadersPropertyChangedStatic,
+            ShadersCoerceValueStatic));
+#endif
 
    
                      
@@ -1429,12 +1522,12 @@ namespace ZoomRectApp
          System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo> newValue,
          ref bool isProcessed);
          
-      static void ShadersPropertyChangedCallback(
+      static void ShadersPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (RegionOfInterest)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>)eventArgs.OldValue;
             var typedNewValue = (System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>)eventArgs.NewValue;
@@ -1449,12 +1542,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnShadersCoerceValue(
          System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo> baseValue,
          ref System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo> newValue,
          ref bool isProcessed);
          
-      static object ShadersCoerceValueCallback(
+      static object ShadersCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -1483,7 +1577,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets Shaders (System.Collections.ObjectModel.ObservableCollection<ZoomRectApp.ShaderEffectInfo>)
       /// </summary>
@@ -1513,10 +1607,16 @@ namespace ZoomRectApp
          "CurrentShader",
          typeof(ZoomRectApp.ShaderEffectInfo),
          typeof(RegionOfInterest),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            default(ZoomRectApp.ShaderEffectInfo),
+            CurrentShaderPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             default(ZoomRectApp.ShaderEffectInfo), 
-            CurrentShaderPropertyChangedCallback, 
-            CurrentShaderCoerceValueCallback));
+            CurrentShaderPropertyChangedStatic,
+            CurrentShaderCoerceValueStatic));
+#endif
 
    
                      
@@ -1525,12 +1625,12 @@ namespace ZoomRectApp
          ZoomRectApp.ShaderEffectInfo newValue,
          ref bool isProcessed);
          
-      static void CurrentShaderPropertyChangedCallback(
+      static void CurrentShaderPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (RegionOfInterest)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (ZoomRectApp.ShaderEffectInfo)eventArgs.OldValue;
             var typedNewValue = (ZoomRectApp.ShaderEffectInfo)eventArgs.NewValue;
@@ -1545,12 +1645,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnCurrentShaderCoerceValue(
          ZoomRectApp.ShaderEffectInfo baseValue,
          ref ZoomRectApp.ShaderEffectInfo newValue,
          ref bool isProcessed);
          
-      static object CurrentShaderCoerceValueCallback(
+      static object CurrentShaderCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -1579,7 +1680,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets CurrentShader (ZoomRectApp.ShaderEffectInfo)
       /// </summary>
@@ -1603,34 +1704,26 @@ namespace ZoomRectApp
       // ----------------------------------------------------------------------
    }
    // -------------------------------------------------------------------------
-}
 
    
-namespace ZoomRectApp
-{
-
    // -------------------------------------------------------------------------
-   // ZoomRectApp.ShaderEffectInfo class
+   // WpfShaderEffects.ShaderEffectInfo class
    // -------------------------------------------------------------------------
    /// <summary>
-   /// ZoomRectApp.ShaderEffectInfo class
+   /// WpfShaderEffects.ShaderEffectInfo class
    /// </summary>
    public sealed partial class ShaderEffectInfo
    {
-   
-      public void CoerceAllDependencyProperties()
-      {
-         CoerceValue(NameProperty);
-         CoerceValue(ShaderEffectProperty);
+      partial void OnConstruction();
       
-      }
+      public ShaderEffectInfo()
+      {
+         CoerceValue (NameProperty);
+         CoerceValue (ShaderEffectProperty);
 
-      public void InvalidateAllDependencyProperties()
-      {
-         InvalidateProperty(NameProperty);
-         InvalidateProperty(ShaderEffectProperty);
-      
+         OnConstruction();
       }
+      
       
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY Name      
@@ -1639,10 +1732,16 @@ namespace ZoomRectApp
          "Name",
          typeof(string),
          typeof(ShaderEffectInfo),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            default(string),
+            NamePropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             default(string), 
-            NamePropertyChangedCallback, 
-            NameCoerceValueCallback));
+            NamePropertyChangedStatic,
+            NameCoerceValueStatic));
+#endif
 
    
                      
@@ -1651,12 +1750,12 @@ namespace ZoomRectApp
          string newValue,
          ref bool isProcessed);
          
-      static void NamePropertyChangedCallback(
+      static void NamePropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (ShaderEffectInfo)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (string)eventArgs.OldValue;
             var typedNewValue = (string)eventArgs.NewValue;
@@ -1671,12 +1770,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnNameCoerceValue(
          string baseValue,
          ref string newValue,
          ref bool isProcessed);
          
-      static object NameCoerceValueCallback(
+      static object NameCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -1705,7 +1805,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets Name (string)
       /// </summary>
@@ -1735,10 +1835,16 @@ namespace ZoomRectApp
          "ShaderEffect",
          typeof(System.Windows.Media.Effects.ShaderEffect),
          typeof(ShaderEffectInfo),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            default(System.Windows.Media.Effects.ShaderEffect),
+            ShaderEffectPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             default(System.Windows.Media.Effects.ShaderEffect), 
-            ShaderEffectPropertyChangedCallback, 
-            ShaderEffectCoerceValueCallback));
+            ShaderEffectPropertyChangedStatic,
+            ShaderEffectCoerceValueStatic));
+#endif
 
    
                      
@@ -1747,12 +1853,12 @@ namespace ZoomRectApp
          System.Windows.Media.Effects.ShaderEffect newValue,
          ref bool isProcessed);
          
-      static void ShaderEffectPropertyChangedCallback(
+      static void ShaderEffectPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (ShaderEffectInfo)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (System.Windows.Media.Effects.ShaderEffect)eventArgs.OldValue;
             var typedNewValue = (System.Windows.Media.Effects.ShaderEffect)eventArgs.NewValue;
@@ -1767,12 +1873,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnShaderEffectCoerceValue(
          System.Windows.Media.Effects.ShaderEffect baseValue,
          ref System.Windows.Media.Effects.ShaderEffect newValue,
          ref bool isProcessed);
          
-      static object ShaderEffectCoerceValueCallback(
+      static object ShaderEffectCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -1801,7 +1908,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets ShaderEffect (System.Windows.Media.Effects.ShaderEffect)
       /// </summary>
@@ -1825,34 +1932,26 @@ namespace ZoomRectApp
       // ----------------------------------------------------------------------
    }
    // -------------------------------------------------------------------------
-}
 
    
-namespace ZoomRectApp
-{
-
    // -------------------------------------------------------------------------
-   // ZoomRectApp.MouseDragBehavior class
+   // WpfShaderEffects.MouseDragBehavior class
    // -------------------------------------------------------------------------
    /// <summary>
-   /// ZoomRectApp.MouseDragBehavior class
+   /// WpfShaderEffects.MouseDragBehavior class
    /// </summary>
    public sealed partial class MouseDragBehavior
    {
-   
-      public void CoerceAllDependencyProperties()
-      {
-         CoerceValue(XProperty);
-         CoerceValue(YProperty);
+      partial void OnConstruction();
       
-      }
+      public MouseDragBehavior()
+      {
+         CoerceValue (XProperty);
+         CoerceValue (YProperty);
 
-      public void InvalidateAllDependencyProperties()
-      {
-         InvalidateProperty(XProperty);
-         InvalidateProperty(YProperty);
-      
+         OnConstruction();
       }
+      
       
       // ----------------------------------------------------------------------
       // BEGIN_PROPERTY X      
@@ -1861,10 +1960,16 @@ namespace ZoomRectApp
          "X",
          typeof(double),
          typeof(MouseDragBehavior),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            XPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-            XPropertyChangedCallback, 
-            XCoerceValueCallback));
+            XPropertyChangedStatic,
+            XCoerceValueStatic));
+#endif
 
    
                      
@@ -1873,12 +1978,12 @@ namespace ZoomRectApp
          double newValue,
          ref bool isProcessed);
          
-      static void XPropertyChangedCallback(
+      static void XPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (MouseDragBehavior)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
             var typedNewValue = (double)eventArgs.NewValue;
@@ -1893,12 +1998,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnXCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object XCoerceValueCallback(
+      static object XCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -1927,7 +2033,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets X (double)
       /// </summary>
@@ -1957,10 +2063,16 @@ namespace ZoomRectApp
          "Y",
          typeof(double),
          typeof(MouseDragBehavior),
+#if SILVERLIGHT
          new System.Windows.PropertyMetadata(
+            0.0,
+            YPropertyChangedStatic));
+#else
+         new System.Windows.UIPropertyMetadata(
             0.0, 
-            YPropertyChangedCallback, 
-            YCoerceValueCallback));
+            YPropertyChangedStatic,
+            YCoerceValueStatic));
+#endif
 
    
                      
@@ -1969,12 +2081,12 @@ namespace ZoomRectApp
          double newValue,
          ref bool isProcessed);
          
-      static void YPropertyChangedCallback(
+      static void YPropertyChangedStatic(
          System.Windows.DependencyObject instance, 
          System.Windows.DependencyPropertyChangedEventArgs eventArgs)
       {
          var typedInstance = (MouseDragBehavior)instance;
-         if (typedInstance != null && eventArgs != null)
+         if (typedInstance != null)
          {
             var typedOldValue = (double)eventArgs.OldValue;
             var typedNewValue = (double)eventArgs.NewValue;
@@ -1989,12 +2101,13 @@ namespace ZoomRectApp
          }
       }
    
+#if !SILVERLIGHT
       partial void OnYCoerceValue(
          double baseValue,
          ref double newValue,
          ref bool isProcessed);
          
-      static object YCoerceValueCallback(
+      static object YCoerceValueStatic(
          System.Windows.DependencyObject instance, 
          object baseValue)
       {
@@ -2023,7 +2136,7 @@ namespace ZoomRectApp
             return baseValue;
          }
       }
-
+#endif
       /// <summary>
       /// Gets and sets Y (double)
       /// </summary>
@@ -2047,5 +2160,6 @@ namespace ZoomRectApp
       // ----------------------------------------------------------------------
    }
    // -------------------------------------------------------------------------
+
 }
 

@@ -61,11 +61,6 @@ namespace WpfShaderEffects.Experimental
          RebuildEffectTree();
       }
 
-      public EffectStacker()
-      {
-         CoerceAllDependencyProperties();
-      }
-
       public override void OnApplyTemplate()
       {
          base.OnApplyTemplate();
